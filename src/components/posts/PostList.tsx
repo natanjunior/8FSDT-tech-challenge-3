@@ -1,15 +1,21 @@
-import { Post } from '@/types/post'
+import Link from 'next/link'
+import { Post, PaginatedResponse } from '@/types/post'
 import { PostCard } from './PostCard'
-import { Pagination } from '@/components/ui/Pagination'
 
 interface PostListProps {
   posts: Post[]
-  currentPage: number
-  totalPages: number
-  onPageChange: (page: number) => void
+  pagination: PaginatedResponse<Post>['pagination']
+  basePath: string
 }
 
-export function PostList({ posts, currentPage, totalPages, onPageChange }: PostListProps) {
+function buildPageUrl(basePath: string, page: number): string {
+  const sep = basePath.includes('?') ? '&' : '?'
+  return `${basePath}${sep}page=${page}`
+}
+
+export function PostList({ posts, pagination, basePath }: PostListProps) {
+  const { page, totalPages } = pagination
+
   if (posts.length === 0) {
     return (
       <div className="text-center py-16 text-on-surface-variant">
@@ -26,13 +32,32 @@ export function PostList({ posts, currentPage, totalPages, onPageChange }: PostL
           <PostCard key={post.id} post={post} />
         ))}
       </div>
-      <div className="flex justify-center">
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={onPageChange}
-        />
-      </div>
+
+      {totalPages > 1 && (
+        <nav aria-label="Paginação" className="flex items-center justify-center gap-2">
+          <Link
+            href={buildPageUrl(basePath, page - 1)}
+            aria-disabled={page === 1}
+            className={`p-2 rounded-card transition-colors ${page === 1 ? 'pointer-events-none opacity-40' : 'hover:bg-surface-low'}`}
+            aria-label="Página anterior"
+          >
+            <span className="material-symbols-outlined text-sm">chevron_left</span>
+          </Link>
+
+          <span className="text-sm text-on-surface-variant font-mono px-3">
+            {page} / {totalPages}
+          </span>
+
+          <Link
+            href={buildPageUrl(basePath, page + 1)}
+            aria-disabled={page === totalPages}
+            className={`p-2 rounded-card transition-colors ${page === totalPages ? 'pointer-events-none opacity-40' : 'hover:bg-surface-low'}`}
+            aria-label="Próxima página"
+          >
+            <span className="material-symbols-outlined text-sm">chevron_right</span>
+          </Link>
+        </nav>
+      )}
     </div>
   )
 }

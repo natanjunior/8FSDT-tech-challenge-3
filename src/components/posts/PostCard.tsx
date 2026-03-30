@@ -23,7 +23,7 @@ export function PostCard({ post }: { post: Post }) {
       <article className="bg-surface-lowest rounded-card p-5 shadow-xl shadow-sky-950/5 transition-shadow hover:shadow-2xl h-full flex flex-col">
         {/* Discipline badge */}
         <div className="mb-3">
-          <DisciplineBadge label={post.discipline?.label ?? null} />
+          <DisciplineBadge disciplineSlug={post.discipline?.slug} />
         </div>
 
         {/* Title */}

@@ -20,13 +20,13 @@ describe('StatusBadge', () => {
 })
 
 describe('DisciplineBadge', () => {
-  it('renders discipline label', () => {
-    render(<DisciplineBadge label="Matemática" />)
+  it('renders discipline label from slug', () => {
+    render(<DisciplineBadge disciplineSlug="matematica" />)
     expect(screen.getByText('Matemática')).toBeInTheDocument()
   })
 
-  it('renders nothing when label is null', () => {
-    const { container } = render(<DisciplineBadge label={null} />)
+  it('renders nothing when disciplineSlug is null', () => {
+    const { container } = render(<DisciplineBadge disciplineSlug={null} />)
     expect(container).toBeEmptyDOMElement()
   })
 })

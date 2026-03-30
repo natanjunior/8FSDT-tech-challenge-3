@@ -25,20 +25,23 @@ export function StatusBadge({ status }: { status: PostStatus }) {
   )
 }
 
-const DISCIPLINE_COLORS: Record<string, string> = {
-  Matemática: 'bg-blue-100 text-blue-700',
-  Português: 'bg-purple-100 text-purple-700',
-  Ciências: 'bg-emerald-100 text-emerald-700',
-  História: 'bg-amber-100 text-amber-700',
-  Geografia: 'bg-teal-100 text-teal-700',
+const DISCIPLINE_CONFIG: Record<string, { label: string; classes: string }> = {
+  matematica: { label: 'Matemática', classes: 'bg-blue-100 text-blue-700' },
+  portugues:  { label: 'Português',  classes: 'bg-purple-100 text-purple-700' },
+  ciencias:   { label: 'Ciências',   classes: 'bg-emerald-100 text-emerald-700' },
+  historia:   { label: 'História',   classes: 'bg-amber-100 text-amber-700' },
+  geografia:  { label: 'Geografia',  classes: 'bg-teal-100 text-teal-700' },
 }
 
-export function DisciplineBadge({ label }: { label: string | null }) {
-  if (!label) return null
-  const classes = DISCIPLINE_COLORS[label] ?? 'bg-surface-low text-on-surface-variant'
+export function DisciplineBadge({ disciplineSlug }: { disciplineSlug: string | null | undefined }) {
+  if (!disciplineSlug) return null
+  const config = DISCIPLINE_CONFIG[disciplineSlug] ?? {
+    label: disciplineSlug,
+    classes: 'bg-surface-low text-on-surface-variant',
+  }
   return (
-    <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-semibold ${classes}`}>
-      {label}
+    <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-semibold ${config.classes}`}>
+      {config.label}
     </span>
   )
 }

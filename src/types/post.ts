@@ -4,6 +4,7 @@ export type PostStatus = 'DRAFT' | 'PUBLISHED' | 'ARCHIVED'
 
 export interface Discipline {
   id: string
+  slug: string
   label: string
 }
 
@@ -16,6 +17,7 @@ export interface Post {
   created_at: string
   updated_at: string
   author: User
+  subtitle?: string
   discipline: Discipline | null
   comments_count: number
   reads_count: number

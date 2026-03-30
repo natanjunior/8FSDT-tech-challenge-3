@@ -13,11 +13,12 @@ const DISCIPLINES = [
 
 interface SidebarProps {
   activeDiscipline?: string
+  activeSection?: 'grupo'
   sidebarOpen?: boolean
   onClose?: () => void
 }
 
-export function Sidebar({ activeDiscipline, sidebarOpen = false, onClose }: SidebarProps) {
+export function Sidebar({ activeDiscipline, activeSection, sidebarOpen = false, onClose }: SidebarProps) {
   const { user } = useAuth()
 
   return (
@@ -70,7 +71,7 @@ export function Sidebar({ activeDiscipline, sidebarOpen = false, onClose }: Side
         </nav>
 
         <div className="border-t border-surface-low pt-4 flex flex-col gap-1">
-          <Link href="/grupo" onClick={onClose} className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-on-surface-variant hover:bg-surface-low transition-colors">
+          <Link href="/grupo" onClick={onClose} className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${activeSection === 'grupo' ? 'bg-teal-50 text-teal-800 font-semibold' : 'text-on-surface-variant hover:bg-surface-low'}`}>
             <span className="material-symbols-outlined text-base">group</span>
             Grupo
           </Link>
