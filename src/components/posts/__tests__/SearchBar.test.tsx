@@ -1,24 +1,50 @@
-import { describe, it, expect, vi } from 'vitest'
-import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import { SearchBar } from '../SearchBar'
+import { render, screen, fireEvent } from '@testing-library/react'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { SearchBar } from '@/components/posts/SearchBar'
+
+const { mockPush, mockGet, mockSearchParams } = vi.hoisted(() => {
+  const mockGet = vi.fn()
+  return {
+    mockPush: vi.fn(),
+    mockGet,
+    mockSearchParams: { get: mockGet },
+  }
+})
+
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({ push: mockPush }),
+  useSearchParams: () => mockSearchParams,
+}))
 
 describe('SearchBar', () => {
+  beforeEach(() => {
+    mockPush.mockClear()
+    mockGet.mockReturnValue(null)
+  })
+
   it('renders search input', () => {
-    render(<SearchBar onSearch={vi.fn()} />)
-    expect(screen.getByRole('searchbox')).toBeInTheDocument()
+    render(<SearchBar />)
+    expect(screen.getByRole('search')).toBeInTheDocument()
+    expect(screen.getByLabelText('Buscar posts')).toBeInTheDocument()
   })
 
-  it('calls onSearch with input value on form submit', async () => {
-    const onSearch = vi.fn()
-    render(<SearchBar onSearch={onSearch} />)
-    await userEvent.type(screen.getByRole('searchbox'), 'frações')
-    await userEvent.keyboard('{Enter}')
-    expect(onSearch).toHaveBeenCalledWith('frações')
+  it('navigates to /posts?q=termo on submit', () => {
+    render(<SearchBar />)
+    const input = screen.getByLabelText('Buscar posts')
+    fireEvent.change(input, { target: { value: 'matemática' } })
+    fireEvent.submit(screen.getByRole('search'))
+    expect(mockPush).toHaveBeenCalledWith('/posts?q=matem%C3%A1tica')
   })
 
-  it('renders with initial value when defaultValue is provided', () => {
-    render(<SearchBar onSearch={vi.fn()} defaultValue="matemática" />)
-    expect(screen.getByRole('searchbox')).toHaveValue('matemática')
+  it('does not navigate when input is empty', () => {
+    render(<SearchBar />)
+    fireEvent.submit(screen.getByRole('search'))
+    expect(mockPush).not.toHaveBeenCalled()
+  })
+
+  it('pre-fills input with q param from URL', () => {
+    mockGet.mockReturnValue('história')
+    render(<SearchBar />)
+    expect(screen.getByLabelText('Buscar posts')).toHaveValue('história')
   })
 })
