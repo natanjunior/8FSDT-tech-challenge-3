@@ -14,7 +14,7 @@ function DefaultEmptyState() {
   )
 }
 
-export function DataTable<T extends Record<string, unknown>>({
+export function DataTable<T extends object>({
   title,
   columns,
   rows,
@@ -112,7 +112,7 @@ export function DataTable<T extends Record<string, unknown>>({
                     const colspan = col.mergedWith ? 2 : 1
                     const value = col.cell
                       ? col.cell(row)
-                      : String((row as Record<string, unknown>)[col.key as string] ?? '')
+                      : String((row as Record<string, unknown>)[col.key as string] ?? '')  // eslint-disable-line @typescript-eslint/no-explicit-any
                     return (
                       <td
                         key={String(col.key)}
