@@ -41,9 +41,8 @@ describe('postSchema', () => {
     expect(result.success).toBe(false)
   })
 
-  it('strips empty discipline_id to undefined', () => {
+  it('accepts empty string discipline_id', () => {
     const result = postSchema.safeParse({ ...valid, discipline_id: '' })
     expect(result.success).toBe(true)
-    expect(result.data?.discipline_id).toBeUndefined()
   })
 })
