@@ -25,6 +25,7 @@ export interface Post {
 
 export interface PostPayload {
   title: string
+  subtitle?: string
   content: string
   status: PostStatus
   discipline_id?: string

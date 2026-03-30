@@ -4,6 +4,11 @@ import { Post, PostPayload, PaginatedResponse } from '@/types/post'
 export interface GetPostsParams {
   page?: number
   limit?: number
+  status?: string
+  discipline?: string
+  q?: string
+  sortKey?: string
+  sortDir?: 'asc' | 'desc'
 }
 
 export interface SearchPostsParams {
@@ -16,7 +21,8 @@ export interface SearchPostsParams {
 export async function getPosts(
   params: GetPostsParams = {}
 ): Promise<PaginatedResponse<Post>> {
-  const { data } = await api.get<PaginatedResponse<Post>>('/posts', { params })
+  const endpoint = params.q ? '/posts/search' : '/posts'
+  const { data } = await api.get<PaginatedResponse<Post>>(endpoint, { params })
   return data
 }
 

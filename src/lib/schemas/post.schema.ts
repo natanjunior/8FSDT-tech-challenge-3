@@ -1,18 +1,11 @@
 import { z } from 'zod'
 
 export const postSchema = z.object({
-  title: z
-    .string()
-    .min(5, 'Título deve ter pelo menos 5 caracteres')
-    .max(255, 'Título deve ter no máximo 255 caracteres'),
-  content: z.string().min(10, 'Conteúdo deve ter pelo menos 10 caracteres'),
-  status: z.enum(['DRAFT', 'PUBLISHED', 'ARCHIVED']),
-  discipline_id: z
-    .string()
-    .uuid('ID de disciplina inválido')
-    .optional()
-    .or(z.literal(''))
-    .transform((v) => v || undefined),
+  title: z.string().min(5, 'Título deve ter entre 5 e 255 caracteres').max(255, 'Título deve ter entre 5 e 255 caracteres'),
+  subtitle: z.string().max(300).optional(),
+  content: z.string().min(10, 'Conteúdo deve ter no mínimo 10 caracteres'),
+  status: z.enum(['DRAFT', 'PUBLISHED', 'ARCHIVED'], { required_error: 'Status é obrigatório' }),
+  discipline_id: z.string().uuid().optional().or(z.literal('')),
 })
 
 export type PostFormData = z.infer<typeof postSchema>
