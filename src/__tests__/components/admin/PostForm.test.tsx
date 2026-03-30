@@ -14,18 +14,43 @@ const mockOnCancel = vi.fn()
 describe('PostForm', () => {
   beforeEach(() => vi.clearAllMocks())
 
-  it('renders title, content, status, author fields', () => {
+  it('renders title, subtitle, content, status, author fields', () => {
     render(<PostForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} submitLabel="Criar artigo" />)
-    expect(screen.getByLabelText(/título/i)).toBeInTheDocument()
-    expect(screen.getByLabelText(/conteúdo/i)).toBeInTheDocument()
-    expect(screen.getByLabelText(/autor/i)).toBeInTheDocument()
+    expect(screen.getByLabelText('Título *')).toBeInTheDocument()
+    expect(screen.getByLabelText('Subtítulo')).toBeInTheDocument()
+    expect(screen.getByLabelText('Conteúdo *')).toBeInTheDocument()
+    expect(screen.getByLabelText('Autor')).toBeInTheDocument()
     expect(screen.getByText('Criar artigo')).toBeInTheDocument()
+  })
+
+  it('subtitle field is optional and accepts text', () => {
+    render(<PostForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} submitLabel="Criar artigo" />)
+    const subtitleInput = screen.getByLabelText('Subtítulo')
+    expect(subtitleInput).toBeInTheDocument()
+    fireEvent.change(subtitleInput, { target: { value: 'Um subtítulo opcional' } })
+    expect(subtitleInput).toHaveValue('Um subtítulo opcional')
+  })
+
+  it('calls onDirtyChange when form becomes dirty', async () => {
+    const mockOnDirtyChange = vi.fn()
+    render(
+      <PostForm
+        onSubmit={mockOnSubmit}
+        onCancel={mockOnCancel}
+        submitLabel="Criar artigo"
+        onDirtyChange={mockOnDirtyChange}
+      />
+    )
+    fireEvent.change(screen.getByLabelText('Título *'), { target: { value: 'Novo título' } })
+    await waitFor(() => {
+      expect(mockOnDirtyChange).toHaveBeenCalledWith(true)
+    })
   })
 
   it('shows validation error when title is too short', async () => {
     render(<PostForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} submitLabel="Criar artigo" />)
-    fireEvent.change(screen.getByLabelText(/título/i), { target: { value: 'abc' } })
-    fireEvent.change(screen.getByLabelText(/conteúdo/i), { target: { value: 'conteudo valido longo o suficiente' } })
+    fireEvent.change(screen.getByLabelText('Título *'), { target: { value: 'abc' } })
+    fireEvent.change(screen.getByLabelText('Conteúdo *'), { target: { value: 'conteudo valido longo o suficiente' } })
     fireEvent.submit(screen.getByRole('button', { name: /criar artigo/i }))
     await waitFor(() => {
       expect(screen.getByText(/entre 5 e 255 caracteres/i)).toBeInTheDocument()
@@ -34,8 +59,8 @@ describe('PostForm', () => {
 
   it('shows validation error when content is too short', async () => {
     render(<PostForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} submitLabel="Criar artigo" />)
-    fireEvent.change(screen.getByLabelText(/título/i), { target: { value: 'Título válido de teste' } })
-    fireEvent.change(screen.getByLabelText(/conteúdo/i), { target: { value: 'curto' } })
+    fireEvent.change(screen.getByLabelText('Título *'), { target: { value: 'Título válido de teste' } })
+    fireEvent.change(screen.getByLabelText('Conteúdo *'), { target: { value: 'curto' } })
     fireEvent.submit(screen.getByRole('button', { name: /criar artigo/i }))
     await waitFor(() => {
       expect(screen.getByText(/no mínimo 10 caracteres/i)).toBeInTheDocument()
@@ -44,7 +69,7 @@ describe('PostForm', () => {
 
   it('author field is disabled', () => {
     render(<PostForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} submitLabel="Criar artigo" />)
-    expect(screen.getByLabelText(/autor/i)).toBeDisabled()
+    expect(screen.getByLabelText('Autor')).toBeDisabled()
   })
 
   it('pre-fills fields from defaultValues', () => {
@@ -56,7 +81,7 @@ describe('PostForm', () => {
         defaultValues={{ title: 'Título pré-preenchido', content: 'Conteúdo', status: 'PUBLISHED', discipline_id: '' }}
       />
     )
-    expect(screen.getByLabelText(/título/i)).toHaveValue('Título pré-preenchido')
+    expect(screen.getByLabelText('Título *')).toHaveValue('Título pré-preenchido')
   })
 
   it('calls onCancel when cancel is clicked', () => {

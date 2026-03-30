@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { postSchema, PostFormData } from '@/lib/schemas/post.schema'
@@ -20,16 +21,17 @@ interface PostFormProps {
   submitLabel: string
   defaultValues?: Partial<PostFormData>
   isSubmitting?: boolean
+  onDirtyChange?: (dirty: boolean) => void
 }
 
-export default function PostForm({ onSubmit, onCancel, submitLabel, defaultValues, isSubmitting }: PostFormProps) {
+export default function PostForm({ onSubmit, onCancel, submitLabel, defaultValues, isSubmitting, onDirtyChange }: PostFormProps) {
   const { user } = useAuth()
 
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: { errors, isDirty: formIsDirty },
   } = useForm<PostFormData>({
     resolver: zodResolver(postSchema),
     defaultValues: {
@@ -43,6 +45,10 @@ export default function PostForm({ onSubmit, onCancel, submitLabel, defaultValue
   })
 
   const contentValue = watch('content') ?? ''
+
+  useEffect(() => {
+    onDirtyChange?.(formIsDirty)
+  }, [formIsDirty, onDirtyChange])
 
   return (
     <div className="bg-surface-container-lowest rounded-xl shadow-xl shadow-sky-950/5 overflow-visible">
@@ -76,6 +82,19 @@ export default function PostForm({ onSubmit, onCancel, submitLabel, defaultValue
             ) : (
               <p className="text-[10px] text-on-surface-variant/70 uppercase tracking-wider">Entre 5 e 255 caracteres</p>
             )}
+          </div>
+
+          {/* Subtítulo */}
+          <div className="space-y-1.5">
+            <label className="block text-sm font-bold text-primary" htmlFor="post-subtitle">Subtítulo</label>
+            <input
+              id="post-subtitle"
+              type="text"
+              placeholder="Ex: Uma abordagem prática para o ensino fundamental"
+              {...register('subtitle')}
+              className="w-full bg-surface-container-low border border-outline-variant/30 rounded-xl px-4 py-3 text-on-surface placeholder:text-on-surface-variant/60 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+            />
+            <p className="text-[10px] text-on-surface-variant/70 uppercase tracking-wider">Até 300 caracteres (opcional)</p>
           </div>
 
           {/* Disciplina + Status */}

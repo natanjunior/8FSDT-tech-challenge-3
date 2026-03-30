@@ -50,6 +50,7 @@ export default function EditPostPage() {
     try {
       await updatePost(id, {
         title: data.title,
+        subtitle: data.subtitle || undefined,
         content: data.content,
         status: data.status,
         discipline_id: data.discipline_id || undefined,
@@ -111,6 +112,7 @@ export default function EditPostPage() {
             discipline_id: post.discipline?.id ?? '',
           }}
           isSubmitting={isSubmitting}
+          onDirtyChange={setIsDirty}
         />
       </main>
 
