@@ -1,0 +1,24 @@
+# docker-compose.yml
+version: '3.9'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: edublog-frontend
+    container_name: edublog-frontend
+    ports:
+      - '3000:3000'
+    environment:
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:3030}
+      - JWT_SECRET=${JWT_SECRET}
+    restart: unless-stopped
+    # Opcional: conectar à rede do backend da Fase 2
+    # networks:
+    #   - edublog-network
+
+# networks:
+#   edublog-network:
+#     external: true
+#     name: fase2_edublog-network  # nome da rede criada pelo compose da Fase 2
