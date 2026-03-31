@@ -26,6 +26,6 @@ describe('Button', () => {
   it('renders secondary variant', () => {
     render(<Button variant="secondary">Cancelar</Button>)
     const btn = screen.getByRole('button')
-    expect(btn.className).toContain('border')
+    expect(btn.className).toContain('text-on-surface-variant')
   })
 })
