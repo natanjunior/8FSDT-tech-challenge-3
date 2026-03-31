@@ -1,25 +1,37 @@
+// src/components/ui/Breadcrumb.tsx
 import Link from 'next/link'
 
 interface BreadcrumbItem {
   label: string
-  href?: string
+  href: string
 }
 
-export function Breadcrumb({ items }: { items: BreadcrumbItem[] }) {
+interface BreadcrumbProps {
+  items: BreadcrumbItem[]
+  currentTitle: string
+  description?: string
+}
+
+export function Breadcrumb({ items, currentTitle, description }: BreadcrumbProps) {
   return (
-    <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-sm text-on-surface-variant">
-      {items.map((item, i) => (
-        <span key={i} className="flex items-center gap-1">
-          {i > 0 && <span className="material-symbols-outlined text-sm">chevron_right</span>}
-          {item.href ? (
-            <Link href={item.href} className="hover:text-secondary transition-colors">
+    <div className="mb-8">
+      <nav className="flex items-center gap-2 text-sm mb-1" aria-label="Breadcrumb">
+        {items.map((item, i) => (
+          <span key={i} className="flex items-center gap-2">
+            <Link
+              href={item.href}
+              className="font-medium text-secondary hover:underline underline-offset-2 transition-colors"
+            >
               {item.label}
             </Link>
-          ) : (
-            <span className="text-on-surface font-medium">{item.label}</span>
-          )}
-        </span>
-      ))}
-    </nav>
+            <span className="material-symbols-outlined text-outline text-base">chevron_right</span>
+          </span>
+        ))}
+        <span className="font-black text-2xl tracking-tight text-primary">{currentTitle}</span>
+      </nav>
+      {description && (
+        <p className="text-sm text-on-surface-variant">{description}</p>
+      )}
+    </div>
   )
 }
