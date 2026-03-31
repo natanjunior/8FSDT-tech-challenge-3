@@ -25,23 +25,24 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   const { data: posts, pagination } = await fetchPosts(page)
 
   return (
-    <PublicLayout>
-      {/* Hero */}
-      <section className="rounded-xl bg-gradient-to-br from-primary to-primary-container p-8 lg:p-12 mb-10 text-white">
-        <h1 className="text-3xl lg:text-4xl font-black mb-2 tracking-tight">
-          Aprenda com os professores
-        </h1>
-        <p className="text-base lg:text-lg opacity-80 mb-6">
-          Posts educacionais sobre Matemática, Português, Ciências, História e Geografia
-        </p>
-        <SearchBar />
+    <PublicLayout wide>
+      {/* Hero Search */}
+      <section className="mb-12 md:mb-20">
+        <div className="max-w-4xl mx-auto text-center mb-6 md:mb-12">
+          <h1 className="text-[2rem] md:text-[3.5rem] font-black tracking-tighter leading-tight md:leading-none text-primary mb-4 md:mb-6">
+            Conhecimento para a <span className="text-secondary">próxima geração.</span>
+          </h1>
+          <p className="text-on-surface-variant text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
+            Acesse materiais educacionais criados por professores da rede pública brasileira.
+          </p>
+        </div>
+        <div className="relative max-w-5xl mx-auto">
+          <SearchBar size="hero" />
+        </div>
       </section>
 
-      {/* Listagem de posts */}
-      <section>
-        <h2 className="text-xl font-bold text-on-surface mb-6">Posts recentes</h2>
-        <PostList posts={posts} pagination={pagination} basePath="/" />
-      </section>
+      {/* Post Grid */}
+      <PostList posts={posts} pagination={pagination} basePath="/" />
     </PublicLayout>
   )
 }
