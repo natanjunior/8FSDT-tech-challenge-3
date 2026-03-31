@@ -1,3 +1,4 @@
+// src/components/ui/Pagination.tsx
 interface PaginationProps {
   currentPage: number
   totalPages: number
@@ -17,11 +18,11 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
   }
 
   return (
-    <nav aria-label="Paginação" className="flex items-center gap-1">
+    <div className="flex gap-1">
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="p-2 rounded-xl disabled:opacity-40 hover:bg-surface-container-low transition-colors"
+        className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-surface-container-high transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
         aria-label="Página anterior"
       >
         <span className="material-symbols-outlined text-sm">chevron_left</span>
@@ -29,16 +30,16 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
 
       {getPages().map((page, i) =>
         page === '...' ? (
-          <span key={`ellipsis-${i}`} className="px-2 text-on-surface-variant">…</span>
+          <span key={`ellipsis-${i}`} className="w-7 h-7 flex items-center justify-center">…</span>
         ) : (
           <button
             key={page}
             onClick={() => onPageChange(page)}
             aria-current={page === currentPage ? 'page' : undefined}
-            className={`w-9 h-9 rounded-xl text-sm font-mono transition-colors
+            className={`w-7 h-7 flex items-center justify-center rounded-lg transition-colors
               ${page === currentPage
-                ? 'bg-primary text-white font-bold'
-                : 'hover:bg-surface-container-low text-on-surface'
+                ? 'bg-primary text-white'
+                : 'hover:bg-surface-container-high'
               }`}
           >
             {page}
@@ -49,11 +50,11 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="p-2 rounded-xl disabled:opacity-40 hover:bg-surface-container-low transition-colors"
+        className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-surface-container-high transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
         aria-label="Próxima página"
       >
         <span className="material-symbols-outlined text-sm">chevron_right</span>
       </button>
-    </nav>
+    </div>
   )
 }
