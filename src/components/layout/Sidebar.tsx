@@ -26,58 +26,68 @@ export function Sidebar({ activeDiscipline, activeSection, sidebarOpen = false, 
       {/* Overlay mobile */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-on-surface/40 z-30 lg:hidden"
+          className="fixed inset-0 bg-on-surface/30 z-30 lg:hidden"
           onClick={onClose}
         />
       )}
 
       <aside
         id="main-sidebar"
-        className={`fixed left-0 top-0 h-screen w-64 bg-surface-container-lowest border-r border-surface-container-low z-40
-          flex flex-col pt-20 pb-6 px-3 transition-transform duration-200
+        className={`fixed left-0 top-0 h-screen w-64 bg-slate-50 shadow-2xl shadow-sky-950/10 py-6 z-40 border-r border-outline-variant/20
+          flex flex-col transition-transform duration-300
           ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}
       >
-        <nav className="flex-1 flex flex-col gap-1">
-          <p className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider px-3 mb-2">
-            Disciplinas
-          </p>
+        <nav className="flex-1 space-y-1 px-2 mt-20">
           {DISCIPLINES.map((d) => (
             <Link
               key={d.slug}
               href={`/posts?discipline=${d.slug}`}
               onClick={onClose}
-              className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all
-                ${activeDiscipline === d.slug
-                  ? 'bg-teal-50 text-teal-800 font-semibold'
-                  : 'text-on-surface-variant hover:bg-surface-container-low hover:translate-x-1'
-                }`}
+              className={
+                activeDiscipline === d.slug
+                  ? 'flex items-center px-4 py-2.5 bg-teal-50 text-teal-800 font-semibold rounded-lg'
+                  : 'flex items-center px-4 py-3 text-slate-500 hover:bg-slate-200 rounded-lg transition-all hover:translate-x-1'
+              }
             >
-              <span className="material-symbols-outlined text-base">{d.icon}</span>
-              {d.label}
+              <span className="material-symbols-outlined mr-3 text-lg">{d.icon}</span>
+              <span className="text-sm font-medium">{d.label}</span>
             </Link>
           ))}
 
           {user?.role === 'TEACHER' && (
-            <Link
-              href="/admin/posts/new"
-              onClick={onClose}
-              className="mt-4 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl
-                bg-gradient-to-r cta-gradient text-white font-bold text-sm"
-            >
-              <span className="material-symbols-outlined text-base">add</span>
-              Criar Post
-            </Link>
+            <div className="pt-4 px-2">
+              <Link
+                href="/admin/posts/new"
+                onClick={onClose}
+                className="w-full bg-gradient-to-r from-secondary to-on-secondary-container text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-secondary/20 hover:opacity-90 transition-all active:scale-95"
+              >
+                <span className="material-symbols-outlined text-sm">add</span>
+                <span className="text-sm">Criar Post</span>
+              </Link>
+            </div>
           )}
         </nav>
 
-        <div className="border-t border-surface-container-low pt-4 flex flex-col gap-1">
-          <Link href="/grupo" onClick={onClose} className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${activeSection === 'grupo' ? 'bg-teal-50 text-teal-800 font-semibold' : 'text-on-surface-variant hover:bg-surface-container-low'}`}>
-            <span className="material-symbols-outlined text-base">group</span>
-            Grupo
+        <div className="px-2 space-y-1 border-t border-slate-200 pt-4 mt-auto">
+          <Link
+            href="/grupo"
+            onClick={onClose}
+            className={
+              activeSection === 'grupo'
+                ? 'flex items-center px-4 py-3 bg-teal-50 text-teal-800 font-semibold rounded-lg'
+                : 'flex items-center px-4 py-3 text-slate-500 hover:bg-slate-200 rounded-lg transition-all hover:translate-x-1'
+            }
+          >
+            <span className="material-symbols-outlined mr-3 text-lg">group</span>
+            <span className="text-sm">Grupo</span>
           </Link>
-          <Link href="/design-system" onClick={onClose} className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-on-surface-variant hover:bg-surface-container-low transition-colors">
-            <span className="material-symbols-outlined text-base">palette</span>
-            Design System
+          <Link
+            href="/design-system"
+            onClick={onClose}
+            className="flex items-center px-4 py-3 text-slate-500 hover:bg-slate-200 rounded-lg transition-all hover:translate-x-1"
+          >
+            <span className="material-symbols-outlined mr-3 text-lg">description</span>
+            <span className="text-sm">Documentação</span>
           </Link>
         </div>
       </aside>
