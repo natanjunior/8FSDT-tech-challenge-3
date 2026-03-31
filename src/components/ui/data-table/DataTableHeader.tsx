@@ -11,7 +11,7 @@ interface DataTableHeaderProps<T> {
 export function DataTableHeader<T>({ columns, sortState, onSort }: DataTableHeaderProps<T>) {
   return (
     <thead>
-      <tr className="border-b border-surface-low">
+      <tr className="border-b border-surface-container-low">
         {columns.map((col, i) => {
           const isSortable = !!col.sortKey
           const isActive = sortState?.sortKey === col.sortKey

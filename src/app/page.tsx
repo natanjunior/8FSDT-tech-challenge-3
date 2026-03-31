@@ -27,7 +27,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   return (
     <PublicLayout>
       {/* Hero */}
-      <section className="rounded-card bg-gradient-to-br from-primary to-primary-container p-8 lg:p-12 mb-10 text-white">
+      <section className="rounded-xl bg-gradient-to-br from-primary to-primary-container p-8 lg:p-12 mb-10 text-white">
         <h1 className="text-3xl lg:text-4xl font-black mb-2 tracking-tight">
           Aprenda com os professores
         </h1>

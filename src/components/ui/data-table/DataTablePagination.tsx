@@ -22,13 +22,13 @@ export function DataTablePagination({
   const end = Math.min(currentPage * pageSize, total)
 
   return (
-    <div className="flex items-center justify-between px-4 py-3 border-t border-surface-low">
+    <div className="flex items-center justify-between px-4 py-3 border-t border-surface-container-low">
       <div className="flex items-center gap-2 text-xs text-on-surface-variant">
         <span>Linhas por página:</span>
         <select
           value={pageSize}
           onChange={(e) => onPageChange({ page: 1, pageSize: Number(e.target.value) })}
-          className="bg-surface-low rounded px-2 py-1"
+          className="bg-surface-container-low rounded px-2 py-1"
         >
           {[10, 25, 50].map((n) => (
             <option key={n} value={n}>{n}</option>

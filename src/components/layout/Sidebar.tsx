@@ -33,7 +33,7 @@ export function Sidebar({ activeDiscipline, activeSection, sidebarOpen = false, 
 
       <aside
         id="main-sidebar"
-        className={`fixed left-0 top-0 h-screen w-64 bg-surface-lowest border-r border-surface-low z-40
+        className={`fixed left-0 top-0 h-screen w-64 bg-surface-container-lowest border-r border-surface-container-low z-40
           flex flex-col pt-20 pb-6 px-3 transition-transform duration-200
           ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}
       >
@@ -49,7 +49,7 @@ export function Sidebar({ activeDiscipline, activeSection, sidebarOpen = false, 
               className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all
                 ${activeDiscipline === d.slug
                   ? 'bg-teal-50 text-teal-800 font-semibold'
-                  : 'text-on-surface-variant hover:bg-surface-low hover:translate-x-1'
+                  : 'text-on-surface-variant hover:bg-surface-container-low hover:translate-x-1'
                 }`}
             >
               <span className="material-symbols-outlined text-base">{d.icon}</span>
@@ -62,7 +62,7 @@ export function Sidebar({ activeDiscipline, activeSection, sidebarOpen = false, 
               href="/admin/posts/new"
               onClick={onClose}
               className="mt-4 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl
-                bg-gradient-to-r from-secondary to-secondary-on-container text-white font-bold text-sm"
+                bg-gradient-to-r cta-gradient text-white font-bold text-sm"
             >
               <span className="material-symbols-outlined text-base">add</span>
               Criar Post
@@ -70,12 +70,12 @@ export function Sidebar({ activeDiscipline, activeSection, sidebarOpen = false, 
           )}
         </nav>
 
-        <div className="border-t border-surface-low pt-4 flex flex-col gap-1">
-          <Link href="/grupo" onClick={onClose} className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${activeSection === 'grupo' ? 'bg-teal-50 text-teal-800 font-semibold' : 'text-on-surface-variant hover:bg-surface-low'}`}>
+        <div className="border-t border-surface-container-low pt-4 flex flex-col gap-1">
+          <Link href="/grupo" onClick={onClose} className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${activeSection === 'grupo' ? 'bg-teal-50 text-teal-800 font-semibold' : 'text-on-surface-variant hover:bg-surface-container-low'}`}>
             <span className="material-symbols-outlined text-base">group</span>
             Grupo
           </Link>
-          <Link href="/design-system" onClick={onClose} className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-on-surface-variant hover:bg-surface-low transition-colors">
+          <Link href="/design-system" onClick={onClose} className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-on-surface-variant hover:bg-surface-container-low transition-colors">
             <span className="material-symbols-outlined text-base">palette</span>
             Design System
           </Link>

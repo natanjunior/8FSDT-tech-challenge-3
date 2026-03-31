@@ -60,10 +60,10 @@ export function Header({ activeDiscipline }: HeaderProps) {
                 </span>
               </button>
               {menuOpen && (
-                <div className="absolute right-0 top-full mt-2 w-40 bg-surface-lowest rounded-card shadow-xl shadow-sky-950/5 border border-surface-low overflow-hidden">
+                <div className="absolute right-0 top-full mt-2 w-40 bg-surface-container-lowest rounded-xl shadow-xl shadow-sky-950/5 border border-surface-container-low overflow-hidden">
                   <button
                     onClick={() => { setMenuOpen(false); logout() }}
-                    className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-surface-low transition-colors"
+                    className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-surface-container-low transition-colors"
                   >
                     Sair
                   </button>
@@ -73,7 +73,7 @@ export function Header({ activeDiscipline }: HeaderProps) {
           ) : (
             <Link
               href="/login"
-              className="px-4 py-2 rounded-card border border-on-surface-variant/20 text-sm text-on-surface hover:bg-surface-low transition-colors"
+              className="px-4 py-2 rounded-xl border border-on-surface-variant/20 text-sm text-on-surface hover:bg-surface-container-low transition-colors"
             >
               Entrar
             </Link>

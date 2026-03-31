@@ -59,9 +59,9 @@ export function DataTable<T extends object>({
   const bodyColumns = columns.filter((col) => !col.mergedInto)
 
   return (
-    <div className="bg-surface-lowest rounded-card shadow-xl shadow-sky-950/5 overflow-hidden">
+    <div className="bg-surface-container-lowest rounded-xl shadow-xl shadow-sky-950/5 overflow-hidden">
       {/* Card header */}
-      <div className="flex items-center justify-between px-4 py-3 bg-surface-low border-b border-surface-low">
+      <div className="flex items-center justify-between px-4 py-3 bg-surface-container-low border-b border-surface-container-low">
         <span className="font-bold text-on-surface">{title}</span>
         <div className="flex items-center gap-2">
           {headerActions}
@@ -86,7 +86,7 @@ export function DataTable<T extends object>({
 
       {/* Filter slot */}
       {filterSlot && filterOpen && (
-        <div className="px-4 py-3 border-b border-surface-low bg-surface-low/50">
+        <div className="px-4 py-3 border-b border-surface-container-low bg-surface-container-low/50">
           {filterSlot}
         </div>
       )}
@@ -106,7 +106,7 @@ export function DataTable<T extends object>({
               rows.map((row, rowIdx) => (
                 <tr
                   key={rowIdx}
-                  className="group border-b border-surface-low/50 hover:bg-surface-low/40 transition-colors"
+                  className="group border-b border-surface-container-low/50 hover:bg-surface-container-low/40 transition-colors"
                 >
                   {bodyColumns.map((col) => {
                     const colspan = col.mergedWith ? 2 : 1

@@ -18,7 +18,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       <input
         id={id}
         ref={ref}
-        className={`px-4 py-3 rounded-card bg-surface-low text-on-surface placeholder-on-surface-variant
+        className={`px-4 py-3 rounded-xl bg-surface-container-low text-on-surface placeholder-on-surface-variant
           outline-none transition-colors border
           ${error ? 'border-error/40 bg-error-container/20' : 'border-transparent focus:border-secondary'}
           ${props.disabled ? 'opacity-60 cursor-not-allowed' : ''}

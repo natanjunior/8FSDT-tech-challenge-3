@@ -22,7 +22,7 @@ export default function GrupoPage() {
         {members.map((member) => (
           <div
             key={member.rm}
-            className="bg-surface-lowest rounded-card shadow-xl shadow-sky-950/5 p-6 flex flex-col items-center text-center gap-4"
+            className="bg-surface-container-lowest rounded-xl shadow-xl shadow-sky-950/5 p-6 flex flex-col items-center text-center gap-4"
           >
             {/* Avatar com iniciais */}
             <div

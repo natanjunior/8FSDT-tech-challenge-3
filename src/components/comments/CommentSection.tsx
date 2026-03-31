@@ -72,7 +72,7 @@ export function CommentSection({ postId, initialCount = 0 }: CommentSectionProps
   }
 
   return (
-    <section id="comments" className="mt-12 pt-8 border-t border-surface-low">
+    <section id="comments" className="mt-12 pt-8 border-t border-surface-container-low">
       <h2 className="text-xl font-bold text-on-surface mb-6">
         Comentários ({pagination.total})
       </h2>

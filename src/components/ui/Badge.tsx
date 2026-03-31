@@ -37,7 +37,7 @@ export function DisciplineBadge({ disciplineSlug }: { disciplineSlug: string | n
   if (!disciplineSlug) return null
   const config = DISCIPLINE_CONFIG[disciplineSlug] ?? {
     label: disciplineSlug,
-    classes: 'bg-surface-low text-on-surface-variant',
+    classes: 'bg-surface-container-low text-on-surface-variant',
   }
   return (
     <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-semibold ${config.classes}`}>

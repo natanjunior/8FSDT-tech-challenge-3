@@ -20,13 +20,13 @@ const VARIANT_CONFIG = {
     icon: 'edit_off',
     titleClass: 'text-primary',
     confirmLabel: 'Sair sem salvar',
-    confirmClass: 'bg-gradient-to-r from-secondary to-secondary-on-container text-white',
+    confirmClass: 'bg-gradient-to-r cta-gradient text-white',
   },
   'status-change': {
     icon: 'swap_horiz',
     titleClass: 'text-primary',
     confirmLabel: 'Confirmar alteração',
-    confirmClass: 'bg-gradient-to-r from-secondary to-secondary-on-container text-white',
+    confirmClass: 'bg-gradient-to-r cta-gradient text-white',
   },
 }
 
@@ -45,7 +45,7 @@ export function ConfirmModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-on-surface/40" onClick={onCancel} />
-      <div className="relative bg-surface-lowest rounded-card shadow-xl shadow-sky-950/5 p-6 w-full max-w-md">
+      <div className="relative bg-surface-container-lowest rounded-xl shadow-xl shadow-sky-950/5 p-6 w-full max-w-md">
         <div className="flex items-center gap-3 mb-4">
           <span className={`material-symbols-outlined text-2xl ${config.titleClass}`}>
             {config.icon}
@@ -56,13 +56,13 @@ export function ConfirmModal({
         <div className="flex justify-end gap-3">
           <button
             onClick={onCancel}
-            className="px-4 py-2 rounded-card border border-on-surface-variant/20 text-on-surface hover:bg-surface-low transition-colors"
+            className="px-4 py-2 rounded-xl border border-on-surface-variant/20 text-on-surface hover:bg-surface-container-low transition-colors"
           >
             Cancelar
           </button>
           <button
             onClick={onConfirm}
-            className={`px-4 py-2 rounded-card font-bold transition-colors ${config.confirmClass}`}
+            className={`px-4 py-2 rounded-xl font-bold transition-colors ${config.confirmClass}`}
           >
             {config.confirmLabel}
           </button>

@@ -28,7 +28,7 @@ function DSSidebar() {
   return (
     <aside
       id="ds-sidebar"
-      className="fixed left-0 top-0 h-screen w-64 bg-surface-lowest pt-20 flex flex-col z-40 hidden lg:flex"
+      className="fixed left-0 top-0 h-screen w-64 bg-surface-container-lowest pt-20 flex flex-col z-40 hidden lg:flex"
     >
       <nav className="flex-1 overflow-y-auto px-4 py-6 space-y-6">
         {DS_SECTIONS.map((section) => (
@@ -41,7 +41,7 @@ function DSSidebar() {
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-on-surface-variant hover:bg-surface-low hover:text-on-surface transition-colors"
+                    className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors"
                   >
                     {item.label}
                   </Link>
@@ -53,10 +53,10 @@ function DSSidebar() {
       </nav>
 
       {/* Botão "Blog" no rodapé — substitui o "Criar Post" */}
-      <div className="shrink-0 p-4 border-t border-surface-low">
+      <div className="shrink-0 p-4 border-t border-surface-container-low">
         <Link
           href="/"
-          className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-gradient-to-r from-secondary to-secondary-on-container text-white font-semibold text-sm"
+          className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-gradient-to-r cta-gradient text-white font-semibold text-sm"
         >
           <span className="material-symbols-outlined text-base" aria-hidden="true">
             arrow_back
@@ -86,7 +86,7 @@ export default function DesignSystemPage() {
 
           {/* Seção de Princípios */}
           <section className="space-y-8">
-            <div className="bg-surface-lowest rounded-card shadow-xl shadow-sky-950/5 p-8">
+            <div className="bg-surface-container-lowest rounded-xl shadow-xl shadow-sky-950/5 p-8">
               <h2 className="text-xl font-bold text-on-surface mb-4">Princípios Visuais</h2>
               <ul className="space-y-3 text-on-surface-variant">
                 <li className="flex gap-3">
@@ -95,27 +95,27 @@ export default function DesignSystemPage() {
                 </li>
                 <li className="flex gap-3">
                   <span className="material-symbols-outlined text-secondary shrink-0">check_circle</span>
-                  <span><strong className="text-on-surface">Sem preto puro</strong> — texto sempre em <code className="font-mono text-sm bg-surface-low px-1 rounded">text-on-surface (#111C2D)</code>.</span>
+                  <span><strong className="text-on-surface">Sem preto puro</strong> — texto sempre em <code className="font-mono text-sm bg-surface-container-low px-1 rounded">text-on-surface (#111C2D)</code>.</span>
                 </li>
                 <li className="flex gap-3">
                   <span className="material-symbols-outlined text-secondary shrink-0">check_circle</span>
-                  <span><strong className="text-on-surface">Botão primary com gradiente</strong> — <code className="font-mono text-sm bg-surface-low px-1 rounded">from-secondary to-secondary-on-container</code>. Nunca cor sólida.</span>
+                  <span><strong className="text-on-surface">Botão primary com gradiente</strong> — <code className="font-mono text-sm bg-surface-container-low px-1 rounded">cta-gradient</code>. Nunca cor sólida.</span>
                 </li>
                 <li className="flex gap-3">
                   <span className="material-symbols-outlined text-secondary shrink-0">check_circle</span>
-                  <span><strong className="text-on-surface">Glassmorphism no header</strong> — <code className="font-mono text-sm bg-surface-low px-1 rounded">bg-slate-50/80 backdrop-blur-md</code>.</span>
+                  <span><strong className="text-on-surface">Glassmorphism no header</strong> — <code className="font-mono text-sm bg-surface-container-low px-1 rounded">bg-slate-50/80 backdrop-blur-md</code>.</span>
                 </li>
               </ul>
             </div>
 
             {/* Paleta de cores */}
-            <div className="bg-surface-lowest rounded-card shadow-xl shadow-sky-950/5 p-8">
+            <div className="bg-surface-container-lowest rounded-xl shadow-xl shadow-sky-950/5 p-8">
               <h2 className="text-xl font-bold text-on-surface mb-6">Paleta de Cores</h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                 {[
                   { name: 'primary', hex: '#022448', cls: 'bg-primary' },
                   { name: 'secondary', hex: '#006A61', cls: 'bg-secondary' },
-                  { name: 'surface', hex: '#F9F9FF', cls: 'bg-surface border border-surface-low' },
+                  { name: 'surface', hex: '#F9F9FF', cls: 'bg-surface border border-surface-container-low' },
                   { name: 'on-surface', hex: '#111C2D', cls: 'bg-on-surface' },
                   { name: 'error', hex: '#DC2626', cls: 'bg-error' },
                   { name: 'secondary-container', hex: '#86F2E4', cls: 'bg-secondary-container' },

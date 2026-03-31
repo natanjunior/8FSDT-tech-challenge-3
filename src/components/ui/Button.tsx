@@ -11,10 +11,10 @@ export function Button({
   className = '',
   ...props
 }: ButtonProps) {
-  const base = 'px-4 py-2 rounded-card font-bold transition-opacity disabled:opacity-50 flex items-center gap-2'
+  const base = 'px-4 py-2 rounded-xl font-bold transition-opacity disabled:opacity-50 flex items-center gap-2'
   const styles = {
-    primary: 'bg-gradient-to-r from-secondary to-secondary-on-container text-white',
-    secondary: 'border border-on-surface-variant/20 text-on-surface hover:bg-surface-low',
+    primary: 'bg-gradient-to-r cta-gradient text-white',
+    secondary: 'border border-on-surface-variant/20 text-on-surface hover:bg-surface-container-low',
   }
 
   return (

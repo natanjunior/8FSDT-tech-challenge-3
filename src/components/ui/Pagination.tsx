@@ -21,7 +21,7 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="p-2 rounded-card disabled:opacity-40 hover:bg-surface-low transition-colors"
+        className="p-2 rounded-xl disabled:opacity-40 hover:bg-surface-container-low transition-colors"
         aria-label="Página anterior"
       >
         <span className="material-symbols-outlined text-sm">chevron_left</span>
@@ -35,10 +35,10 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
             key={page}
             onClick={() => onPageChange(page)}
             aria-current={page === currentPage ? 'page' : undefined}
-            className={`w-9 h-9 rounded-card text-sm font-mono transition-colors
+            className={`w-9 h-9 rounded-xl text-sm font-mono transition-colors
               ${page === currentPage
                 ? 'bg-primary text-white font-bold'
-                : 'hover:bg-surface-low text-on-surface'
+                : 'hover:bg-surface-container-low text-on-surface'
               }`}
           >
             {page}
@@ -49,7 +49,7 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="p-2 rounded-card disabled:opacity-40 hover:bg-surface-low transition-colors"
+        className="p-2 rounded-xl disabled:opacity-40 hover:bg-surface-container-low transition-colors"
         aria-label="Próxima página"
       >
         <span className="material-symbols-outlined text-sm">chevron_right</span>

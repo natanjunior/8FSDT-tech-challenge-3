@@ -12,7 +12,7 @@ export function AdminSidebar() {
   ]
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-64 bg-surface-lowest border-r border-surface-low z-40 flex flex-col pt-20 pb-6 px-3">
+    <aside className="fixed left-0 top-0 h-screen w-64 bg-surface-container-lowest border-r border-surface-container-low z-40 flex flex-col pt-20 pb-6 px-3">
       <p className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider px-3 mb-2">
         Painel
       </p>
@@ -24,7 +24,7 @@ export function AdminSidebar() {
             className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors
               ${pathname === link.href
                 ? 'bg-teal-50 text-teal-800 font-semibold'
-                : 'text-on-surface-variant hover:bg-surface-low'
+                : 'text-on-surface-variant hover:bg-surface-container-low'
               }`}
           >
             <span className="material-symbols-outlined text-base">{link.icon}</span>

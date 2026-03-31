@@ -20,7 +20,7 @@ function getExcerpt(content: string, maxLength = 120): string {
 export function PostCard({ post }: { post: Post }) {
   return (
     <Link href={`/posts/${post.id}`} className="group block">
-      <article className="bg-surface-lowest rounded-card p-5 shadow-xl shadow-sky-950/5 transition-shadow hover:shadow-2xl h-full flex flex-col">
+      <article className="bg-surface-container-lowest rounded-xl p-5 shadow-xl shadow-sky-950/5 transition-shadow hover:shadow-2xl h-full flex flex-col">
         {/* Discipline badge */}
         <div className="mb-3">
           <DisciplineBadge disciplineSlug={post.discipline?.slug} />

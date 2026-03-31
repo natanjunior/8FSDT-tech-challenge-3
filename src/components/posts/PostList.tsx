@@ -38,7 +38,7 @@ export function PostList({ posts, pagination, basePath }: PostListProps) {
           <Link
             href={buildPageUrl(basePath, page - 1)}
             aria-disabled={page === 1}
-            className={`p-2 rounded-card transition-colors ${page === 1 ? 'pointer-events-none opacity-40' : 'hover:bg-surface-low'}`}
+            className={`p-2 rounded-xl transition-colors ${page === 1 ? 'pointer-events-none opacity-40' : 'hover:bg-surface-container-low'}`}
             aria-label="Página anterior"
           >
             <span className="material-symbols-outlined text-sm">chevron_left</span>
@@ -51,7 +51,7 @@ export function PostList({ posts, pagination, basePath }: PostListProps) {
           <Link
             href={buildPageUrl(basePath, page + 1)}
             aria-disabled={page === totalPages}
-            className={`p-2 rounded-card transition-colors ${page === totalPages ? 'pointer-events-none opacity-40' : 'hover:bg-surface-low'}`}
+            className={`p-2 rounded-xl transition-colors ${page === totalPages ? 'pointer-events-none opacity-40' : 'hover:bg-surface-container-low'}`}
             aria-label="Próxima página"
           >
             <span className="material-symbols-outlined text-sm">chevron_right</span>

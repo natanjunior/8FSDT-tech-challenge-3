@@ -1,19 +1,59 @@
+/* src/app/globals.css */
 @import "tailwindcss";
 
 @theme {
+  /* === Cores — extraídas do tailwind.config dos protótipos === */
   --color-primary: #022448;
-  --color-primary-container: #1E3A5F;
-  --color-secondary: #006A61;
-  --color-secondary-container: #86F2E4;
-  --color-secondary-on-container: #003733;
-  --color-surface: #F9F9FF;
-  --color-surface-low: #F0F3FF;
-  --color-surface-lowest: #FFFFFF;
-  --color-on-surface: #111C2D;
-  --color-on-surface-variant: #94A3B8;
-  --color-error: #DC2626;
-  --color-error-container: #FEE2E2;
-  --radius-card: 0.75rem;
+  --color-primary-container: #1e3a5f;
+  --color-secondary: #006a61;
+  --color-secondary-container: #86f2e4;
+  --color-on-secondary-container: #006f66;
+  --color-on-secondary-fixed: #00201d;
+  --color-on-secondary-fixed-variant: #005049;
+  --color-surface: #f9f9ff;
+  --color-surface-container-low: #f0f3ff;
+  --color-surface-container: #e7eeff;
+  --color-surface-container-high: #dee8ff;
+  --color-surface-container-lowest: #ffffff;
+  --color-background: #f9f9ff;
+  --color-on-surface: #111c2d;
+  --color-on-surface-variant: #43474e;
+  --color-on-background: #111c2d;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #8aa4cf;
+  --color-outline: #74777f;
+  --color-outline-variant: #c4c6cf;
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+
+  /* === Border Radius — override do protótipo === */
+  --radius-DEFAULT: 0.125rem;
+  --radius-lg: 0.25rem;
+  --radius-xl: 0.5rem;
+  --radius-full: 0.75rem;
+
+  /* === Tipografia === */
   --font-family-sans: 'Inter', sans-serif;
   --font-family-mono: 'JetBrains Mono', monospace;
+}
+
+/* CSS custom classes usadas nos protótipos */
+.cta-gradient {
+  background: linear-gradient(90deg, #006a61 0%, #005049 100%);
+}
+
+.primary-gradient {
+  background: linear-gradient(135deg, #022448 0%, #1E3A5F 100%);
+}
+
+.editorial-gradient {
+  background: linear-gradient(135deg, #022448 0%, #1E3A5F 100%);
+}
+
+/* Material Symbols baseline reset (presente em todos os protótipos) */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  display: inline-block;
+  line-height: 1;
+  vertical-align: middle;
 }

@@ -51,7 +51,7 @@ export function CommentForm({ onSubmit, isSubmitting }: CommentFormProps) {
           type="text"
           placeholder="Seu nome (opcional)"
           disabled={isSubmitting}
-          className="w-full px-4 py-2 rounded-xl bg-surface-low text-on-surface text-sm placeholder:text-on-surface-variant focus:outline-none focus:ring-2 focus:ring-secondary/30 disabled:opacity-50"
+          className="w-full px-4 py-2 rounded-xl bg-surface-container-low text-on-surface text-sm placeholder:text-on-surface-variant focus:outline-none focus:ring-2 focus:ring-secondary/30 disabled:opacity-50"
         />
 
         {/* Campo comentário */}
@@ -61,7 +61,7 @@ export function CommentForm({ onSubmit, isSubmitting }: CommentFormProps) {
             rows={3}
             placeholder="Escreva seu comentário..."
             disabled={isSubmitting}
-            className="w-full px-4 py-3 rounded-xl bg-surface-low text-on-surface text-sm placeholder:text-on-surface-variant focus:outline-none focus:ring-2 focus:ring-secondary/30 resize-none disabled:opacity-50"
+            className="w-full px-4 py-3 rounded-xl bg-surface-container-low text-on-surface text-sm placeholder:text-on-surface-variant focus:outline-none focus:ring-2 focus:ring-secondary/30 resize-none disabled:opacity-50"
           />
           {errors.content && (
             <p className="text-error text-xs mt-1 flex items-center gap-1">

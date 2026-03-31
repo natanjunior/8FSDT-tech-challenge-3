@@ -86,7 +86,7 @@ export default async function PostsPage({ searchParams }: PostsPageProps) {
   return (
     <PublicLayout activeDiscipline={discipline}>
       {/* Barra de busca */}
-      <div className="mb-8 bg-surface-low rounded-card p-6">
+      <div className="mb-8 bg-surface-container-low rounded-xl p-6">
         <SearchBar />
       </div>
 
