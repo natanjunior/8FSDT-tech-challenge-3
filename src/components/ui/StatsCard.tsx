@@ -1,24 +1,24 @@
+// src/components/ui/StatsCard.tsx
+import { ReactNode } from 'react'
+
 interface StatsCardProps {
-  icon: string
-  value: string | number
-  label: string
+  children: ReactNode
   variant?: 'default' | 'primary'
+  borderColor?: string // ex: 'border-slate-400', 'border-green-500'
 }
 
-export function StatsCard({ icon, value, label, variant = 'default' }: StatsCardProps) {
-  const bg = variant === 'primary' ? 'bg-primary text-white' : 'bg-surface-container-lowest'
-  const textColor = variant === 'primary' ? 'text-white' : 'text-on-surface'
-  const subColor = variant === 'primary' ? 'text-white/70' : 'text-on-surface-variant'
+export function StatsCard({ children, variant = 'default', borderColor }: StatsCardProps) {
+  if (variant === 'primary') {
+    return (
+      <div className="bg-primary p-6 rounded-xl shadow-xl shadow-primary/20 flex flex-col justify-between text-white overflow-hidden relative">
+        {children}
+      </div>
+    )
+  }
 
   return (
-    <div className={`${bg} rounded-xl p-4 shadow-xl shadow-sky-950/5 flex items-center gap-4`}>
-      <span className={`material-symbols-outlined text-3xl ${variant === 'primary' ? 'text-white/40' : 'text-secondary'}`}>
-        {icon}
-      </span>
-      <div>
-        <p className={`text-2xl font-black font-mono ${textColor}`}>{value}</p>
-        <p className={`text-xs ${subColor}`}>{label}</p>
-      </div>
+    <div className={`bg-surface-container-lowest p-6 rounded-xl shadow-xl shadow-sky-950/5 flex flex-col justify-between ${borderColor ? `border-l-4 ${borderColor}` : ''}`}>
+      {children}
     </div>
   )
 }
