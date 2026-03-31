@@ -50,6 +50,11 @@
   background: linear-gradient(135deg, #022448 0%, #1E3A5F 100%);
 }
 
+/* Editorial card shadow — used on post cards across prototypes */
+.editorial-shadow {
+  box-shadow: 0 20px 25px -5px rgb(2 36 72 / 0.05), 0 8px 10px -6px rgb(2 36 72 / 0.05);
+}
+
 /* Material Symbols baseline reset (presente em todos os protótipos) */
 .material-symbols-outlined {
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
