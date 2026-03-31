@@ -45,38 +45,11 @@ async function fetchSearch(params: {
 export default async function PostsPage({ searchParams }: PostsPageProps) {
   const sp = await searchParams
   const page = Math.max(1, Number(sp.page ?? 1))
-  // ?q= e ?discipline= são mutuamente exclusivos — q tem prioridade
   const q = sp.q?.trim()
   const discipline = q ? undefined : sp.discipline
 
   const { data: posts, pagination } = await fetchSearch({ q, discipline, page })
 
-  // Heading dinâmico conforme o modo
-  let heading: React.ReactNode
-  if (q) {
-    heading = (
-      <h1 className="text-2xl font-bold text-on-surface mb-6">
-        <span className="text-on-surface-variant font-normal">{pagination.total} resultados para </span>
-        &quot;{q}&quot;
-      </h1>
-    )
-  } else if (discipline && DISCIPLINE_NAMES[discipline]) {
-    heading = (
-      <div className="mb-6">
-        <DisciplineBadge disciplineSlug={discipline} />
-        <h1 className="text-2xl font-bold text-on-surface mt-3">
-          <span className="text-on-surface-variant font-normal">{pagination.total} posts em </span>
-          {DISCIPLINE_NAMES[discipline]}
-        </h1>
-      </div>
-    )
-  } else {
-    heading = (
-      <h1 className="text-2xl font-bold text-on-surface mb-6">Todos os posts</h1>
-    )
-  }
-
-  // basePath preserva os parâmetros de busca/filtro na paginação
   const basePath = q
     ? `/posts?q=${encodeURIComponent(q)}`
     : discipline
@@ -85,12 +58,32 @@ export default async function PostsPage({ searchParams }: PostsPageProps) {
 
   return (
     <PublicLayout activeDiscipline={discipline}>
-      {/* Barra de busca */}
-      <div className="mb-8 bg-surface-container-low rounded-xl p-6">
-        <SearchBar />
+      {/* Search input + resultado */}
+      <div className="mb-6 md:mb-10">
+        <div className="relative max-w-2xl mb-3 md:mb-4">
+          <SearchBar />
+        </div>
+        {q && (
+          <p className="text-sm text-on-surface-variant">
+            <span className="font-bold text-on-surface">{pagination.total} resultados</span> para{' '}
+            <span className="font-bold text-secondary">&quot;{q}&quot;</span>
+          </p>
+        )}
+        {discipline && !q && DISCIPLINE_NAMES[discipline] && (
+          <div className="flex items-center gap-3">
+            <DisciplineBadge disciplineSlug={discipline} />
+            <p className="text-sm text-on-surface-variant">
+              <span className="font-bold text-on-surface">{pagination.total} posts</span> em{' '}
+              <span className="font-bold text-secondary">{DISCIPLINE_NAMES[discipline]}</span>
+            </p>
+          </div>
+        )}
+        {!q && !discipline && (
+          <p className="text-sm text-on-surface-variant">
+            <span className="font-bold text-on-surface">{pagination.total} posts</span> disponíveis
+          </p>
+        )}
       </div>
-
-      {heading}
 
       <PostList posts={posts} pagination={pagination} basePath={basePath} />
     </PublicLayout>
