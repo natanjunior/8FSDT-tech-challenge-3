@@ -389,12 +389,18 @@ export default function AdminPage() {
       {/* Delete confirmation modal */}
       <ConfirmModal
         isOpen={!!deleteTarget}
-        variant="delete"
+        icon="delete_forever"
+        iconBgClass="bg-error-container/40"
+        iconTextClass="text-error"
         title="Excluir artigo?"
-        message={`Esta ação é permanente. O artigo "${deleteTarget?.title}" será removido e não poderá ser recuperado.`}
+        cancelLabel="Cancelar"
+        confirmLabel="Excluir permanentemente"
+        confirmClass="bg-error text-white shadow-lg shadow-error/20"
         onConfirm={handleDeleteConfirm}
         onCancel={() => setDeleteTarget(null)}
-      />
+      >
+        Esta ação é permanente. O artigo &ldquo;{deleteTarget?.title}&rdquo; será removido e não poderá ser recuperado.
+      </ConfirmModal>
     </div>
   )
 }
