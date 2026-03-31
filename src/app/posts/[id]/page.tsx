@@ -3,9 +3,29 @@ import { notFound, redirect } from 'next/navigation'
 import { PublicLayout } from '@/components/layout/PublicLayout'
 import { CommentSection } from '@/components/comments/CommentSection'
 import { DisciplineBadge, StatusBadge } from '@/components/ui/Badge'
-import { AuthorId } from '@/components/ui/AuthorId'
-import { IconCount } from '@/components/ui/IconCount'
 import type { Post } from '@/types/post'
+
+const COLORS = [
+  'bg-blue-100 border-blue-200 text-blue-700',
+  'bg-emerald-100 border-emerald-200 text-emerald-700',
+  'bg-teal-100 border-teal-200 text-teal-700',
+  'bg-amber-100 border-amber-200 text-amber-700',
+  'bg-rose-100 border-rose-200 text-rose-700',
+  'bg-violet-100 border-violet-200 text-violet-700',
+]
+
+function getColorByName(name: string): string {
+  const hash = name.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0)
+  return COLORS[hash % COLORS.length]
+}
+
+function getInitials(name: string): string {
+  return name
+    .split(' ')
+    .slice(0, 2)
+    .map((n) => n[0]?.toUpperCase() ?? '')
+    .join('')
+}
 
 interface PostPageProps {
   params: Promise<{ id: string }>
@@ -34,64 +54,96 @@ export default async function PostPage({ params }: PostPageProps) {
 
   if (!post) notFound()
 
-  // Visitantes sem token só podem ver PUBLISHED
   if (post.status !== 'PUBLISHED' && !token) {
     redirect('/posts')
   }
 
   const disciplineSlug = post.discipline?.slug
+  const authorColor = getColorByName(post.author.name)
+  const authorInitials = getInitials(post.author.name)
+
+  const paragraphs = post.content.split('\n\n').filter(Boolean)
 
   return (
     <PublicLayout activeDiscipline={disciplineSlug}>
       <article>
         {/* Cabeçalho do artigo */}
-        <header className="mb-8">
-          <div className="flex flex-wrap items-center gap-3 mb-4">
+        <header className="mb-10">
+
+          {/* Badges + contadores + data */}
+          <div className="flex items-center gap-3 mb-6 flex-wrap">
             {post.discipline && <DisciplineBadge disciplineSlug={post.discipline.slug} />}
             {post.status !== 'PUBLISHED' && <StatusBadge status={post.status} />}
-            <IconCount type="comment" count={post.comments_count ?? 0} />
-            <IconCount type="bookmark" count={post.reads_count ?? 0} />
+            <div className="flex items-center gap-3">
+              <span className="flex items-center gap-1 text-[11px] font-mono text-on-surface-variant">
+                <span className="material-symbols-outlined text-outline" style={{ fontSize: 16 }}>forum</span>
+                {post.comments_count ?? 0}
+              </span>
+              <span className="flex items-center gap-1 text-[11px] font-mono text-on-surface-variant">
+                <span className="material-symbols-outlined text-outline" style={{ fontSize: 16 }}>bookmark</span>
+                {post.reads_count ?? 0}
+              </span>
+            </div>
+            <span className="text-xs font-mono text-on-surface-variant ml-auto">
+              <span className="md:hidden">
+                {new Date(post.published_at ?? post.created_at).toLocaleDateString('pt-BR', {
+                  day: '2-digit', month: '2-digit', year: '2-digit',
+                })}
+              </span>
+              <span className="hidden md:inline">
+                {new Date(post.published_at ?? post.created_at).toLocaleDateString('pt-BR', {
+                  day: 'numeric', month: 'long', year: 'numeric',
+                })}
+              </span>
+            </span>
           </div>
 
-          {/* Data responsiva */}
-          <div className="text-on-surface-variant text-sm font-mono mb-3">
-            <span className="md:hidden">
-              {new Date(post.published_at ?? post.created_at).toLocaleDateString('pt-BR', {
-                day: '2-digit',
-                month: '2-digit',
-                year: '2-digit',
-              })}
-            </span>
-            <span className="hidden md:inline">
-              {new Date(post.published_at ?? post.created_at).toLocaleDateString('pt-BR', {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric',
-              })}
-            </span>
-          </div>
-
-          <h1 className="text-4xl lg:text-5xl font-black text-primary tracking-tight leading-tight mb-4">
+          {/* Título */}
+          <h1 className="text-5xl font-extrabold text-primary leading-[1.1] tracking-tighter mb-8">
             {post.title}
           </h1>
 
           {post.subtitle && (
-            <p className="text-xl text-on-surface-variant mb-6">{post.subtitle}</p>
+            <p className="text-xl text-on-surface-variant mb-8">{post.subtitle}</p>
           )}
 
-          <AuthorId name={post.author.name} size="normal" />
+          {/* Autor + ações */}
+          <div className="flex items-center gap-4 p-4 rounded-xl bg-surface-container-low">
+            <div className={`w-14 h-14 rounded-full ${authorColor} border-2 flex items-center justify-center font-black text-lg shrink-0`}>
+              {authorInitials}
+            </div>
+            <div className="flex-1">
+              <p className="font-bold text-primary leading-none mb-1">{post.author.name}</p>
+              <p className="text-sm text-on-surface-variant">
+                Professor{post.discipline ? ` · ${post.discipline.label}` : ''}
+              </p>
+            </div>
+            <div className="flex items-center gap-1">
+              <button className="flex items-center gap-1.5 px-3 py-2 text-sm text-on-surface-variant hover:bg-surface-container rounded-lg transition-colors">
+                <span className="material-symbols-outlined text-lg">share</span>
+                <span className="text-xs font-medium hidden sm:block">Compartilhar</span>
+              </button>
+              <button className="flex items-center gap-1.5 px-3 py-2 text-sm text-on-surface-variant hover:bg-surface-container rounded-lg transition-colors">
+                <span className="material-symbols-outlined text-lg">bookmark</span>
+                <span className="text-xs font-medium hidden sm:block">Marcar como lido</span>
+              </button>
+            </div>
+          </div>
         </header>
 
         {/* Corpo do artigo */}
-        <div className="prose prose-lg max-w-none text-on-surface leading-relaxed">
-          {post.content.split('\n\n').map((paragraph, i) => (
-            <p key={i} className="mb-4">
+        <div className="text-lg text-on-surface leading-[1.6] space-y-8">
+          {paragraphs.map((paragraph, i) => (
+            <p
+              key={i}
+              className={i === 0 ? 'first-letter:text-5xl first-letter:font-black first-letter:text-primary first-letter:mr-3 first-letter:float-left' : ''}
+            >
               {paragraph}
             </p>
           ))}
         </div>
 
-        {/* Seção de comentários (Client Component) */}
+        {/* Seção de comentários */}
         <CommentSection postId={post.id} initialCount={post.comments_count ?? 0} />
       </article>
     </PublicLayout>
