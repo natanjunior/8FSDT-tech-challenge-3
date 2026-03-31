@@ -33,63 +33,86 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-surface-container-low flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-surface-container-lowest rounded-xl shadow-xl shadow-sky-950/5 p-8">
-        {/* Logo */}
-        <div className="text-center mb-6">
-          <h1 className="text-2xl font-black text-primary">8FSDT TC 3</h1>
-          <p className="text-sm text-on-surface-variant mt-1">
-            Sistema de blogging educacional — rede pública
-          </p>
-        </div>
+    <div className="bg-surface-container-low text-on-surface min-h-screen flex flex-col">
+      <main className="flex-1 flex items-center justify-center px-4 py-16">
+        <section className="bg-surface-container-lowest w-full max-w-md p-10 rounded-xl shadow-xl shadow-on-surface/5 border border-outline-variant/20">
 
-        <hr className="border-surface-container-low mb-6" />
-
-        <form onSubmit={handleSubmit(onSubmit)} noValidate>
-          <div className="mb-4">
-            <label
-              htmlFor="email"
-              className="block text-sm font-bold text-on-surface mb-1"
-            >
-              E-mail
-            </label>
-            <input
-              id="email"
-              type="email"
-              autoComplete="email"
-              placeholder="seu.email@escola.com"
-              className={`w-full px-4 py-3 rounded-xl bg-surface-container-low text-on-surface placeholder-on-surface-variant
-                outline-none transition-colors
-                ${errors.email ? 'border border-error/40 bg-error-container/20' : 'border border-transparent focus:border-secondary'}
-              `}
-              {...register('email')}
-            />
-            {errors.email && (
-              <p className="text-error text-sm mt-1">{errors.email.message}</p>
-            )}
-            <p className="text-on-surface-variant text-xs mt-1">
-              Não é necessário senha. Basta informar o e-mail cadastrado.
-            </p>
+          {/* Logo */}
+          <div className="flex flex-col items-center mb-10">
+            <div className="w-16 h-16 editorial-gradient rounded-xl flex items-center justify-center mb-4 shadow-lg shadow-primary/20">
+              <span className="material-symbols-outlined text-white text-3xl">auto_stories</span>
+            </div>
+            <h2 className="text-xl font-black tracking-tight text-primary uppercase text-center">8FSDT TC 3</h2>
+            <p className="text-sm text-on-surface-variant mt-1 font-medium tracking-wide">Sistema de blogging educacional</p>
           </div>
 
-          {serverError && (
-            <p className="text-error text-sm mb-4">{serverError}</p>
-          )}
+          <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-6">
 
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full py-3 rounded-xl bg-gradient-to-r cta-gradient text-white font-bold
-              disabled:opacity-50 transition-opacity"
-          >
-            {isSubmitting ? 'Entrando...' : 'Entrar'}
-          </button>
-        </form>
+            {/* Email Input */}
+            <div className="space-y-2">
+              <label className="block text-sm font-bold text-on-surface tracking-tight" htmlFor="email">
+                E-mail
+              </label>
+              <div className="relative">
+                <input
+                  id="email"
+                  type="email"
+                  autoComplete="email"
+                  placeholder="seu.email@escola.com"
+                  className={`w-full rounded-xl px-4 py-3 text-on-surface focus:ring-2 focus:border-transparent transition-all outline-none placeholder:text-outline/50
+                    ${errors.email || serverError
+                      ? 'bg-error-container/20 border border-error/30'
+                      : 'bg-surface-container-low border border-outline-variant/20 focus:ring-primary'
+                    }`}
+                  {...register('email')}
+                />
+                {(errors.email || serverError) && (
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-error text-lg">error</span>
+                )}
+              </div>
+              {errors.email && (
+                <p className="text-xs font-medium text-error flex items-center gap-1">
+                  <span className="material-symbols-outlined text-sm">cancel</span>
+                  {errors.email.message}
+                </p>
+              )}
+              {serverError && (
+                <p className="text-xs font-medium text-error flex items-center gap-1">
+                  <span className="material-symbols-outlined text-sm">cancel</span>
+                  {serverError}
+                </p>
+              )}
+              {!errors.email && !serverError && (
+                <p className="text-xs text-on-surface-variant flex items-center gap-1">
+                  <span className="material-symbols-outlined text-sm">info</span>
+                  Não é necessário senha. Basta informar o e-mail cadastrado.
+                </p>
+              )}
+            </div>
 
-        <p className="text-center text-xs text-on-surface-variant mt-6">
-          Apenas professores e alunos cadastrados podem acessar.
-        </p>
-      </div>
+            {/* Submit */}
+            <div className="pt-2">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full cta-gradient text-white font-bold py-4 rounded-xl shadow-lg shadow-secondary/20 hover:scale-[1.02] active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50"
+              >
+                <span>{isSubmitting ? 'Entrando...' : 'Entrar'}</span>
+                {!isSubmitting && <span className="material-symbols-outlined text-lg">login</span>}
+              </button>
+            </div>
+
+            <p className="text-center text-xs text-on-surface-variant pt-2">
+              Apenas professores e alunos cadastrados podem acessar.
+            </p>
+
+          </form>
+        </section>
+      </main>
+
+      <footer className="py-6 px-8 border-t border-outline-variant/10 text-[10px] font-light uppercase tracking-widest text-center text-on-surface-variant">
+        © 2026 8FSDT TC 3 · PosTech FIAP
+      </footer>
     </div>
   )
 }
