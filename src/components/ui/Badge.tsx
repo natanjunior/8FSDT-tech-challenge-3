@@ -1,46 +1,51 @@
+// src/components/ui/Badge.tsx
 import { PostStatus } from '@/types/post'
 
-const STATUS_CONFIG: Record<PostStatus, { label: string; classes: string }> = {
+const STATUS_CONFIG: Record<PostStatus, { label: string; bgClass: string; textClass: string; dotClass: string }> = {
   PUBLISHED: {
-    label: 'Publicado',
-    classes: 'bg-green-500/10 text-green-600',
+    label: 'PUBLICADO',
+    bgClass: 'bg-green-500/10',
+    textClass: 'text-green-600',
+    dotClass: 'bg-green-500',
   },
   DRAFT: {
-    label: 'Rascunho',
-    classes: 'bg-yellow-400/10 text-yellow-600',
+    label: 'RASCUNHO',
+    bgClass: 'bg-yellow-500/10',
+    textClass: 'text-yellow-600',
+    dotClass: 'bg-yellow-500',
   },
   ARCHIVED: {
-    label: 'Arquivado',
-    classes: 'bg-on-surface-variant/10 text-on-surface-variant',
+    label: 'ARQUIVADO',
+    bgClass: 'bg-slate-400/10',
+    textClass: 'text-slate-500',
+    dotClass: 'bg-slate-400',
   },
 }
 
 export function StatusBadge({ status }: { status: PostStatus }) {
-  const { label, classes } = STATUS_CONFIG[status]
+  const config = STATUS_CONFIG[status]
   return (
-    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold ${classes}`}>
-      <span className="w-1.5 h-1.5 rounded-full bg-current" />
-      {label}
+    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold ${config.bgClass} ${config.textClass}`}>
+      <span className={`w-1.5 h-1.5 rounded-full ${config.dotClass} mr-2`} />
+      {config.label}
     </span>
   )
 }
 
-const DISCIPLINE_CONFIG: Record<string, { label: string; classes: string }> = {
-  matematica: { label: 'Matemática', classes: 'bg-blue-100 text-blue-700' },
-  portugues:  { label: 'Português',  classes: 'bg-purple-100 text-purple-700' },
-  ciencias:   { label: 'Ciências',   classes: 'bg-emerald-100 text-emerald-700' },
-  historia:   { label: 'História',   classes: 'bg-amber-100 text-amber-700' },
-  geografia:  { label: 'Geografia',  classes: 'bg-teal-100 text-teal-700' },
+const DISCIPLINE_CONFIG: Record<string, { label: string; bgColor: string }> = {
+  matematica: { label: 'Matemática', bgColor: 'bg-blue-600' },
+  portugues:  { label: 'Português',  bgColor: 'bg-amber-600' },
+  ciencias:   { label: 'Ciências',   bgColor: 'bg-emerald-600' },
+  historia:   { label: 'História',   bgColor: 'bg-rose-600' },
+  geografia:  { label: 'Geografia',  bgColor: 'bg-teal-600' },
 }
 
 export function DisciplineBadge({ disciplineSlug }: { disciplineSlug: string | null | undefined }) {
   if (!disciplineSlug) return null
-  const config = DISCIPLINE_CONFIG[disciplineSlug] ?? {
-    label: disciplineSlug,
-    classes: 'bg-surface-container-low text-on-surface-variant',
-  }
+  const config = DISCIPLINE_CONFIG[disciplineSlug]
+  if (!config) return null
   return (
-    <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-semibold ${config.classes}`}>
+    <span className={`${config.bgColor} text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full`}>
       {config.label}
     </span>
   )
