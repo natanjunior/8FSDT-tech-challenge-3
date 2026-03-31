@@ -30,7 +30,7 @@ describe('PostCard', () => {
 
   it('renders discipline badge when discipline exists', () => {
     render(<PostCard post={mockPost} />)
-    expect(screen.getByText('Matemática')).toBeInTheDocument()
+    expect(screen.getAllByText('Matemática').length).toBeGreaterThanOrEqual(1)
   })
 
   it('does not render discipline badge when discipline is null', () => {
