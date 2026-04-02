@@ -33,6 +33,7 @@ export default function AdminPage() {
   const [posts, setPosts] = useState<Post[]>([])
   const [pagination, setPagination] = useState({ page: 1, total: 0, totalPages: 1, limit: 10 })
   const [isLoading, setIsLoading] = useState(true)
+  const [statusStats, setStatusStats] = useState({ published: 0, draft: 0, archived: 0 })
   const [sortKey, setSortKey] = useState<string | null>('date')
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc')
   const [filterOpen, setFilterOpen] = useState(false)
@@ -42,6 +43,23 @@ export default function AdminPage() {
   const [filterStatus, setFilterStatus] = useState('')
   const [deleteTarget, setDeleteTarget] = useState<Post | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
+
+  const loadStats = useCallback(async () => {
+    try {
+      const [pubRes, draftRes, archRes] = await Promise.all([
+        getPosts({ status: 'PUBLISHED', page: 1, limit: 1 }),
+        getPosts({ status: 'DRAFT', page: 1, limit: 1 }),
+        getPosts({ status: 'ARCHIVED', page: 1, limit: 1 }),
+      ])
+      setStatusStats({
+        published: pubRes.pagination.total,
+        draft: draftRes.pagination.total,
+        archived: archRes.pagination.total,
+      })
+    } catch {
+      // Keep previous stats on error — non-critical
+    }
+  }, [])
 
   const loadPosts = useCallback(async (page = 1) => {
     setIsLoading(true)
@@ -63,6 +81,8 @@ export default function AdminPage() {
       setIsLoading(false)
     }
   }, [filterQ, filterDiscipline, filterStatus, sortKey, sortDir, pagination.limit])
+
+  useEffect(() => { loadStats() }, [loadStats])
 
   useEffect(() => { loadPosts(1) }, [filterQ, filterDiscipline, filterStatus, sortKey, sortDir])
 
@@ -101,11 +121,7 @@ export default function AdminPage() {
     }
   }
 
-  // Stats computed from current page — ideally from backend totals
   const total = pagination.total
-  const published = posts.filter(p => p.status === 'PUBLISHED').length
-  const drafts = posts.filter(p => p.status === 'DRAFT').length
-  const archived = posts.filter(p => p.status === 'ARCHIVED').length
   const reads = posts.reduce((sum, p) => sum + p.reads_count, 0)
 
   return (
@@ -126,17 +142,17 @@ export default function AdminPage() {
         </div>
         <div className="bg-surface-container-lowest p-6 rounded-xl shadow-xl shadow-sky-950/5 flex flex-col justify-between border-l-4 border-green-500">
           <span className="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Publicados</span>
-          <span className="text-3xl font-black text-primary mt-3">{String(published).padStart(2, '0')}</span>
+          <span className="text-3xl font-black text-primary mt-3">{String(statusStats.published).padStart(2, '0')}</span>
         </div>
         <div className="bg-surface-container-lowest p-6 rounded-xl shadow-xl shadow-sky-950/5 flex flex-col justify-between border-l-4 border-orange-400">
           <span className="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Em revisão</span>
           <div className="flex items-end gap-6 mt-3">
             <div>
-              <span className="text-3xl font-black text-primary leading-none">{String(drafts).padStart(2, '0')}</span>
+              <span className="text-3xl font-black text-primary leading-none">{String(statusStats.draft).padStart(2, '0')}</span>
               <p className="text-xs text-on-surface-variant mt-1">Rascunhos</p>
             </div>
             <div>
-              <span className="text-3xl font-black text-primary leading-none">{String(archived).padStart(2, '0')}</span>
+              <span className="text-3xl font-black text-primary leading-none">{String(statusStats.archived).padStart(2, '0')}</span>
               <p className="text-xs text-on-surface-variant mt-1">Arquivados</p>
             </div>
           </div>
