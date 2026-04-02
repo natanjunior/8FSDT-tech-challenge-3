@@ -48,14 +48,15 @@ export function PostCard({ post }: { post: Post }) {
   const statusConfig = STATUS_INLINE[post.status] ?? STATUS_INLINE.PUBLISHED
   const authorColor = getColorByName(post.author.name)
   const authorInitials = getInitials(post.author.name)
+  const disciplineSlug = post.discipline ? getDisciplineSlug(post.discipline.label) : undefined
 
   return (
     <Link href={`/posts/${post.id}`} className="group block">
       <article className="group bg-surface-container-lowest rounded-xl p-8 editorial-shadow flex flex-col h-full relative border border-outline-variant/10">
         {/* Discipline badge — floating above card */}
-        {post.discipline && (
+        {disciplineSlug && (
           <div className="absolute -top-3 left-6">
-            <DisciplineBadge disciplineSlug={getDisciplineSlug(post.discipline.label) ?? ''} />
+            <DisciplineBadge disciplineSlug={disciplineSlug} />
           </div>
         )}
 

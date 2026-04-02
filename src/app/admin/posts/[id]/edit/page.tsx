@@ -85,6 +85,9 @@ export default function EditPostPage() {
 
   if (!post) return null
 
+  const disciplineSlug = post.discipline ? getDisciplineSlug(post.discipline.label) : undefined
+  const disciplineColor = (disciplineSlug ? DISC_COLORS[disciplineSlug] : undefined) ?? 'bg-primary'
+
   return (
     <div className="flex flex-col lg:flex-row gap-8 items-start px-8 lg:px-16 py-12 max-w-[76rem] mx-auto">
 
@@ -136,7 +139,7 @@ export default function EditPostPage() {
             {post.discipline && (
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1.5">Disciplina</p>
-                <span className={`${DISC_COLORS[getDisciplineSlug(post.discipline.label) ?? ''] ?? 'bg-primary'} text-white text-[10px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full`}>
+                <span className={`${disciplineColor} text-white text-[10px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full`}>
                   {post.discipline.label}
                 </span>
               </div>

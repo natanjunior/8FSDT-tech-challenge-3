@@ -77,7 +77,7 @@ export default async function PostPage({ params }: PostPageProps) {
 
           {/* Badges + contadores + data */}
           <div className="flex items-center gap-3 mb-6 flex-wrap">
-            {post.discipline && <DisciplineBadge disciplineSlug={getDisciplineSlug(post.discipline.label) ?? ''} />}
+            {disciplineSlug && <DisciplineBadge disciplineSlug={disciplineSlug} />}
             {post.status !== 'PUBLISHED' && <StatusBadge status={post.status} />}
             <div className="flex items-center gap-3">
               <span className="flex items-center gap-1 text-[11px] font-mono text-on-surface-variant">
