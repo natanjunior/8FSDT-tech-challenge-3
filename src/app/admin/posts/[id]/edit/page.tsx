@@ -32,6 +32,7 @@ export default function EditPostPage() {
   const [post, setPost] = useState<Post | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [saveError, setSaveError] = useState<string | null>(null)
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
   const [leaveModalOpen, setLeaveModalOpen] = useState(false)
   const [isDirty, setIsDirty] = useState(false)
@@ -48,6 +49,7 @@ export default function EditPostPage() {
   async function handleSubmit(data: PostFormData) {
     if (!post) return
     setIsSubmitting(true)
+    setSaveError(null)
     try {
       await updatePost(id, {
         title: data.title,
@@ -57,6 +59,9 @@ export default function EditPostPage() {
         discipline_id: data.discipline_id || undefined,
       })
       router.push('/admin')
+    } catch (err: unknown) {
+      const apiMessage = (err as { response?: { data?: { error?: string } } })?.response?.data?.error
+      setSaveError(apiMessage ?? 'Erro ao salvar as alterações. Tente novamente.')
     } finally {
       setIsSubmitting(false)
     }
@@ -103,6 +108,13 @@ export default function EditPostPage() {
           </nav>
           <p className="text-sm text-on-surface-variant">Atualize o conteúdo e salve as alterações.</p>
         </div>
+
+        {saveError && (
+          <div className="mb-6 p-4 rounded-xl bg-error-container/20 border border-error/30 flex items-start gap-3">
+            <span className="material-symbols-outlined text-error text-xl shrink-0 mt-0.5">error</span>
+            <p className="text-sm text-error font-medium">{saveError}</p>
+          </div>
+        )}
 
         <PostForm
           onSubmit={handleSubmit}

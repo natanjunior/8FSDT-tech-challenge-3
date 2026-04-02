@@ -10,9 +10,11 @@ import { createPost } from '@/services/posts.service'
 export default function NewPostPage() {
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [saveError, setSaveError] = useState<string | null>(null)
 
   async function handleSubmit(data: PostFormData) {
     setIsSubmitting(true)
+    setSaveError(null)
     try {
       await createPost({
         title: data.title,
@@ -22,6 +24,9 @@ export default function NewPostPage() {
         discipline_id: data.discipline_id || undefined,
       })
       router.push('/admin')
+    } catch (err: unknown) {
+      const apiMessage = (err as { response?: { data?: { error?: string } } })?.response?.data?.error
+      setSaveError(apiMessage ?? 'Erro ao criar o artigo. Verifique os dados e tente novamente.')
     } finally {
       setIsSubmitting(false)
     }
@@ -40,6 +45,13 @@ export default function NewPostPage() {
         </nav>
         <p className="text-sm text-on-surface-variant">Preencha os campos abaixo para publicar um novo artigo.</p>
       </div>
+
+      {saveError && (
+        <div className="mb-6 p-4 rounded-xl bg-error-container/20 border border-error/30 flex items-start gap-3">
+          <span className="material-symbols-outlined text-error text-xl shrink-0 mt-0.5">error</span>
+          <p className="text-sm text-error font-medium">{saveError}</p>
+        </div>
+      )}
 
       <PostForm
         onSubmit={handleSubmit}
