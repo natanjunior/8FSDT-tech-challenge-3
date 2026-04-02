@@ -8,6 +8,7 @@ import { PostFormData } from '@/lib/schemas/post.schema'
 import { getPost, updatePost, deletePost } from '@/services/posts.service'
 import { StatusBadge } from '@/components/ui/Badge'
 import { Post } from '@/types/post'
+import { getDisciplineSlug } from '@/lib/discipline'
 
 function formatDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString('pt-BR', {
@@ -135,7 +136,7 @@ export default function EditPostPage() {
             {post.discipline && (
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1.5">Disciplina</p>
-                <span className={`${DISC_COLORS[post.discipline.slug] ?? 'bg-primary'} text-white text-[10px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full`}>
+                <span className={`${DISC_COLORS[getDisciplineSlug(post.discipline.label) ?? ''] ?? 'bg-primary'} text-white text-[10px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full`}>
                   {post.discipline.label}
                 </span>
               </div>

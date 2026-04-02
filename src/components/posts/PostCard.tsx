@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Post } from '@/types/post'
 import { DisciplineBadge } from '@/components/ui/Badge'
+import { getDisciplineSlug } from '@/lib/discipline'
 
 const COLORS = [
   'bg-blue-100 border-blue-200 text-blue-700',
@@ -54,7 +55,7 @@ export function PostCard({ post }: { post: Post }) {
         {/* Discipline badge — floating above card */}
         {post.discipline && (
           <div className="absolute -top-3 left-6">
-            <DisciplineBadge disciplineSlug={post.discipline.slug} />
+            <DisciplineBadge disciplineSlug={getDisciplineSlug(post.discipline.label) ?? ''} />
           </div>
         )}
 

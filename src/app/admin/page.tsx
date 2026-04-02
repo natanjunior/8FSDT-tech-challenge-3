@@ -9,6 +9,7 @@ import { Post } from '@/types/post'
 import { StatusBadge, DisciplineBadge } from '@/components/ui/Badge'
 import { AuthorId } from '@/components/ui/AuthorId'
 import { ConfirmModal } from '@/components/ui/ConfirmModal'
+import { getDisciplineSlug } from '@/lib/discipline'
 
 // Discipline color map (matches prototype)
 const DISC_COLORS: Record<string, string> = {
@@ -56,6 +57,8 @@ export default function AdminPage() {
       })
       setPosts(result.data)
       setPagination(prev => ({ ...prev, ...result.pagination }))
+    } catch {
+      setPosts([])
     } finally {
       setIsLoading(false)
     }
@@ -309,7 +312,7 @@ export default function AdminPage() {
                   </td>
                   <td className="px-6 py-4">
                     {post.discipline ? (
-                      <span className={`${DISC_COLORS[post.discipline.slug] ?? 'bg-primary'} text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full`}>
+                      <span className={`${DISC_COLORS[getDisciplineSlug(post.discipline.label) ?? ''] ?? 'bg-primary'} text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full`}>
                         {post.discipline.label}
                       </span>
                     ) : (

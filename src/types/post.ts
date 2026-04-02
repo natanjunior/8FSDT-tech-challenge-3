@@ -4,7 +4,6 @@ export type PostStatus = 'DRAFT' | 'PUBLISHED' | 'ARCHIVED'
 
 export interface Discipline {
   id: string
-  slug: string
   label: string
 }
 

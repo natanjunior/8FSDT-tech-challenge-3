@@ -4,6 +4,7 @@ import { PublicLayout } from '@/components/layout/PublicLayout'
 import { CommentSection } from '@/components/comments/CommentSection'
 import { DisciplineBadge, StatusBadge } from '@/components/ui/Badge'
 import type { Post } from '@/types/post'
+import { getDisciplineSlug } from '@/lib/discipline'
 
 const COLORS = [
   'bg-blue-100 border-blue-200 text-blue-700',
@@ -36,13 +37,17 @@ async function fetchPost(id: string, token?: string): Promise<Post | null> {
   const headers: HeadersInit = {}
   if (token) headers['Authorization'] = `Bearer ${token}`
 
-  const res = await fetch(`${apiUrl}/posts/${id}`, {
-    headers,
-    cache: 'no-store',
-  })
-  if (res.status === 404) return null
-  if (!res.ok) return null
-  return res.json()
+  try {
+    const res = await fetch(`${apiUrl}/posts/${id}`, {
+      headers,
+      cache: 'no-store',
+    })
+    if (res.status === 404) return null
+    if (!res.ok) return null
+    return res.json()
+  } catch {
+    return null
+  }
 }
 
 export default async function PostPage({ params }: PostPageProps) {
@@ -58,7 +63,7 @@ export default async function PostPage({ params }: PostPageProps) {
     redirect('/posts')
   }
 
-  const disciplineSlug = post.discipline?.slug
+  const disciplineSlug = post.discipline ? getDisciplineSlug(post.discipline.label) : undefined
   const authorColor = getColorByName(post.author.name)
   const authorInitials = getInitials(post.author.name)
 
@@ -72,7 +77,7 @@ export default async function PostPage({ params }: PostPageProps) {
 
           {/* Badges + contadores + data */}
           <div className="flex items-center gap-3 mb-6 flex-wrap">
-            {post.discipline && <DisciplineBadge disciplineSlug={post.discipline.slug} />}
+            {post.discipline && <DisciplineBadge disciplineSlug={getDisciplineSlug(post.discipline.label) ?? ''} />}
             {post.status !== 'PUBLISHED' && <StatusBadge status={post.status} />}
             <div className="flex items-center gap-3">
               <span className="flex items-center gap-1 text-[11px] font-mono text-on-surface-variant">
