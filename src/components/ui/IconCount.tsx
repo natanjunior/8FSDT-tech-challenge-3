@@ -1,6 +1,8 @@
 const ICON_MAP = {
   comment: 'forum',
   bookmark: 'bookmark',
+  views: 'visibility',
+  likes: 'thumb_up',
 } as const
 
 interface IconCountProps {
@@ -9,19 +11,19 @@ interface IconCountProps {
   size?: 'sm' | 'md' | 'lg'
 }
 
-export function IconCount({ type, count, size = 'md' }: IconCountProps) {
-  const iconSizes = { sm: 'text-sm', md: 'text-base', lg: 'text-xl' }
-  const countSizes = { sm: 'text-[10px]', md: 'text-[11px]', lg: 'text-xs' }
+export function IconCount({ type, count, size = 'sm' }: IconCountProps) {
+  const iconPx = { sm: 16, md: 20, lg: 24 }
+  const countSizes = { sm: 'text-[11px]', md: 'text-sm', lg: 'text-base' }
 
   return (
-    <div className="flex items-center gap-0.5 text-on-surface-variant group-hover:text-secondary transition-colors">
+    <span className={`flex items-center gap-1 ${countSizes[size]} font-mono text-on-surface-variant group-hover:text-secondary transition-colors`}>
       <span
-        className={`material-symbols-outlined ${iconSizes[size]} group-hover:[font-variation-settings:'FILL'_1]`}
-        style={{ fontVariationSettings: "'FILL' 0" }}
+        className="material-symbols-outlined text-outline group-hover:text-secondary transition-colors"
+        style={{ fontSize: `${iconPx[size]}px`, fontVariationSettings: "'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24" }}
       >
         {ICON_MAP[type]}
       </span>
-      <span className={`${countSizes[size]} font-mono`}>{count}</span>
-    </div>
+      {count}
+    </span>
   )
 }
