@@ -11,7 +11,7 @@ interface DataTableHeaderProps<T> {
 export function DataTableHeader<T>({ columns, sortState, onSort }: DataTableHeaderProps<T>) {
   return (
     <thead>
-      <tr className="border-b border-surface-container-low">
+      <tr className="bg-surface-container-low/30 border-b border-surface-container-high">
         {columns.map((col, i) => {
           const isSortable = !!col.sortKey
           const isActive = sortState?.sortKey === col.sortKey
@@ -21,7 +21,7 @@ export function DataTableHeader<T>({ columns, sortState, onSort }: DataTableHead
           return (
             <th
               key={String(col.key)}
-              className={`px-4 py-3 text-left text-xs font-semibold text-on-surface-variant
+              className={`px-6 py-4 text-left text-xs font-black uppercase tracking-widest text-on-surface-variant
                 ${isSortable ? 'cursor-pointer hover:text-secondary select-none' : ''}
                 ${col.align === 'center' ? 'text-center' : ''}
                 ${col.align === 'right' ? 'text-right' : ''}
@@ -36,7 +36,7 @@ export function DataTableHeader<T>({ columns, sortState, onSort }: DataTableHead
                 {isSortable && (
                   <span
                     className={`material-symbols-outlined text-xs transition-opacity
-                      ${isActive ? 'opacity-100 text-on-surface-variant' : 'opacity-0 group-hover:opacity-100'}`}
+                      ${isActive ? 'opacity-100 text-outline-variant' : 'opacity-0 group-hover:opacity-100'}`}
                   >
                     {isActive && sortState?.dir === 'desc' ? 'arrow_downward' : 'arrow_upward'}
                   </span>

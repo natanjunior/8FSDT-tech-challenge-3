@@ -61,23 +61,23 @@ export function DataTable<T extends object>({
   return (
     <div className="bg-surface-container-lowest rounded-xl shadow-xl shadow-sky-950/5 overflow-hidden">
       {/* Card header */}
-      <div className="flex items-center justify-between px-4 py-3 bg-surface-container-low border-b border-surface-container-low">
-        <span className="font-bold text-on-surface">{title}</span>
+      <div className="flex items-center gap-2 px-6 py-4 bg-surface-container border-b border-surface-container-high">
+        <h3 className="font-bold text-primary text-sm flex-1">{title}</h3>
         <div className="flex items-center gap-2">
           {headerActions}
           {filterSlot && (
             <button
               onClick={() => setFilterOpen((v) => !v)}
-              className="p-1 rounded hover:bg-surface transition-colors"
+              className="p-2 rounded-lg hover:bg-surface-container-high transition-colors"
               aria-label="Filtros"
             >
-              <span className="material-symbols-outlined text-on-surface-variant text-sm">
+              <span className="material-symbols-outlined text-on-surface-variant text-base">
                 filter_list
               </span>
             </button>
           )}
-          <button className="p-1 rounded hover:bg-surface transition-colors" aria-label="Mais opções">
-            <span className="material-symbols-outlined text-on-surface-variant text-sm">
+          <button className="p-2 rounded-lg hover:bg-surface-container-high transition-colors" aria-label="Mais opções">
+            <span className="material-symbols-outlined text-on-surface-variant text-base">
               more_vert
             </span>
           </button>
@@ -86,7 +86,7 @@ export function DataTable<T extends object>({
 
       {/* Filter slot */}
       {filterSlot && filterOpen && (
-        <div className="px-4 py-3 border-b border-surface-container-low bg-surface-container-low/50">
+        <div className="px-6 py-4 bg-surface-container-low/60 border-b border-surface-container-high flex flex-wrap gap-3">
           {filterSlot}
         </div>
       )}
@@ -95,7 +95,7 @@ export function DataTable<T extends object>({
       <div className="overflow-x-auto">
         <table className="w-full">
           <DataTableHeader columns={columns} sortState={sortState} onSort={handleSort} />
-          <tbody>
+          <tbody className="divide-y divide-surface-container-low">
             {rows.length === 0 ? (
               <tr>
                 <td colSpan={bodyColumns.length}>
@@ -106,7 +106,7 @@ export function DataTable<T extends object>({
               rows.map((row, rowIdx) => (
                 <tr
                   key={rowIdx}
-                  className="group border-b border-surface-container-low/50 hover:bg-surface-container-low/40 transition-colors"
+                  className="group hover:bg-surface-container-low/30 transition-colors"
                 >
                   {bodyColumns.map((col) => {
                     const colspan = col.mergedWith ? 2 : 1
@@ -117,7 +117,7 @@ export function DataTable<T extends object>({
                       <td
                         key={String(col.key)}
                         colSpan={colspan}
-                        className={`px-4 py-3 text-sm
+                        className={`px-6 py-4 text-sm
                           ${col.align === 'center' ? 'text-center' : ''}
                           ${col.align === 'right' ? 'text-right' : ''}
                         `}
