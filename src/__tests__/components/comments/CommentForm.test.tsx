@@ -18,7 +18,7 @@ describe('CommentForm', () => {
   it('renders content textarea and optional name field', () => {
     render(<CommentForm onSubmit={mockOnSubmit} isSubmitting={false} />)
     expect(screen.getByPlaceholderText('Escreva seu comentário...')).toBeInTheDocument()
-    expect(screen.getByPlaceholderText('Seu nome (opcional)')).toBeInTheDocument()
+    expect(screen.getByPlaceholderText('Seu nome (deixe em branco para comentar como anônimo)')).toBeInTheDocument()
   })
 
   it('shows validation error when content is empty on submit', async () => {
@@ -35,7 +35,7 @@ describe('CommentForm', () => {
     fireEvent.change(screen.getByPlaceholderText('Escreva seu comentário...'), {
       target: { value: 'Excelente post!' },
     })
-    fireEvent.change(screen.getByPlaceholderText('Seu nome (opcional)'), {
+    fireEvent.change(screen.getByPlaceholderText('Seu nome (deixe em branco para comentar como anônimo)'), {
       target: { value: 'Ana' },
     })
     fireEvent.click(screen.getByRole('button', { name: /comentar/i }))

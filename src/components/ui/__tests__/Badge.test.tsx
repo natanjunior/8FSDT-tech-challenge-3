@@ -26,7 +26,7 @@ describe('DisciplineBadge', () => {
   })
 
   it('renders nothing when disciplineSlug is null', () => {
-    const { container } = render(<DisciplineBadge disciplineSlug={null} />)
-    expect(container).toBeEmptyDOMElement()
+    render(<DisciplineBadge disciplineSlug={null} />)
+    expect(screen.getByText('Sem disciplina')).toBeInTheDocument()
   })
 })

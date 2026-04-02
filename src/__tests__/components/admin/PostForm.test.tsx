@@ -14,21 +14,12 @@ const mockOnCancel = vi.fn()
 describe('PostForm', () => {
   beforeEach(() => vi.clearAllMocks())
 
-  it('renders title, subtitle, content, status, author fields', () => {
+  it('renders title, content, status, author fields', () => {
     render(<PostForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} submitLabel="Criar artigo" />)
     expect(screen.getByLabelText('Título *')).toBeInTheDocument()
-    expect(screen.getByLabelText('Subtítulo')).toBeInTheDocument()
     expect(screen.getByLabelText('Conteúdo *')).toBeInTheDocument()
     expect(screen.getByLabelText('Autor')).toBeInTheDocument()
     expect(screen.getByText('Criar artigo')).toBeInTheDocument()
-  })
-
-  it('subtitle field is optional and accepts text', () => {
-    render(<PostForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} submitLabel="Criar artigo" />)
-    const subtitleInput = screen.getByLabelText('Subtítulo')
-    expect(subtitleInput).toBeInTheDocument()
-    fireEvent.change(subtitleInput, { target: { value: 'Um subtítulo opcional' } })
-    expect(subtitleInput).toHaveValue('Um subtítulo opcional')
   })
 
   it('calls onDirtyChange when form becomes dirty', async () => {
