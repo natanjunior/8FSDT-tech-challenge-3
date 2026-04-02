@@ -69,4 +69,32 @@ describe('Button', () => {
     expect(btn.className).toContain('cursor-not-allowed')
     expect(btn).toBeDisabled()
   })
+
+  it('primary loading has opacity-80, cursor-wait, and is disabled', () => {
+    render(<Button isLoading>Salvando</Button>)
+    const btn = screen.getByRole('button')
+    expect(btn.className).toContain('opacity-80')
+    expect(btn.className).toContain('cursor-wait')
+    expect(btn).toBeDisabled()
+  })
+
+  it('primary loading renders spinner svg', () => {
+    render(<Button isLoading>Salvando</Button>)
+    const svg = document.querySelector('svg')
+    expect(svg).not.toBeNull()
+    expect(svg!.className.baseVal).toContain('animate-spin')
+  })
+
+  it('primary loading does not have hover/active transition classes', () => {
+    render(<Button isLoading>Salvando</Button>)
+    const btn = screen.getByRole('button')
+    expect(btn.className).not.toContain('hover:scale')
+    expect(btn.className).not.toContain('active:scale')
+  })
+
+  it('isLoading on non-primary variant does not render spinner', () => {
+    render(<Button variant="secondary" isLoading>Salvando</Button>)
+    const svg = document.querySelector('svg')
+    expect(svg).toBeNull()
+  })
 })

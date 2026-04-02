@@ -14,22 +14,43 @@ type ButtonVariant =
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant
   children: ReactNode
+  isLoading?: boolean
 }
+
+const Spinner = () => (
+  <svg
+    className="animate-spin h-4 w-4 text-white"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+  >
+    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+    <path
+      className="opacity-75"
+      fill="currentColor"
+      d="M4 12a8 8 0 018-8V0C5.373 0 3 0 3 12h4z"
+    />
+  </svg>
+)
 
 export function Button({
   variant = 'primary',
   children,
   className = '',
   disabled,
+  isLoading,
   ...props
 }: ButtonProps) {
   const styles: Record<ButtonVariant, string> = {
     // cta-gradient text-white font-bold px-6 py-3 rounded-xl shadow-lg shadow-secondary/20
     // hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-2
     // disabled: opacity-40 cursor-not-allowed (no hover/active transitions)
-    primary: disabled
-      ? 'cta-gradient text-white font-bold px-6 py-3 rounded-xl opacity-40 cursor-not-allowed flex items-center gap-2'
-      : 'cta-gradient text-white font-bold px-6 py-3 rounded-xl shadow-lg shadow-secondary/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-2',
+    // loading: opacity-80 cursor-wait (no hover/active transitions)
+    primary: isLoading
+      ? 'cta-gradient text-white font-bold px-6 py-3 rounded-xl shadow-lg shadow-secondary/20 opacity-80 flex items-center gap-2 cursor-wait'
+      : disabled
+        ? 'cta-gradient text-white font-bold px-6 py-3 rounded-xl opacity-40 cursor-not-allowed flex items-center gap-2'
+        : 'cta-gradient text-white font-bold px-6 py-3 rounded-xl shadow-lg shadow-secondary/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-2',
 
     // primary-gradient text-white px-5 py-2 rounded-xl text-sm font-bold
     // shadow-lg shadow-sky-950/20 active:scale-95 transform transition-all
@@ -65,9 +86,10 @@ export function Button({
   return (
     <button
       className={`${styles[variant]} ${className}`}
-      disabled={disabled}
+      disabled={disabled || isLoading}
       {...props}
     >
+      {isLoading && variant === 'primary' && <Spinner />}
       {children}
     </button>
   )
