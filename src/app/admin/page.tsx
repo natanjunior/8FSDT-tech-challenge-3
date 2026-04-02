@@ -49,7 +49,7 @@ export default function AdminPage() {
       const result = await getPosts({
         page,
         limit: pagination.limit,
-        q: filterQ || undefined,
+        query: filterQ || undefined,
         discipline: filterDiscipline || undefined,
         status: filterStatus || undefined,
         sortKey: sortKey ?? undefined,

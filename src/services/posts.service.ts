@@ -6,13 +6,13 @@ export interface GetPostsParams {
   limit?: number
   status?: string
   discipline?: string
-  q?: string
+  query?: string
   sortKey?: string
   sortDir?: 'asc' | 'desc'
 }
 
 export interface SearchPostsParams {
-  q?: string
+  query?: string
   discipline?: string
   page?: number
   limit?: number
@@ -21,7 +21,7 @@ export interface SearchPostsParams {
 export async function getPosts(
   params: GetPostsParams = {}
 ): Promise<PaginatedResponse<Post>> {
-  const endpoint = params.q ? '/posts/search' : '/posts'
+  const endpoint = params.query ? '/posts/search' : '/posts'
   const { data } = await api.get<PaginatedResponse<Post>>(endpoint, { params })
   return data
 }
