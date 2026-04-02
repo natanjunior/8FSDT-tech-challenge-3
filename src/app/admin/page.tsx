@@ -319,7 +319,7 @@ export default function AdminPage() {
                         {post.title}
                       </span>
                       {post.subtitle && (
-                        <span className="text-xs text-on-surface-variant">{post.subtitle}</span>
+                        <span className="text-xs text-on-surface-variant mt-1">{post.subtitle}</span>
                       )}
                       <div className="flex items-center gap-2 mt-0.5">
                         <AuthorId name={post.author.name} size="sm" />
