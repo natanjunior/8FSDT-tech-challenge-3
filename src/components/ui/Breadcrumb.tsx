@@ -14,7 +14,7 @@ interface BreadcrumbProps {
 
 export function Breadcrumb({ items, currentTitle, description }: BreadcrumbProps) {
   return (
-    <div className="mb-8">
+    <div>
       <nav className="flex items-center gap-2 text-sm mb-1" aria-label="Breadcrumb">
         {items.map((item, i) => (
           <span key={i} className="flex items-center gap-2">
