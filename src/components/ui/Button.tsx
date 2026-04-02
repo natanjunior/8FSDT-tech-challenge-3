@@ -28,7 +28,7 @@ const Spinner = () => (
     <path
       className="opacity-75"
       fill="currentColor"
-      d="M4 12a8 8 0 018-8V0C5.373 0 3 0 3 12h4z"
+      d="M4 12a8 8 0 018-8v8z"
     />
   </svg>
 )
