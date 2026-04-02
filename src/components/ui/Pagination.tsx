@@ -17,30 +17,33 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
     return [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages]
   }
 
+  const chevronEnabled = 'w-12 h-12 flex items-center justify-center rounded-xl bg-surface-container hover:bg-surface-container-high text-primary transition-colors'
+  const chevronDisabled = 'w-12 h-12 flex items-center justify-center rounded-xl bg-surface-container text-outline cursor-not-allowed opacity-40'
+
   return (
-    <div className="flex gap-1">
+    <nav className="flex justify-center items-center space-x-2">
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-surface-container-high transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+        className={currentPage === 1 ? chevronDisabled : chevronEnabled}
         aria-label="Página anterior"
       >
-        <span className="material-symbols-outlined text-sm">chevron_left</span>
+        <span className="material-symbols-outlined">chevron_left</span>
       </button>
 
       {getPages().map((page, i) =>
         page === '...' ? (
-          <span key={`ellipsis-${i}`} className="w-7 h-7 flex items-center justify-center">…</span>
+          <span key={`ellipsis-${i}`} className="px-2 text-outline">...</span>
         ) : (
           <button
             key={page}
             onClick={() => onPageChange(page)}
             aria-current={page === currentPage ? 'page' : undefined}
-            className={`w-7 h-7 flex items-center justify-center rounded-lg transition-colors
-              ${page === currentPage
-                ? 'bg-primary text-white'
-                : 'hover:bg-surface-container-high'
-              }`}
+            className={
+              page === currentPage
+                ? 'w-12 h-12 flex items-center justify-center rounded-xl bg-primary text-white font-bold'
+                : 'w-12 h-12 flex items-center justify-center rounded-xl bg-surface-container-lowest hover:bg-surface-container-high text-primary font-bold border border-outline-variant/20 transition-colors'
+            }
           >
             {page}
           </button>
@@ -50,11 +53,11 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-surface-container-high transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+        className={currentPage === totalPages ? chevronDisabled : chevronEnabled}
         aria-label="Próxima página"
       >
-        <span className="material-symbols-outlined text-sm">chevron_right</span>
+        <span className="material-symbols-outlined">chevron_right</span>
       </button>
-    </div>
+    </nav>
   )
 }
