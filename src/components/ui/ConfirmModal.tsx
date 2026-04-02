@@ -12,6 +12,7 @@ interface ConfirmModalProps {
   children: ReactNode // descrição livre — pode incluir badges inline
   cancelLabel: string
   confirmLabel: string
+  confirmIcon?: string // optional Material Symbol icon inside confirm button
   confirmClass: string // ex: 'bg-error text-white shadow-lg shadow-error/20' ou 'primary-gradient text-white shadow-lg shadow-primary/20'
   onConfirm: () => void
   onCancel: () => void
@@ -27,6 +28,7 @@ export function ConfirmModal({
   children,
   cancelLabel,
   confirmLabel,
+  confirmIcon,
   confirmClass,
   onConfirm,
   onCancel,
@@ -44,9 +46,9 @@ export function ConfirmModal({
           </div>
           <div>
             <h2 className="text-lg font-black text-primary tracking-tight">{title}</h2>
-            <div className="text-sm text-on-surface-variant mt-1 leading-relaxed">
+            <p className="text-sm text-on-surface-variant mt-1 leading-relaxed">
               {children}
-            </div>
+            </p>
           </div>
         </div>
         <div className="flex items-center justify-end gap-3 pt-2 border-t border-outline-variant/10">
@@ -63,6 +65,7 @@ export function ConfirmModal({
             disabled={isLoading}
             className={`flex items-center gap-2 px-6 py-2.5 text-sm font-bold rounded-xl hover:opacity-90 transition-all active:scale-95 disabled:opacity-50 ${confirmClass}`}
           >
+            {confirmIcon && <span className="material-symbols-outlined text-lg">{confirmIcon}</span>}
             {confirmLabel}
           </button>
         </div>
