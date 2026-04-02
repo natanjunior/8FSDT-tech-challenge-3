@@ -54,11 +54,9 @@ export function PostCard({ post }: { post: Post }) {
     <Link href={`/posts/${post.id}`} className="block">
       <article className="group bg-surface-container-lowest rounded-xl p-8 editorial-shadow flex flex-col h-full relative border border-outline-variant/10">
         {/* Discipline badge — floating above card */}
-        {disciplineSlug && (
-          <div className="absolute -top-3 left-6">
-            <DisciplineBadge disciplineSlug={disciplineSlug} />
-          </div>
-        )}
+        <div className="absolute -top-3 left-6">
+          <DisciplineBadge disciplineSlug={disciplineSlug} />
+        </div>
 
         {/* Top — status + date */}
         <div className="flex justify-between items-start mb-4 pt-2">
@@ -89,20 +87,18 @@ export function PostCard({ post }: { post: Post }) {
             </div>
             <div>
               <p className="text-sm font-bold text-primary">{post.author.name}</p>
-              {post.discipline && (
-                <p className="text-[10px] text-outline">{post.discipline.label}</p>
-              )}
+              <p className="text-[10px] text-outline">{post.discipline?.label ?? 'Sem disciplina'}</p>
             </div>
           </div>
 
           {/* Stats */}
           <div className="flex items-center gap-3">
-            <span className="flex items-center gap-1 text-[11px] font-mono text-on-surface-variant">
-              <span className="material-symbols-outlined text-outline" style={{ fontSize: 16 }}>forum</span>
+            <span className="flex items-center gap-1 text-[11px] font-mono text-on-surface-variant group-hover:text-secondary transition-colors">
+              <span className="material-symbols-outlined text-outline group-hover:text-secondary transition-colors" style={{ fontSize: 16 }}>forum</span>
               {post.comments_count}
             </span>
-            <span className="flex items-center gap-1 text-[11px] font-mono text-on-surface-variant">
-              <span className="material-symbols-outlined text-outline" style={{ fontSize: 16 }}>bookmark</span>
+            <span className="flex items-center gap-1 text-[11px] font-mono text-on-surface-variant group-hover:text-secondary transition-colors">
+              <span className="material-symbols-outlined text-outline group-hover:text-secondary transition-colors" style={{ fontSize: 16 }}>bookmark</span>
               {post.reads_count}
             </span>
           </div>

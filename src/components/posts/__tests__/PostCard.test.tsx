@@ -33,9 +33,10 @@ describe('PostCard', () => {
     expect(screen.getAllByText('Matemática').length).toBeGreaterThanOrEqual(1)
   })
 
-  it('does not render discipline badge when discipline is null', () => {
+  it('renders "Sem disciplina" fallback badge and subtitle when discipline is null', () => {
     render(<PostCard post={{ ...mockPost, discipline: null }} />)
     expect(screen.queryByText('Matemática')).not.toBeInTheDocument()
+    expect(screen.getAllByText('Sem disciplina').length).toBeGreaterThanOrEqual(1)
   })
 
   it('renders comment and bookmark counts', () => {

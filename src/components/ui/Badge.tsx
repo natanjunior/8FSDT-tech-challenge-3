@@ -34,7 +34,13 @@ const DISCIPLINE_CONFIG: Record<string, { label: string; bgColor: string }> = {
 }
 
 export function DisciplineBadge({ disciplineSlug }: { disciplineSlug: string | null | undefined }) {
-  if (!disciplineSlug) return null
+  if (!disciplineSlug) {
+    return (
+      <span className="bg-slate-400 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full shadow-lg">
+        Sem disciplina
+      </span>
+    )
+  }
   const config = DISCIPLINE_CONFIG[disciplineSlug]
   if (!config) return null
   return (
