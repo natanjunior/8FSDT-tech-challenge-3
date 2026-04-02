@@ -7,9 +7,9 @@ import { DataTablePagination } from './DataTablePagination'
 
 function DefaultEmptyState() {
   return (
-    <div className="px-6 py-16 flex flex-col items-center gap-3 text-center">
-      <span className="material-symbols-outlined text-on-surface-variant" style={{ fontSize: 40 }}>inbox</span>
-      <p className="text-sm text-on-surface-variant">Nenhum resultado encontrado.</p>
+    <div className="flex flex-col items-center justify-center py-12 text-on-surface-variant">
+      <span className="material-symbols-outlined text-4xl mb-2">inbox</span>
+      <p className="text-sm">Nenhum resultado encontrado.</p>
     </div>
   )
 }
@@ -61,21 +61,27 @@ export function DataTable<T extends object>({
   return (
     <div className="bg-surface-container-lowest rounded-xl shadow-xl shadow-sky-950/5 overflow-hidden">
       {/* Card header */}
-      <div className="px-6 py-4 bg-surface-container flex items-center gap-2 border-b border-surface-container-high">
+      <div className="flex items-center gap-2 px-6 py-4 bg-surface-container border-b border-surface-container-high">
         <h3 className="font-bold text-primary text-sm flex-1">{title}</h3>
-        {headerActions}
-        {filterSlot && (
-          <button
-            onClick={() => setFilterOpen((v) => !v)}
-            className="p-2 hover:bg-surface-container-high rounded-lg text-on-surface-variant transition-colors"
-            aria-label="Filtros"
-          >
-            <span className="material-symbols-outlined text-base">filter_list</span>
+        <div className="flex items-center gap-2">
+          {headerActions}
+          {filterSlot && (
+            <button
+              onClick={() => setFilterOpen((v) => !v)}
+              className="p-2 rounded-lg hover:bg-surface-container-high transition-colors"
+              aria-label="Filtros"
+            >
+              <span className="material-symbols-outlined text-on-surface-variant text-base">
+                filter_list
+              </span>
+            </button>
+          )}
+          <button className="p-2 rounded-lg hover:bg-surface-container-high transition-colors" aria-label="Mais opções">
+            <span className="material-symbols-outlined text-on-surface-variant text-base">
+              more_vert
+            </span>
           </button>
-        )}
-        <button className="p-2 hover:bg-surface-container-high rounded-lg text-on-surface-variant transition-colors" aria-label="Mais opções">
-          <span className="material-symbols-outlined text-base">more_vert</span>
-        </button>
+        </div>
       </div>
 
       {/* Filter slot */}
@@ -111,7 +117,7 @@ export function DataTable<T extends object>({
                       <td
                         key={String(col.key)}
                         colSpan={colspan}
-                        className={`px-6 py-4
+                        className={`px-6 py-4 text-sm
                           ${col.align === 'center' ? 'text-center' : ''}
                           ${col.align === 'right' ? 'text-right' : ''}
                         `}

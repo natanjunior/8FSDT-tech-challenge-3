@@ -113,8 +113,14 @@ export default function LoginPage() {
         </section>
       </main>
 
-      <footer className="py-6 px-8 border-t border-outline-variant/10 text-[10px] font-light uppercase tracking-widest text-center text-on-surface-variant">
-        © 2026 8FSDT TC 3 · PosTech FIAP
+      <footer className="py-6 px-8 border-t border-outline-variant/10">
+        <div className="max-w-md mx-auto flex justify-between items-center opacity-60">
+          <p className="text-[10px] font-light uppercase tracking-widest text-on-surface-variant">© 2026 8FSDT TC 3</p>
+          <div className="flex gap-6">
+            <a className="text-[10px] font-light uppercase tracking-widest hover:text-primary transition-colors" href="/grupo">Grupo</a>
+            <a className="text-[10px] font-light uppercase tracking-widest hover:text-primary transition-colors" href="/design-system">Documentação</a>
+          </div>
+        </div>
       </footer>
     </div>
   )

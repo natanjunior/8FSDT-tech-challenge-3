@@ -122,7 +122,7 @@ export default function AdminPage() {
   }
 
   const total = pagination.total
-  const reads = posts.reduce((sum, p) => sum + (p.reads_count ?? 0), 0)
+  const reads = posts.reduce((sum, p) => sum + p.reads_count, 0)
 
   return (
     <div className="px-8 lg:px-16 py-12">
@@ -313,20 +313,20 @@ export default function AdminPage() {
                 </tr>
               ) : posts.map(post => (
                 <tr key={post.id} className="group hover:bg-surface-container-low/30 transition-colors">
-                  <td colSpan={2} className="px-6 py-5">
-                    <div className="flex flex-col">
+                  <td colSpan={2} className="px-6 py-4">
+                    <div className="flex flex-col gap-1.5">
                       <span className="font-bold text-primary leading-tight hover:text-secondary cursor-pointer transition-colors">
                         {post.title}
                       </span>
                       {post.subtitle && (
                         <span className="text-xs text-on-surface-variant mt-1">{post.subtitle}</span>
                       )}
-                      <div className="flex items-center gap-2 mt-1">
-                        <AuthorId name={post.author.name} size="mini" />
+                      <div className="flex items-center gap-2 mt-0.5">
+                        <AuthorId name={post.author.name} size="sm" />
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-5">
+                  <td className="px-6 py-4">
                     {post.discipline ? (
                       <span className={`${DISC_COLORS[getDisciplineSlug(post.discipline.label) ?? ''] ?? 'bg-primary'} text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full`}>
                         {post.discipline.label}
@@ -335,19 +335,19 @@ export default function AdminPage() {
                       <span className="text-xs text-on-surface-variant/40">—</span>
                     )}
                   </td>
-                  <td className="px-6 py-5">
+                  <td className="px-6 py-4">
                     <StatusBadge status={post.status} />
                   </td>
-                  <td className="px-6 py-5">
+                  <td className="px-6 py-4">
                     <span className="text-sm font-mono text-on-surface-variant">{formatDate(post.updated_at)}</span>
                   </td>
-                  <td className="px-6 py-5 text-center">
-                    <span className="text-sm font-mono text-on-surface-variant">{post.comments_count ?? 0}</span>
+                  <td className="px-6 py-4 text-center">
+                    <span className="text-sm font-mono text-on-surface-variant">{post.comments_count}</span>
                   </td>
-                  <td className="px-6 py-5 text-center">
-                    <span className="text-sm font-mono text-on-surface-variant">{post.reads_count ?? 0}</span>
+                  <td className="px-6 py-4 text-center">
+                    <span className="text-sm font-mono text-on-surface-variant">{post.reads_count}</span>
                   </td>
-                  <td className="px-6 py-5 text-right">
+                  <td className="px-6 py-4 text-right">
                     <div className="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                       <button
                         onClick={() => router.push(`/admin/posts/${post.id}/edit`)}

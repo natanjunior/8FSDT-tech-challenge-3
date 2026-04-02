@@ -15,30 +15,29 @@ export function DataTableHeader<T>({ columns, sortState, onSort }: DataTableHead
         {columns.map((col, i) => {
           const isSortable = !!col.sortKey
           const isActive = sortState?.sortKey === col.sortKey
-          const isGhost = col.mergedInto !== undefined
-          const prevCol = i > 0 ? columns[i - 1] : undefined
-          const isGhostWithPipe = isGhost && prevCol?.mergedInto === undefined
+          const nextToCol = columns[i + 1]
+          const hasPipe = col.mergedInto === undefined && nextToCol?.mergedInto !== undefined
 
           return (
             <th
               key={String(col.key)}
-              className={`px-6 py-4 text-xs font-black uppercase tracking-widest text-on-surface-variant
-                ${isSortable ? 'cursor-pointer select-none transition-colors' : ''}
-                ${isGhost ? 'pl-0 pr-6' : ''}
+              className={`px-6 py-4 text-left text-xs font-black uppercase tracking-widest text-on-surface-variant
+                ${isSortable ? 'cursor-pointer hover:text-secondary select-none' : ''}
                 ${col.align === 'center' ? 'text-center' : ''}
                 ${col.align === 'right' ? 'text-right' : ''}
               `}
               onClick={isSortable ? () => onSort(col.sortKey!) : undefined}
             >
-              <span className={`flex items-center gap-1${col.align === 'center' ? ' justify-center' : col.align === 'right' ? ' justify-end' : ''}`}>
-                {isGhostWithPipe && (
-                  <span className="text-outline-variant font-light mr-0.5">|</span>
-                )}
+              <span className="flex items-center gap-1">
                 {col.label}
+                {hasPipe && (
+                  <span className="text-on-surface-variant/40 font-light mx-1">|</span>
+                )}
                 {isSortable && (
                   <span
-                    className={`sort-arrow material-symbols-outlined text-outline-variant transition-opacity${isActive ? '' : ' opacity-0'}`}
-                    style={{ fontSize: 14 }}
+                    className={`material-symbols-outlined text-outline-variant transition-opacity
+                      ${isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
+                    style={{ fontSize: '14px' }}
                   >
                     {isActive && sortState?.dir === 'desc' ? 'arrow_downward' : 'arrow_upward'}
                   </span>

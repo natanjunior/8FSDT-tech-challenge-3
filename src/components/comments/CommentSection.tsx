@@ -19,7 +19,6 @@ export function CommentSection({ postId, initialCount = 0 }: CommentSectionProps
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [commentsDisabled, setCommentsDisabled] = useState(false)
 
   const loadPage = useCallback(
     async (page: number, append = false) => {
@@ -31,15 +30,8 @@ export function CommentSection({ postId, initialCount = 0 }: CommentSectionProps
           totalPages: res.pagination.totalPages,
           total: res.pagination.total,
         })
-      } catch (err: unknown) {
-        const status = (err as { response?: { status?: number } })?.response?.status
-        if (status === 404 || status === 401) {
-          // Endpoint doesn't exist or requires auth — degrade silently
-          setComments([])
-          setCommentsDisabled(true)
-        } else {
-          setError('Não foi possível carregar os comentários.')
-        }
+      } catch {
+        setError('Não foi possível carregar os comentários.')
       }
     },
     [postId],
@@ -57,19 +49,12 @@ export function CommentSection({ postId, initialCount = 0 }: CommentSectionProps
   }
 
   async function handleSubmit(data: CommentPayload) {
-    if (commentsDisabled) return
     setIsSubmitting(true)
     try {
       await createComment(postId, data)
-      // Refetch da primeira página após criar comentário
       await loadPage(1)
-    } catch (err: unknown) {
-      const status = (err as { response?: { status?: number } })?.response?.status
-      if (status === 404 || status === 401) {
-        setCommentsDisabled(true)
-      } else {
-        setError('Não foi possível enviar o comentário.')
-      }
+    } catch {
+      setError('Não foi possível enviar o comentário.')
     } finally {
       setIsSubmitting(false)
     }
@@ -78,7 +63,6 @@ export function CommentSection({ postId, initialCount = 0 }: CommentSectionProps
   async function handleDelete(commentId: string) {
     try {
       await deleteComment(postId, commentId)
-      // Refetch da primeira página após deletar
       await loadPage(1)
     } catch {
       setError('Não foi possível excluir o comentário.')
@@ -86,23 +70,31 @@ export function CommentSection({ postId, initialCount = 0 }: CommentSectionProps
   }
 
   return (
-    <section id="comments" className="mt-12 pt-8 border-t border-surface-container-low">
-      <h2 className="text-xl font-bold text-on-surface mb-6">
-        Comentários ({commentsDisabled ? '—' : pagination.total})
-      </h2>
+    <section className="mt-16">
+      <div className="bg-surface-container-lowest rounded-xl shadow-xl shadow-sky-950/5 overflow-hidden">
 
-      {commentsDisabled ? (
-        <p className="text-on-surface-variant text-sm py-4">
-          Comentários não disponíveis no momento.
-        </p>
-      ) : (
-        <>
-          <div className="mb-8">
-            <CommentForm onSubmit={handleSubmit} isSubmitting={isSubmitting} />
-          </div>
+        {/* Card header */}
+        <div className="px-6 py-4 bg-surface-container flex items-center border-b border-surface-container-high">
+          <h3 className="font-bold text-primary flex items-center gap-2 text-sm">
+            <span className="material-symbols-outlined text-primary/60 text-base">forum</span>
+            Comentários
+          </h3>
+          <span className="ml-auto text-xs font-mono text-on-surface-variant">
+            {pagination.total} {pagination.total === 1 ? 'comentário' : 'comentários'}
+          </span>
+        </div>
 
+        <div className="p-6 space-y-6">
+
+          {/* Formulário de novo comentário */}
+          <CommentForm onSubmit={handleSubmit} isSubmitting={isSubmitting} />
+
+          {/* Separador */}
+          <div className="border-t border-surface-container-high" />
+
+          {/* Lista de comentários */}
           {error && (
-            <p className="text-error text-sm mb-4 flex items-center gap-2">
+            <p className="text-error text-sm flex items-center gap-2">
               <span className="material-symbols-outlined text-base" aria-hidden="true">error</span>
               {error}
             </p>
@@ -139,8 +131,8 @@ export function CommentSection({ postId, initialCount = 0 }: CommentSectionProps
               )}
             </div>
           )}
-        </>
-      )}
+        </div>
+      </div>
     </section>
   )
 }

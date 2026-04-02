@@ -2,7 +2,9 @@
 interface AuthorIdProps {
   name: string
   initials?: string
-  size?: 'normal' | 'mini'
+  subtitle?: string // ex: 'Matemática', 'Professor · Matemática'
+  date?: string // ex: '15 de janeiro de 2024' — only rendered for size="lg"
+  size?: 'sm' | 'md' | 'lg' // sm=36px (header/sidebar), md=40px (PostCard), lg=48px (article footer)
   colorClass?: string // ex: 'bg-emerald-100 border-emerald-200 text-emerald-700'
 }
 
@@ -29,28 +31,50 @@ function getColorByName(name: string): string {
   return COLORS[hash % COLORS.length]
 }
 
-export function AuthorId({ name, initials, size = 'normal', colorClass }: AuthorIdProps) {
+export function AuthorId({ name, initials, subtitle, date, size = 'md', colorClass }: AuthorIdProps) {
   const displayInitials = initials ?? getInitials(name)
   const color = colorClass ?? getColorByName(name)
 
-  if (size === 'mini') {
+  // sm = 36px — Header autenticado / Sidebar (gap-3)
+  if (size === 'sm') {
     return (
-      <div className="flex items-center gap-2 mt-0.5">
-        <div className={`w-5 h-5 rounded-full ${color} border flex items-center justify-center text-[9px] font-black shrink-0`}>
+      <div className="flex items-center gap-3">
+        <div className={`w-9 h-9 rounded-full ${color} border-2 flex items-center justify-center text-xs font-black shrink-0`}>
           {displayInitials}
         </div>
-        <span className="text-xs font-medium text-on-surface-variant">{name}</span>
+        <div>
+          <p className="text-sm font-bold text-primary leading-none">{name}</p>
+          {subtitle && <p className="text-[10px] text-outline leading-none mt-0.5">{subtitle}</p>}
+        </div>
       </div>
     )
   }
 
+  // lg = 48px — Rodapé de artigo (gap-4)
+  if (size === 'lg') {
+    return (
+      <div className="flex items-center gap-4">
+        <div className={`w-12 h-12 rounded-full ${color} border-2 flex items-center justify-center text-sm font-black shrink-0`}>
+          {displayInitials}
+        </div>
+        <div>
+          <p className="font-bold text-primary">{name}</p>
+          {subtitle && <p className="text-xs text-on-surface-variant">{subtitle}</p>}
+          {date && <p className="text-xs text-outline font-mono mt-0.5">{date}</p>}
+        </div>
+      </div>
+    )
+  }
+
+  // md = 40px — PostCard (gap-3, default)
   return (
     <div className="flex items-center gap-3">
-      <div className={`w-10 h-10 rounded-full ${color} border-2 flex items-center justify-center text-sm font-black shrink-0`}>
+      <div className={`w-10 h-10 rounded-full ${color} border-2 flex items-center justify-center text-xs font-black shrink-0`}>
         {displayInitials}
       </div>
       <div>
-        <p className="text-sm font-bold text-primary leading-tight">{name}</p>
+        <p className="text-sm font-bold text-primary">{name}</p>
+        {subtitle && <p className="text-[10px] text-outline">{subtitle}</p>}
       </div>
     </div>
   )

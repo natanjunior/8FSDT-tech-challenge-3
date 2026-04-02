@@ -2,7 +2,6 @@ import { cookies } from 'next/headers'
 import { notFound, redirect } from 'next/navigation'
 import { PublicLayout } from '@/components/layout/PublicLayout'
 import { CommentSection } from '@/components/comments/CommentSection'
-import { PostActions } from '@/components/posts/PostActions'
 import { DisciplineBadge, StatusBadge } from '@/components/ui/Badge'
 import type { Post } from '@/types/post'
 import { getDisciplineSlug } from '@/lib/discipline'
@@ -79,7 +78,7 @@ export default async function PostPage({ params }: PostPageProps) {
           {/* Badges + contadores + data */}
           <div className="flex items-center gap-3 mb-6 flex-wrap">
             {disciplineSlug && <DisciplineBadge disciplineSlug={disciplineSlug} />}
-            {post.status !== 'PUBLISHED' && <StatusBadge status={post.status} />}
+            <StatusBadge status={post.status} />
             <div className="flex items-center gap-3">
               <span className="flex items-center gap-1 text-[11px] font-mono text-on-surface-variant">
                 <span className="material-symbols-outlined text-outline" style={{ fontSize: 16 }}>forum</span>
@@ -138,7 +137,7 @@ export default async function PostPage({ params }: PostPageProps) {
         </header>
 
         {/* Corpo do artigo */}
-        <div className="text-lg text-on-surface leading-[1.6] space-y-8">
+        <article className="text-lg text-on-surface leading-[1.6] space-y-8">
           {paragraphs.map((paragraph, i) => (
             <p
               key={i}
@@ -147,10 +146,7 @@ export default async function PostPage({ params }: PostPageProps) {
               {paragraph}
             </p>
           ))}
-        </div>
-
-        {/* Ações do post */}
-        <PostActions postId={post.id} readsCount={post.reads_count ?? 0} />
+        </article>
 
         {/* Seção de comentários */}
         <CommentSection postId={post.id} initialCount={post.comments_count ?? 0} />

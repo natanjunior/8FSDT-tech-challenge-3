@@ -42,7 +42,7 @@ export function SearchBar({ size = 'compact' }: SearchBarProps) {
       <div className={`absolute inset-y-2 ${isHero ? 'md:inset-y-3' : 'md:inset-y-3'} right-2 ${isHero ? 'md:right-3' : 'md:right-3'}`}>
         <button
           type="submit"
-          className="bg-secondary text-white px-4 md:px-8 h-full rounded-lg font-bold hover:brightness-110 transition-all text-sm"
+          className={`bg-secondary text-white px-4 ${isHero ? 'md:px-8' : 'md:px-6'} h-full rounded-lg font-bold hover:brightness-110 transition-all text-sm`}
         >
           Buscar
         </button>

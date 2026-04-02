@@ -10,15 +10,6 @@ interface DataTablePaginationProps {
   onPageChange: (event: PageEvent) => void
 }
 
-function getPages(currentPage: number, totalPages: number): (number | '...')[] {
-  if (totalPages <= 5) return Array.from({ length: totalPages }, (_, i) => i + 1)
-  if (currentPage <= 3) return [1, 2, 3, 4, '...', totalPages]
-  if (currentPage >= totalPages - 2) {
-    return [1, '...', totalPages - 3, totalPages - 2, totalPages - 1, totalPages]
-  }
-  return [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages]
-}
-
 export function DataTablePagination({
   currentPage,
   totalPages,
@@ -26,11 +17,11 @@ export function DataTablePagination({
   total,
   onPageChange,
 }: DataTablePaginationProps) {
-  const pages = getPages(currentPage, totalPages)
+  const pages = buildPageList(currentPage, totalPages)
 
   return (
     <div className="px-6 py-4 border-t border-surface-container-high flex items-center justify-between gap-4 flex-wrap">
-      {/* pageSize select */}
+      {/* Left: rows per page + total */}
       <div className="flex items-center gap-2 text-sm text-on-surface-variant">
         <span>Exibir</span>
         <select
@@ -42,48 +33,63 @@ export function DataTablePagination({
             <option key={n} value={n}>{n}</option>
           ))}
         </select>
-        <span>por página · <strong className="text-on-surface">{total}</strong> registros</span>
+        <span>
+          por página · <strong className="text-on-surface">{total}</strong> registros
+        </span>
       </div>
 
-      {/* Page buttons */}
+      {/* Right: pagination buttons */}
       <div className="flex items-center gap-1">
         <button
           onClick={() => onPageChange({ page: currentPage - 1, pageSize })}
           disabled={currentPage === 1}
-          className={`w-9 h-9 flex items-center justify-center rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors text-primary${currentPage === 1 ? ' opacity-40 cursor-not-allowed' : ''}`}
-          aria-label="Página anterior"
+          className="w-9 h-9 flex items-center justify-center rounded-xl bg-surface-container hover:bg-surface-container-high text-primary transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
         >
           <span className="material-symbols-outlined text-base">chevron_left</span>
         </button>
 
-        {pages.map((page, i) =>
-          page === '...' ? (
-            <span key={`ellipsis-${i}`} className="w-9 h-9 flex items-center justify-center">…</span>
+        {pages.map((p, i) =>
+          p === '...' ? (
+            <span key={`ellipsis-${i}`} className="w-9 h-9 flex items-center justify-center text-on-surface-variant text-sm">
+              …
+            </span>
           ) : (
             <button
-              key={page}
-              onClick={() => onPageChange({ page: page as number, pageSize })}
-              aria-current={page === currentPage ? 'page' : undefined}
-              className={`w-9 h-9 flex items-center justify-center rounded-xl font-bold text-sm transition-colors${
-                page === currentPage
-                  ? ' bg-primary text-white'
-                  : ' bg-surface-container-lowest hover:bg-surface-container-high border border-outline-variant/20 text-primary'
+              key={p}
+              onClick={() => onPageChange({ page: p as number, pageSize })}
+              className={`w-9 h-9 flex items-center justify-center rounded-xl text-sm font-bold transition-colors ${
+                p === currentPage
+                  ? 'bg-primary text-white font-bold'
+                  : 'bg-surface-container-lowest border border-outline-variant/20 text-primary hover:bg-surface-container-high'
               }`}
             >
-              {page}
+              {p}
             </button>
           )
         )}
 
         <button
           onClick={() => onPageChange({ page: currentPage + 1, pageSize })}
-          disabled={currentPage === totalPages}
-          className={`w-9 h-9 flex items-center justify-center rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors text-primary${currentPage === totalPages ? ' opacity-40 cursor-not-allowed' : ''}`}
-          aria-label="Próxima página"
+          disabled={currentPage === totalPages || totalPages === 0}
+          className="w-9 h-9 flex items-center justify-center rounded-xl bg-surface-container hover:bg-surface-container-high text-primary transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
         >
           <span className="material-symbols-outlined text-base">chevron_right</span>
         </button>
       </div>
     </div>
   )
+}
+
+function buildPageList(current: number, total: number): (number | '...')[] {
+  if (total <= 7) {
+    return Array.from({ length: total }, (_, i) => i + 1)
+  }
+  const pages: (number | '...')[] = [1]
+  if (current > 3) pages.push('...')
+  for (let p = Math.max(2, current - 1); p <= Math.min(total - 1, current + 1); p++) {
+    pages.push(p)
+  }
+  if (current < total - 2) pages.push('...')
+  pages.push(total)
+  return pages
 }
