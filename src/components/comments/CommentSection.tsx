@@ -19,6 +19,7 @@ export function CommentSection({ postId, initialCount = 0 }: CommentSectionProps
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [commentsDisabled, setCommentsDisabled] = useState(false)
 
   const loadPage = useCallback(
     async (page: number, append = false) => {
@@ -30,8 +31,15 @@ export function CommentSection({ postId, initialCount = 0 }: CommentSectionProps
           totalPages: res.pagination.totalPages,
           total: res.pagination.total,
         })
-      } catch {
-        setError('Não foi possível carregar os comentários.')
+      } catch (err: unknown) {
+        const status = (err as { response?: { status?: number } })?.response?.status
+        if (status === 404 || status === 401) {
+          // Endpoint doesn't exist or requires auth — degrade silently
+          setComments([])
+          setCommentsDisabled(true)
+        } else {
+          setError('Não foi possível carregar os comentários.')
+        }
       }
     },
     [postId],
@@ -49,13 +57,19 @@ export function CommentSection({ postId, initialCount = 0 }: CommentSectionProps
   }
 
   async function handleSubmit(data: CommentPayload) {
+    if (commentsDisabled) return
     setIsSubmitting(true)
     try {
       await createComment(postId, data)
       // Refetch da primeira página após criar comentário
       await loadPage(1)
-    } catch {
-      setError('Não foi possível enviar o comentário.')
+    } catch (err: unknown) {
+      const status = (err as { response?: { status?: number } })?.response?.status
+      if (status === 404 || status === 401) {
+        setCommentsDisabled(true)
+      } else {
+        setError('Não foi possível enviar o comentário.')
+      }
     } finally {
       setIsSubmitting(false)
     }
@@ -74,50 +88,58 @@ export function CommentSection({ postId, initialCount = 0 }: CommentSectionProps
   return (
     <section id="comments" className="mt-12 pt-8 border-t border-surface-container-low">
       <h2 className="text-xl font-bold text-on-surface mb-6">
-        Comentários ({pagination.total})
+        Comentários ({commentsDisabled ? '—' : pagination.total})
       </h2>
 
-      <div className="mb-8">
-        <CommentForm onSubmit={handleSubmit} isSubmitting={isSubmitting} />
-      </div>
-
-      {error && (
-        <p className="text-error text-sm mb-4 flex items-center gap-2">
-          <span className="material-symbols-outlined text-base" aria-hidden="true">error</span>
-          {error}
+      {commentsDisabled ? (
+        <p className="text-on-surface-variant text-sm py-4">
+          Comentários não disponíveis no momento.
         </p>
-      )}
-
-      {isLoading ? (
-        <div className="flex justify-center py-8">
-          <Spinner />
-        </div>
       ) : (
-        <div className="space-y-6">
-          {comments.length === 0 ? (
-            <p className="text-on-surface-variant text-sm text-center py-8">
-              Nenhum comentário ainda. Seja o primeiro a comentar!
+        <>
+          <div className="mb-8">
+            <CommentForm onSubmit={handleSubmit} isSubmitting={isSubmitting} />
+          </div>
+
+          {error && (
+            <p className="text-error text-sm mb-4 flex items-center gap-2">
+              <span className="material-symbols-outlined text-base" aria-hidden="true">error</span>
+              {error}
             </p>
-          ) : (
-            comments.map((comment) => (
-              <CommentItem key={comment.id} comment={comment} onDelete={handleDelete} />
-            ))
           )}
 
-          {pagination.page < pagination.totalPages && (
-            <div className="flex justify-center pt-4">
-              <button
-                type="button"
-                onClick={handleLoadMore}
-                disabled={isLoadingMore}
-                className="text-secondary font-semibold text-sm hover:underline disabled:opacity-50 flex items-center gap-2"
-              >
-                {isLoadingMore && <Spinner size="sm" />}
-                Carregar mais comentários
-              </button>
+          {isLoading ? (
+            <div className="flex justify-center py-8">
+              <Spinner />
+            </div>
+          ) : (
+            <div className="space-y-6">
+              {comments.length === 0 ? (
+                <p className="text-on-surface-variant text-sm text-center py-8">
+                  Nenhum comentário ainda. Seja o primeiro a comentar!
+                </p>
+              ) : (
+                comments.map((comment) => (
+                  <CommentItem key={comment.id} comment={comment} onDelete={handleDelete} />
+                ))
+              )}
+
+              {pagination.page < pagination.totalPages && (
+                <div className="flex justify-center pt-4">
+                  <button
+                    type="button"
+                    onClick={handleLoadMore}
+                    disabled={isLoadingMore}
+                    className="text-secondary font-semibold text-sm hover:underline disabled:opacity-50 flex items-center gap-2"
+                  >
+                    {isLoadingMore && <Spinner size="sm" />}
+                    Carregar mais comentários
+                  </button>
+                </div>
+              )}
             </div>
           )}
-        </div>
+        </>
       )}
     </section>
   )
