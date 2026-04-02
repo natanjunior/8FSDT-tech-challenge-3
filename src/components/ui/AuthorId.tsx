@@ -3,6 +3,7 @@ interface AuthorIdProps {
   name: string
   initials?: string
   subtitle?: string // ex: 'Matemática', 'Professor · Matemática'
+  date?: string // ex: '15 de janeiro de 2024' — only rendered for size="lg"
   size?: 'sm' | 'md' | 'lg' // sm=36px (header/sidebar), md=40px (PostCard), lg=48px (article footer)
   colorClass?: string // ex: 'bg-emerald-100 border-emerald-200 text-emerald-700'
 }
@@ -30,7 +31,7 @@ function getColorByName(name: string): string {
   return COLORS[hash % COLORS.length]
 }
 
-export function AuthorId({ name, initials, subtitle, size = 'md', colorClass }: AuthorIdProps) {
+export function AuthorId({ name, initials, subtitle, date, size = 'md', colorClass }: AuthorIdProps) {
   const displayInitials = initials ?? getInitials(name)
   const color = colorClass ?? getColorByName(name)
 
@@ -59,6 +60,7 @@ export function AuthorId({ name, initials, subtitle, size = 'md', colorClass }: 
         <div>
           <p className="font-bold text-primary">{name}</p>
           {subtitle && <p className="text-xs text-on-surface-variant">{subtitle}</p>}
+          {date && <p className="text-xs text-outline font-mono mt-0.5">{date}</p>}
         </div>
       </div>
     )
