@@ -27,10 +27,10 @@ export function StatusBadge({ status }: { status: PostStatus }) {
 
 const DISCIPLINE_CONFIG: Record<string, { label: string; bgColor: string }> = {
   matematica: { label: 'Matemática', bgColor: 'bg-blue-600' },
-  portugues:  { label: 'Português',  bgColor: 'bg-amber-600' },
+  portugues:  { label: 'Português',  bgColor: 'bg-rose-600' },
   ciencias:   { label: 'Ciências',   bgColor: 'bg-emerald-600' },
-  historia:   { label: 'História',   bgColor: 'bg-rose-600' },
-  geografia:  { label: 'Geografia',  bgColor: 'bg-teal-600' },
+  historia:   { label: 'História',   bgColor: 'bg-amber-600' },
+  geografia:  { label: 'Geografia',  bgColor: 'bg-indigo-600' },
 }
 
 export function DisciplineBadge({ disciplineSlug }: { disciplineSlug: string | null | undefined }) {
@@ -38,7 +38,7 @@ export function DisciplineBadge({ disciplineSlug }: { disciplineSlug: string | n
   const config = DISCIPLINE_CONFIG[disciplineSlug]
   if (!config) return null
   return (
-    <span className={`${config.bgColor} text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full`}>
+    <span className={`${config.bgColor} text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full shadow-lg`}>
       {config.label}
     </span>
   )
