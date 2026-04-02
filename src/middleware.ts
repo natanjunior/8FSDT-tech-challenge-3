@@ -3,7 +3,6 @@ import jwt from 'jsonwebtoken'
 
 export function middleware(request: NextRequest) {
   const token = request.cookies.get('auth_token')?.value
-  const userBase64 = request.cookies.get('auth_user')?.value
   const { pathname } = request.nextUrl
 
   // Só protege rotas /admin/*
@@ -12,19 +11,21 @@ export function middleware(request: NextRequest) {
   }
 
   // Sem cookie → redirect para login
-  if (!token || !userBase64) {
+  if (!token) {
     const loginUrl = new URL('/login', request.url)
     loginUrl.searchParams.set('redirect', pathname)
     return NextResponse.redirect(loginUrl)
   }
 
   try {
-    jwt.verify(token, process.env.JWT_SECRET!)
-
-    const user = JSON.parse(Buffer.from(userBase64, 'base64').toString('utf-8'))
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
+      id: string
+      role: string
+      sessionId?: string
+    }
 
     // STUDENT tentando acessar admin → redirect para home
-    if (user.role !== 'TEACHER') {
+    if (decoded.role !== 'TEACHER') {
       return NextResponse.redirect(new URL('/', request.url))
     }
 
