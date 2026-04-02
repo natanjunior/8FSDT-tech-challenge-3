@@ -2,6 +2,7 @@ import { cookies } from 'next/headers'
 import { notFound, redirect } from 'next/navigation'
 import { PublicLayout } from '@/components/layout/PublicLayout'
 import { CommentSection } from '@/components/comments/CommentSection'
+import { PostActions } from '@/components/posts/PostActions'
 import { DisciplineBadge, StatusBadge } from '@/components/ui/Badge'
 import type { Post } from '@/types/post'
 import { getDisciplineSlug } from '@/lib/discipline'
@@ -147,6 +148,9 @@ export default async function PostPage({ params }: PostPageProps) {
             </p>
           ))}
         </div>
+
+        {/* Ações do post */}
+        <PostActions postId={post.id} readsCount={post.reads_count ?? 0} />
 
         {/* Seção de comentários */}
         <CommentSection postId={post.id} initialCount={post.comments_count ?? 0} />
