@@ -60,7 +60,7 @@ export default async function PostsPage({ searchParams }: PostsPageProps) {
     <PublicLayout activeDiscipline={discipline}>
       {/* Search input + resultado */}
       <div className="mb-6 md:mb-10">
-        <div className="relative max-w-2xl mb-3 md:mb-4">
+        <div className="max-w-2xl mb-3 md:mb-4">
           <SearchBar />
         </div>
         {q && (
@@ -73,8 +73,7 @@ export default async function PostsPage({ searchParams }: PostsPageProps) {
           <div className="flex items-center gap-3">
             <DisciplineBadge disciplineSlug={discipline} />
             <p className="text-sm text-on-surface-variant">
-              <span className="font-bold text-on-surface">{pagination.total} posts</span> em{' '}
-              <span className="font-bold text-secondary">{DISCIPLINE_NAMES[discipline]}</span>
+              <span className="font-bold text-on-surface">{pagination.total} posts</span> nesta disciplina
             </p>
           </div>
         )}
