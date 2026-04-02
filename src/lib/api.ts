@@ -37,7 +37,14 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401 && typeof window !== 'undefined') {
+    // Only redirect to /login if the user WAS authenticated (cookie present)
+    // Anonymous visitors receiving 401 should NOT be redirected
+    if (
+      error.response?.status === 401 &&
+      typeof window !== 'undefined' &&
+      typeof document !== 'undefined' &&
+      document.cookie.includes('auth_token')
+    ) {
       setAuthToken(null)
       window.location.href = '/login'
     }
