@@ -51,7 +51,7 @@ export function PostCard({ post }: { post: Post }) {
   const disciplineSlug = post.discipline ? getDisciplineSlug(post.discipline.label) : undefined
 
   return (
-    <Link href={`/posts/${post.id}`} className="group block">
+    <Link href={`/posts/${post.id}`} className="block">
       <article className="group bg-surface-container-lowest rounded-xl p-8 editorial-shadow flex flex-col h-full relative border border-outline-variant/10">
         {/* Discipline badge — floating above card */}
         {disciplineSlug && (
