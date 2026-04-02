@@ -84,7 +84,7 @@ export default function AdminPage() {
 
   useEffect(() => { loadStats() }, [loadStats])
 
-  useEffect(() => { loadPosts(1) }, [filterQ, filterDiscipline, filterStatus, sortKey, sortDir])
+  useEffect(() => { loadPosts(1) }, [filterQ, filterDiscipline, filterStatus, sortKey, sortDir, loadPosts])
 
   function handleSort(col: string) {
     if (sortKey === col) {
