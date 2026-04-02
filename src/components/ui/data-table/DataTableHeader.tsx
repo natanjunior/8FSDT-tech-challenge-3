@@ -11,32 +11,34 @@ interface DataTableHeaderProps<T> {
 export function DataTableHeader<T>({ columns, sortState, onSort }: DataTableHeaderProps<T>) {
   return (
     <thead>
-      <tr className="border-b border-surface-container-low">
+      <tr className="bg-surface-container-low/30 border-b border-surface-container-high">
         {columns.map((col, i) => {
           const isSortable = !!col.sortKey
           const isActive = sortState?.sortKey === col.sortKey
-          const nextToCol = columns[i + 1]
-          const hasPipe = col.mergedInto === undefined && nextToCol?.mergedInto !== undefined
+          const isGhost = col.mergedInto !== undefined
+          const prevCol = i > 0 ? columns[i - 1] : undefined
+          const isGhostWithPipe = isGhost && prevCol?.mergedInto === undefined
 
           return (
             <th
               key={String(col.key)}
-              className={`px-4 py-3 text-left text-xs font-semibold text-on-surface-variant
-                ${isSortable ? 'cursor-pointer hover:text-secondary select-none' : ''}
+              className={`px-6 py-4 text-xs font-black uppercase tracking-widest text-on-surface-variant
+                ${isSortable ? 'cursor-pointer select-none transition-colors' : ''}
+                ${isGhost ? 'pl-0 pr-6' : ''}
                 ${col.align === 'center' ? 'text-center' : ''}
                 ${col.align === 'right' ? 'text-right' : ''}
               `}
               onClick={isSortable ? () => onSort(col.sortKey!) : undefined}
             >
-              <span className="flex items-center gap-1">
-                {col.label}
-                {hasPipe && (
-                  <span className="text-on-surface-variant/40 font-light mx-1">|</span>
+              <span className={`flex items-center gap-1${col.align === 'center' ? ' justify-center' : col.align === 'right' ? ' justify-end' : ''}`}>
+                {isGhostWithPipe && (
+                  <span className="text-outline-variant font-light mr-0.5">|</span>
                 )}
+                {col.label}
                 {isSortable && (
                   <span
-                    className={`material-symbols-outlined text-xs transition-opacity
-                      ${isActive ? 'opacity-100 text-on-surface-variant' : 'opacity-0 group-hover:opacity-100'}`}
+                    className={`sort-arrow material-symbols-outlined text-outline-variant transition-opacity${isActive ? '' : ' opacity-0'}`}
+                    style={{ fontSize: 14 }}
                   >
                     {isActive && sortState?.dir === 'desc' ? 'arrow_downward' : 'arrow_upward'}
                   </span>

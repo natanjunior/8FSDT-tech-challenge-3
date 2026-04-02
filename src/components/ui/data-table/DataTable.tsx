@@ -7,9 +7,9 @@ import { DataTablePagination } from './DataTablePagination'
 
 function DefaultEmptyState() {
   return (
-    <div className="flex flex-col items-center justify-center py-12 text-on-surface-variant">
-      <span className="material-symbols-outlined text-4xl mb-2">inbox</span>
-      <p className="text-sm">Nenhum resultado encontrado.</p>
+    <div className="px-6 py-16 flex flex-col items-center gap-3 text-center">
+      <span className="material-symbols-outlined text-on-surface-variant" style={{ fontSize: 40 }}>inbox</span>
+      <p className="text-sm text-on-surface-variant">Nenhum resultado encontrado.</p>
     </div>
   )
 }
@@ -61,41 +61,35 @@ export function DataTable<T extends object>({
   return (
     <div className="bg-surface-container-lowest rounded-xl shadow-xl shadow-sky-950/5 overflow-hidden">
       {/* Card header */}
-      <div className="flex items-center justify-between px-4 py-3 bg-surface-container-low border-b border-surface-container-low">
-        <span className="font-bold text-on-surface">{title}</span>
-        <div className="flex items-center gap-2">
-          {headerActions}
-          {filterSlot && (
-            <button
-              onClick={() => setFilterOpen((v) => !v)}
-              className="p-1 rounded hover:bg-surface transition-colors"
-              aria-label="Filtros"
-            >
-              <span className="material-symbols-outlined text-on-surface-variant text-sm">
-                filter_list
-              </span>
-            </button>
-          )}
-          <button className="p-1 rounded hover:bg-surface transition-colors" aria-label="Mais opções">
-            <span className="material-symbols-outlined text-on-surface-variant text-sm">
-              more_vert
-            </span>
+      <div className="px-6 py-4 bg-surface-container flex items-center gap-2 border-b border-surface-container-high">
+        <h3 className="font-bold text-primary text-sm flex-1">{title}</h3>
+        {headerActions}
+        {filterSlot && (
+          <button
+            onClick={() => setFilterOpen((v) => !v)}
+            className="p-2 hover:bg-surface-container-high rounded-lg text-on-surface-variant transition-colors"
+            aria-label="Filtros"
+          >
+            <span className="material-symbols-outlined text-base">filter_list</span>
           </button>
-        </div>
+        )}
+        <button className="p-2 hover:bg-surface-container-high rounded-lg text-on-surface-variant transition-colors" aria-label="Mais opções">
+          <span className="material-symbols-outlined text-base">more_vert</span>
+        </button>
       </div>
 
       {/* Filter slot */}
       {filterSlot && filterOpen && (
-        <div className="px-4 py-3 border-b border-surface-container-low bg-surface-container-low/50">
+        <div className="px-6 py-4 bg-surface-container-low/60 border-b border-surface-container-high flex flex-wrap gap-3">
           {filterSlot}
         </div>
       )}
 
       {/* Table */}
       <div className="overflow-x-auto">
-        <table className="w-full">
+        <table className="w-full text-left border-collapse">
           <DataTableHeader columns={columns} sortState={sortState} onSort={handleSort} />
-          <tbody>
+          <tbody className="divide-y divide-surface-container-low">
             {rows.length === 0 ? (
               <tr>
                 <td colSpan={bodyColumns.length}>
@@ -106,7 +100,7 @@ export function DataTable<T extends object>({
               rows.map((row, rowIdx) => (
                 <tr
                   key={rowIdx}
-                  className="group border-b border-surface-container-low/50 hover:bg-surface-container-low/40 transition-colors"
+                  className="group hover:bg-surface-container-low/30 transition-colors"
                 >
                   {bodyColumns.map((col) => {
                     const colspan = col.mergedWith ? 2 : 1
@@ -117,7 +111,7 @@ export function DataTable<T extends object>({
                       <td
                         key={String(col.key)}
                         colSpan={colspan}
-                        className={`px-4 py-3 text-sm
+                        className={`px-6 py-4
                           ${col.align === 'center' ? 'text-center' : ''}
                           ${col.align === 'right' ? 'text-right' : ''}
                         `}
