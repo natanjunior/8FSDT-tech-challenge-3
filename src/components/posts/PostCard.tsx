@@ -44,11 +44,18 @@ function getExcerpt(content: string, maxLength = 160): string {
   return text.length > maxLength ? text.slice(0, maxLength) + '…' : text
 }
 
-export function PostCard({ post }: { post: Post }) {
+interface PostCardProps {
+  post: Post
+  size?: 'default' | 'large'
+}
+
+export function PostCard({ post, size = 'default' }: PostCardProps) {
   const statusConfig = STATUS_INLINE[post.status] ?? STATUS_INLINE.PUBLISHED
   const authorColor = getColorByName(post.author.name)
   const authorInitials = getInitials(post.author.name)
   const disciplineSlug = post.discipline ? getDisciplineSlug(post.discipline.label) : undefined
+
+  const isLarge = size === 'large'
 
   return (
     <Link href={`/posts/${post.id}`} className="block">
@@ -59,7 +66,7 @@ export function PostCard({ post }: { post: Post }) {
         </div>
 
         {/* Top — status + date */}
-        <div className="flex justify-between items-start mb-4 pt-2">
+        <div className={`flex justify-between items-start pt-2 ${isLarge ? 'mb-6' : 'mb-4'}`}>
           <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${statusConfig.classes}`}>
             {statusConfig.label}
           </span>
@@ -69,19 +76,19 @@ export function PostCard({ post }: { post: Post }) {
         </div>
 
         {/* Title */}
-        <h3 className="text-xl font-extrabold text-primary leading-tight mb-3 line-clamp-3 group-hover:text-secondary transition-colors cursor-pointer">
+        <h3 className={`font-extrabold text-primary leading-tight group-hover:text-secondary transition-colors cursor-pointer ${isLarge ? 'text-2xl mb-6' : 'text-xl mb-3 line-clamp-3'}`}>
           {post.title}
         </h3>
 
         {/* Excerpt */}
-        <p className="text-on-surface-variant leading-relaxed text-sm mb-6 line-clamp-3">
+        <p className={`text-on-surface-variant leading-relaxed text-sm ${isLarge ? 'mb-8 line-clamp-2' : 'mb-6 line-clamp-3'}`}>
           {getExcerpt(post.content)}
         </p>
 
         {/* Footer */}
-        <div className="mt-auto flex items-center justify-between border-t border-outline-variant/10 pt-5">
+        <div className={`mt-auto flex items-center justify-between border-t border-outline-variant/10 ${isLarge ? 'pt-6' : 'pt-5'}`}>
           {/* Author */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center space-x-3">
             <div className={`w-10 h-10 ${authorColor} border-2 rounded-full flex items-center justify-center text-xs font-black shrink-0`}>
               {authorInitials}
             </div>

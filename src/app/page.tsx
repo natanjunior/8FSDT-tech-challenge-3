@@ -25,7 +25,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   const { data: posts, pagination } = await fetchPosts(page)
 
   return (
-    <PublicLayout wide>
+    <PublicLayout noSidebar>
       {/* Hero Search */}
       <section className="mb-12 md:mb-20">
         <div className="max-w-4xl mx-auto text-center mb-6 md:mb-12">
@@ -42,7 +42,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
       </section>
 
       {/* Post Grid */}
-      <PostList posts={posts} pagination={pagination} basePath="/" />
+      <PostList posts={posts} pagination={pagination} basePath="/" size="large" />
     </PublicLayout>
   )
 }
