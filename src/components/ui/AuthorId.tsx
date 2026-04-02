@@ -2,6 +2,7 @@
 interface AuthorIdProps {
   name: string
   initials?: string
+  subtitle?: string // ex: 'Matemática', 'Professor · Matemática'
   size?: 'normal' | 'mini'
   colorClass?: string // ex: 'bg-emerald-100 border-emerald-200 text-emerald-700'
 }
@@ -29,7 +30,7 @@ function getColorByName(name: string): string {
   return COLORS[hash % COLORS.length]
 }
 
-export function AuthorId({ name, initials, size = 'normal', colorClass }: AuthorIdProps) {
+export function AuthorId({ name, initials, subtitle, size = 'normal', colorClass }: AuthorIdProps) {
   const displayInitials = initials ?? getInitials(name)
   const color = colorClass ?? getColorByName(name)
 
@@ -46,11 +47,12 @@ export function AuthorId({ name, initials, size = 'normal', colorClass }: Author
 
   return (
     <div className="flex items-center gap-3">
-      <div className={`w-10 h-10 rounded-full ${color} border-2 flex items-center justify-center text-sm font-black shrink-0`}>
+      <div className={`w-10 h-10 rounded-full ${color} border-2 flex items-center justify-center text-xs font-black shrink-0`}>
         {displayInitials}
       </div>
       <div>
         <p className="text-sm font-bold text-primary leading-tight">{name}</p>
+        {subtitle && <p className="text-[10px] text-outline">{subtitle}</p>}
       </div>
     </div>
   )
