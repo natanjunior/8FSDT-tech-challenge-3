@@ -52,7 +52,6 @@ export function CommentSection({ postId, initialCount = 0 }: CommentSectionProps
     setIsSubmitting(true)
     try {
       await createComment(postId, data)
-      // Refetch da primeira página após criar comentário
       await loadPage(1)
     } catch {
       setError('Não foi possível enviar o comentário.')
@@ -64,7 +63,6 @@ export function CommentSection({ postId, initialCount = 0 }: CommentSectionProps
   async function handleDelete(commentId: string) {
     try {
       await deleteComment(postId, commentId)
-      // Refetch da primeira página após deletar
       await loadPage(1)
     } catch {
       setError('Não foi possível excluir o comentário.')
@@ -72,53 +70,69 @@ export function CommentSection({ postId, initialCount = 0 }: CommentSectionProps
   }
 
   return (
-    <section id="comments" className="mt-12 pt-8 border-t border-surface-container-low">
-      <h2 className="text-xl font-bold text-on-surface mb-6">
-        Comentários ({pagination.total})
-      </h2>
+    <section className="mt-16">
+      <div className="bg-surface-container-lowest rounded-xl shadow-xl shadow-sky-950/5 overflow-hidden">
 
-      <div className="mb-8">
-        <CommentForm onSubmit={handleSubmit} isSubmitting={isSubmitting} />
-      </div>
-
-      {error && (
-        <p className="text-error text-sm mb-4 flex items-center gap-2">
-          <span className="material-symbols-outlined text-base" aria-hidden="true">error</span>
-          {error}
-        </p>
-      )}
-
-      {isLoading ? (
-        <div className="flex justify-center py-8">
-          <Spinner />
+        {/* Card header */}
+        <div className="px-6 py-4 bg-surface-container flex items-center border-b border-surface-container-high">
+          <h3 className="font-bold text-primary flex items-center gap-2 text-sm">
+            <span className="material-symbols-outlined text-primary/60 text-base">forum</span>
+            Comentários
+          </h3>
+          <span className="ml-auto text-xs font-mono text-on-surface-variant">
+            {pagination.total} {pagination.total === 1 ? 'comentário' : 'comentários'}
+          </span>
         </div>
-      ) : (
-        <div className="space-y-6">
-          {comments.length === 0 ? (
-            <p className="text-on-surface-variant text-sm text-center py-8">
-              Nenhum comentário ainda. Seja o primeiro a comentar!
+
+        <div className="p-6 space-y-6">
+
+          {/* Formulário de novo comentário */}
+          <CommentForm onSubmit={handleSubmit} isSubmitting={isSubmitting} />
+
+          {/* Separador */}
+          <div className="border-t border-surface-container-high" />
+
+          {/* Lista de comentários */}
+          {error && (
+            <p className="text-error text-sm flex items-center gap-2">
+              <span className="material-symbols-outlined text-base" aria-hidden="true">error</span>
+              {error}
             </p>
-          ) : (
-            comments.map((comment) => (
-              <CommentItem key={comment.id} comment={comment} onDelete={handleDelete} />
-            ))
           )}
 
-          {pagination.page < pagination.totalPages && (
-            <div className="flex justify-center pt-4">
-              <button
-                type="button"
-                onClick={handleLoadMore}
-                disabled={isLoadingMore}
-                className="text-secondary font-semibold text-sm hover:underline disabled:opacity-50 flex items-center gap-2"
-              >
-                {isLoadingMore && <Spinner size="sm" />}
-                Carregar mais comentários
-              </button>
+          {isLoading ? (
+            <div className="flex justify-center py-8">
+              <Spinner />
+            </div>
+          ) : (
+            <div className="space-y-6">
+              {comments.length === 0 ? (
+                <p className="text-on-surface-variant text-sm text-center py-8">
+                  Nenhum comentário ainda. Seja o primeiro a comentar!
+                </p>
+              ) : (
+                comments.map((comment) => (
+                  <CommentItem key={comment.id} comment={comment} onDelete={handleDelete} />
+                ))
+              )}
+
+              {pagination.page < pagination.totalPages && (
+                <div className="flex justify-center pt-4">
+                  <button
+                    type="button"
+                    onClick={handleLoadMore}
+                    disabled={isLoadingMore}
+                    className="text-secondary font-semibold text-sm hover:underline disabled:opacity-50 flex items-center gap-2"
+                  >
+                    {isLoadingMore && <Spinner size="sm" />}
+                    Carregar mais comentários
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </div>
-      )}
+      </div>
     </section>
   )
 }

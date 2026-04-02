@@ -4,7 +4,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useAuth } from '@/contexts/AuthContext'
 import { commentSchema } from '@/lib/schemas/comment.schema'
 import type { CommentPayload } from '@/types/comment'
-import { Button } from '@/components/ui/Button'
 
 interface CommentFormProps {
   onSubmit: (data: CommentPayload) => void
@@ -20,10 +19,12 @@ export function CommentForm({ onSubmit, isSubmitting }: CommentFormProps) {
     formState: { errors },
   } = useForm<CommentPayload>({
     resolver: zodResolver(commentSchema),
+    defaultValues: {
+      author_name: user?.name ?? '',
+    },
   })
 
   function handleValid(data: CommentPayload) {
-    // author_name vazio → undefined (não enviar ao backend)
     const payload: CommentPayload = {
       content: data.content,
       author_name: data.author_name?.trim() || undefined,
@@ -32,54 +33,45 @@ export function CommentForm({ onSubmit, isSubmitting }: CommentFormProps) {
     reset()
   }
 
-  // Suppress unused variable warning — user available for future TEACHER UI
-  void user
-
   return (
-    <form onSubmit={handleSubmit(handleValid)} className="flex gap-4">
+    <form onSubmit={handleSubmit(handleValid)} className="flex gap-4 items-start">
       {/* Avatar */}
-      <div className="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center shrink-0">
-        <span className="material-symbols-outlined text-secondary text-xl" aria-hidden="true">
-          person
-        </span>
+      <div className="w-10 h-10 rounded-full bg-emerald-100 border-2 border-emerald-200 flex items-center justify-center text-emerald-700 shrink-0">
+        <span className="material-symbols-outlined" style={{ fontSize: 20 }}>person</span>
       </div>
 
+      {/* Formulário */}
       <div className="flex-1 space-y-3">
-        {/* Campo nome (opcional) */}
         <input
           {...register('author_name')}
           type="text"
-          placeholder="Seu nome (opcional)"
+          placeholder="Seu nome (deixe em branco para comentar como anônimo)"
           disabled={isSubmitting}
-          className="w-full px-4 py-2 rounded-xl bg-surface-container-low text-on-surface text-sm placeholder:text-on-surface-variant focus:outline-none focus:ring-2 focus:ring-secondary/30 disabled:opacity-50"
+          className="w-full bg-surface-container-low border-none rounded-xl px-4 py-2.5 text-sm text-on-surface focus:ring-2 focus:ring-primary/20 outline-none placeholder:text-on-surface-variant/60 disabled:opacity-50"
         />
 
-        {/* Campo comentário */}
-        <div>
-          <textarea
-            {...register('content')}
-            rows={3}
-            placeholder="Escreva seu comentário..."
-            disabled={isSubmitting}
-            className="w-full px-4 py-3 rounded-xl bg-surface-container-low text-on-surface text-sm placeholder:text-on-surface-variant focus:outline-none focus:ring-2 focus:ring-secondary/30 resize-none disabled:opacity-50"
-          />
-          {errors.content && (
-            <p className="text-error text-xs mt-1 flex items-center gap-1">
-              <span className="material-symbols-outlined text-sm" aria-hidden="true">error</span>
-              {errors.content.message ?? 'Conteúdo é obrigatório'}
-            </p>
-          )}
-        </div>
+        <textarea
+          {...register('content')}
+          placeholder="Escreva seu comentário..."
+          disabled={isSubmitting}
+          className="w-full bg-surface-container-low border-none rounded-xl px-4 py-3 text-sm text-on-surface focus:ring-2 focus:ring-primary/20 outline-none placeholder:text-on-surface-variant/60 resize-none min-h-[100px] disabled:opacity-50"
+        />
+        {errors.content && (
+          <p className="text-error text-xs flex items-center gap-1">
+            <span className="material-symbols-outlined text-sm" aria-hidden="true">error</span>
+            {errors.content.message ?? 'Conteúdo é obrigatório'}
+          </p>
+        )}
 
         <div className="flex justify-end">
-          <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting && (
-              <span className="material-symbols-outlined text-sm animate-spin mr-1" aria-hidden="true">
-                progress_activity
-              </span>
-            )}
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-secondary to-on-secondary-container text-white text-sm font-bold rounded-xl hover:opacity-90 transition-all active:scale-95 shadow-lg shadow-secondary/20 disabled:opacity-50"
+          >
+            <span className="material-symbols-outlined text-sm">send</span>
             Comentar
-          </Button>
+          </button>
         </div>
       </div>
     </form>
