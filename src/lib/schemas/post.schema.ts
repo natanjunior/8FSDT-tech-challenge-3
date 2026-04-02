@@ -5,7 +5,11 @@ export const postSchema = z.object({
   subtitle: z.string().max(300).optional(),
   content: z.string().min(10, 'Conteúdo deve ter no mínimo 10 caracteres'),
   status: z.enum(['DRAFT', 'PUBLISHED', 'ARCHIVED'], { error: 'Status é obrigatório' }),
-  discipline_id: z.string().uuid().optional().or(z.literal('')),
+  discipline_id: z
+    .string()
+    .optional()
+    .transform((v) => (v === '' || v === undefined ? undefined : v)),
 })
 
-export type PostFormData = z.infer<typeof postSchema>
+export type PostFormInput = z.input<typeof postSchema>
+export type PostFormData = z.output<typeof postSchema>

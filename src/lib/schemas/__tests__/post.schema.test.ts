@@ -41,8 +41,41 @@ describe('postSchema', () => {
     expect(result.success).toBe(false)
   })
 
-  it('accepts empty string discipline_id', () => {
-    const result = postSchema.safeParse({ ...valid, discipline_id: '' })
+  it('transforms empty discipline_id to undefined', () => {
+    const result = postSchema.safeParse({
+      title: 'Tests',
+      content: 'Content with enough chars to pass validation',
+      status: 'DRAFT',
+      discipline_id: '',
+    })
     expect(result.success).toBe(true)
+    if (result.success) {
+      expect(result.data.discipline_id).toBeUndefined()
+    }
+  })
+
+  it('accepts valid UUID for discipline_id', () => {
+    const result = postSchema.safeParse({
+      title: 'Tests',
+      content: 'Content with enough chars to pass validation',
+      status: 'DRAFT',
+      discipline_id: '123e4567-e89b-12d3-a456-426614174000',
+    })
+    expect(result.success).toBe(true)
+    if (result.success) {
+      expect(result.data.discipline_id).toBe('123e4567-e89b-12d3-a456-426614174000')
+    }
+  })
+
+  it('accepts undefined discipline_id', () => {
+    const result = postSchema.safeParse({
+      title: 'Tests',
+      content: 'Content with enough chars to pass validation',
+      status: 'DRAFT',
+    })
+    expect(result.success).toBe(true)
+    if (result.success) {
+      expect(result.data.discipline_id).toBeUndefined()
+    }
   })
 })

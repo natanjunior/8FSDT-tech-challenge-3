@@ -3,7 +3,7 @@
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { postSchema, PostFormData } from '@/lib/schemas/post.schema'
+import { postSchema, PostFormData, PostFormInput } from '@/lib/schemas/post.schema'
 import { useAuth } from '@/contexts/AuthContext'
 
 const DISCIPLINE_OPTIONS = [
@@ -19,7 +19,7 @@ interface PostFormProps {
   onSubmit: (data: PostFormData) => Promise<void>
   onCancel: () => void
   submitLabel: string
-  defaultValues?: Partial<PostFormData>
+  defaultValues?: Partial<PostFormInput>
   isSubmitting?: boolean
   onDirtyChange?: (dirty: boolean) => void
 }
@@ -32,7 +32,7 @@ export default function PostForm({ onSubmit, onCancel, submitLabel, defaultValue
     handleSubmit,
     watch,
     formState: { errors, isDirty: formIsDirty },
-  } = useForm<PostFormData>({
+  } = useForm<PostFormInput, unknown, PostFormData>({
     resolver: zodResolver(postSchema),
     defaultValues: {
       title: '',
