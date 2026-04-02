@@ -99,11 +99,11 @@ export function PostCard({ post }: { post: Post }) {
           <div className="flex items-center gap-3">
             <span className="flex items-center gap-1 text-[11px] font-mono text-on-surface-variant">
               <span className="material-symbols-outlined text-outline" style={{ fontSize: 16 }}>forum</span>
-              {post.comments_count}
+              {post.comments_count ?? 0}
             </span>
             <span className="flex items-center gap-1 text-[11px] font-mono text-on-surface-variant">
               <span className="material-symbols-outlined text-outline" style={{ fontSize: 16 }}>bookmark</span>
-              {post.reads_count}
+              {post.reads_count ?? 0}
             </span>
           </div>
         </div>

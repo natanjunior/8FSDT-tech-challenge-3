@@ -122,7 +122,7 @@ export default function AdminPage() {
   }
 
   const total = pagination.total
-  const reads = posts.reduce((sum, p) => sum + p.reads_count, 0)
+  const reads = posts.reduce((sum, p) => sum + (p.reads_count ?? 0), 0)
 
   return (
     <div className="px-8 lg:px-16 py-12">
@@ -342,10 +342,10 @@ export default function AdminPage() {
                     <span className="text-sm font-mono text-on-surface-variant">{formatDate(post.updated_at)}</span>
                   </td>
                   <td className="px-6 py-4 text-center">
-                    <span className="text-sm font-mono text-on-surface-variant">{post.comments_count}</span>
+                    <span className="text-sm font-mono text-on-surface-variant">{post.comments_count ?? 0}</span>
                   </td>
                   <td className="px-6 py-4 text-center">
-                    <span className="text-sm font-mono text-on-surface-variant">{post.reads_count}</span>
+                    <span className="text-sm font-mono text-on-surface-variant">{post.reads_count ?? 0}</span>
                   </td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">

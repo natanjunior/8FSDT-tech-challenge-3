@@ -18,8 +18,8 @@ export interface Post {
   author: User
   subtitle?: string
   discipline: Discipline | null
-  comments_count: number
-  reads_count: number
+  comments_count?: number
+  reads_count?: number
 }
 
 export interface PostPayload {
