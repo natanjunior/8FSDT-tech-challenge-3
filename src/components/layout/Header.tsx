@@ -82,7 +82,7 @@ export function Header({ activeDiscipline }: HeaderProps) {
                   <p className="text-sm font-bold text-primary leading-none">{user.name}</p>
                   <p className="text-[10px] text-outline leading-none mt-0.5">{user.role === 'TEACHER' ? 'Professor' : 'Aluno'}</p>
                 </div>
-                <span className="material-symbols-outlined text-outline text-base">
+                <span className={`material-symbols-outlined text-base ${menuOpen ? 'text-primary' : 'text-outline'}`}>
                   {menuOpen ? 'expand_less' : 'expand_more'}
                 </span>
               </button>
