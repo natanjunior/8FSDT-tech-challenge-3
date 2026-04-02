@@ -3,11 +3,14 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useSearchParams } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
 import { loginSchema, LoginFormData } from '@/lib/schemas/login.schema'
 
 export default function LoginPage() {
   const { login } = useAuth()
+  const searchParams = useSearchParams()
+  const redirectTo = searchParams.get('redirect') ?? undefined
   const [serverError, setServerError] = useState<string | null>(null)
 
   const {
@@ -21,7 +24,7 @@ export default function LoginPage() {
   async function onSubmit(data: LoginFormData) {
     setServerError(null)
     try {
-      await login(data.email)
+      await login(data.email, redirectTo)
     } catch (err: unknown) {
       const axiosErr = err as { response?: { status: number } }
       if (axiosErr.response?.status === 404) {

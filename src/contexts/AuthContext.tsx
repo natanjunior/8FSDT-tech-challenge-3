@@ -16,7 +16,7 @@ import { setAuthToken } from '@/lib/api'
 interface AuthContextType {
   user: User | null
   isLoading: boolean
-  login: (email: string) => Promise<void>
+  login: (email: string, redirectTo?: string) => Promise<void>
   logout: () => Promise<void>
 }
 
@@ -44,7 +44,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     rehydrate()
   }, [])
 
-  const login = useCallback(async (email: string) => {
+  const login = useCallback(async (email: string, redirectTo?: string) => {
     const { user, token } = await loginRequest(email)
     // Seta httpOnly cookie via API route interna
     await fetch('/api/auth/set-cookie', {
@@ -54,8 +54,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     })
     setAuthToken(token)
     setUser(user)
-    // Redirect baseado na role
-    router.push(user.role === 'TEACHER' ? '/admin' : '/')
+    // Use redirectTo if provided; fallback to role-based default
+    const destination = redirectTo ?? (user.role === 'TEACHER' ? '/admin' : '/')
+    router.push(destination)
   }, [router])
 
   const logout = useCallback(async () => {
