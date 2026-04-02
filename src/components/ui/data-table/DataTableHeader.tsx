@@ -35,8 +35,9 @@ export function DataTableHeader<T>({ columns, sortState, onSort }: DataTableHead
                 )}
                 {isSortable && (
                   <span
-                    className={`material-symbols-outlined text-xs transition-opacity
-                      ${isActive ? 'opacity-100 text-outline-variant' : 'opacity-0 group-hover:opacity-100'}`}
+                    className={`material-symbols-outlined text-outline-variant transition-opacity
+                      ${isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
+                    style={{ fontSize: '14px' }}
                   >
                     {isActive && sortState?.dir === 'desc' ? 'arrow_downward' : 'arrow_upward'}
                   </span>

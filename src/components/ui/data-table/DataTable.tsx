@@ -93,7 +93,7 @@ export function DataTable<T extends object>({
 
       {/* Table */}
       <div className="overflow-x-auto">
-        <table className="w-full">
+        <table className="w-full text-left border-collapse">
           <DataTableHeader columns={columns} sortState={sortState} onSort={handleSort} />
           <tbody className="divide-y divide-surface-container-low">
             {rows.length === 0 ? (
