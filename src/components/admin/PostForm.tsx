@@ -64,35 +64,27 @@ export default function PostForm({ onSubmit, onCancel, submitLabel, defaultValue
           {/* Título */}
           <div className="space-y-1.5">
             <label className="block text-sm font-bold text-primary" htmlFor="post-title">Título *</label>
-            <input
-              id="post-title"
-              type="text"
-              placeholder="Ex: Introdução às Frações Decimais"
-              {...register('title')}
-              className={`w-full rounded-xl px-4 py-3 text-on-surface placeholder:text-on-surface-variant/60 outline-none transition-all ${
-                errors.title
-                  ? 'bg-error-container/20 border-2 border-error/40 focus:ring-2 focus:ring-error/20'
-                  : 'bg-surface-container-low border border-outline-variant/30 focus:ring-2 focus:ring-primary/20 focus:border-primary'
-              }`}
-            />
+            <div className="relative">
+              <input
+                id="post-title"
+                type="text"
+                placeholder="Ex: Introdução às Frações Decimais"
+                {...register('title')}
+                className={`w-full rounded-xl px-4 py-3 text-on-surface placeholder:text-on-surface-variant/60 outline-none transition-all ${
+                  errors.title
+                    ? 'bg-error-container/20 border-2 border-error/40 focus:ring-2 focus:ring-error/20'
+                    : 'bg-surface-container-low border border-outline-variant/30 focus:ring-2 focus:ring-primary/20 focus:border-primary'
+                }`}
+              />
+              {errors.title && (
+                <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-error text-lg">error</span>
+              )}
+            </div>
             {errors.title ? (
               <p className="text-xs text-error font-medium">{errors.title.message}</p>
             ) : (
               <p className="text-[10px] text-on-surface-variant/70 uppercase tracking-wider">Entre 5 e 255 caracteres</p>
             )}
-          </div>
-
-          {/* Subtítulo */}
-          <div className="space-y-1.5">
-            <label className="block text-sm font-bold text-primary" htmlFor="post-subtitle">Subtítulo</label>
-            <input
-              id="post-subtitle"
-              type="text"
-              placeholder="Ex: Uma abordagem prática para o ensino fundamental"
-              {...register('subtitle')}
-              className="w-full bg-surface-container-low border border-outline-variant/30 rounded-xl px-4 py-3 text-on-surface placeholder:text-on-surface-variant/60 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
-            />
-            <p className="text-[10px] text-on-surface-variant/70 uppercase tracking-wider">Até 300 caracteres (opcional)</p>
           </div>
 
           {/* Disciplina + Status */}
@@ -150,7 +142,7 @@ export default function PostForm({ onSubmit, onCancel, submitLabel, defaultValue
               />
               <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant/40 text-sm">lock</span>
             </div>
-            <p className="text-[10px] text-on-surface-variant/70 uppercase tracking-wider">Definido pelo usuário autenticado</p>
+            <p className="text-[10px] text-on-surface-variant/70 uppercase tracking-wider">Não editável</p>
           </div>
 
           {/* Conteúdo */}
@@ -158,7 +150,7 @@ export default function PostForm({ onSubmit, onCancel, submitLabel, defaultValue
             <div className="flex items-center justify-between">
               <label className="block text-sm font-bold text-primary" htmlFor="content">Conteúdo *</label>
               <span className="text-[10px] font-bold text-on-surface-variant/70 font-mono">
-                {contentValue.length} / MÍN. 10
+                {contentValue.length} CARACTERES
               </span>
             </div>
             <textarea
