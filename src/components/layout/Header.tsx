@@ -58,7 +58,7 @@ export function Header({ activeDiscipline }: HeaderProps) {
               href={`/posts?discipline=${d.slug}`}
               className={
                 activeDiscipline === d.slug
-                  ? 'text-teal-700 font-bold border-b-2 border-teal-600 px-3 py-1'
+                  ? 'text-sky-900 bg-slate-200/40 transition-all duration-300 px-3 py-1 rounded-md'
                   : 'text-slate-600 hover:text-sky-900 hover:bg-slate-200/40 transition-all duration-300 px-3 py-1 rounded-md'
               }
             >
@@ -68,7 +68,7 @@ export function Header({ activeDiscipline }: HeaderProps) {
         </nav>
 
         {/* Direita — auth */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           {user ? (
             <div className="relative">
               <button
