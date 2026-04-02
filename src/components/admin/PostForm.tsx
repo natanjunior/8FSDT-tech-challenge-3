@@ -1,19 +1,12 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { postSchema, PostFormData, PostFormInput } from '@/lib/schemas/post.schema'
 import { useAuth } from '@/contexts/AuthContext'
-
-const DISCIPLINE_OPTIONS = [
-  { value: '', label: 'Nenhuma' },
-  { value: 'matematica', label: 'Matemática' },
-  { value: 'portugues', label: 'Português' },
-  { value: 'ciencias', label: 'Ciências' },
-  { value: 'historia', label: 'História' },
-  { value: 'geografia', label: 'Geografia' },
-]
+import { getDisciplines } from '@/services/disciplines.service'
+import type { Discipline } from '@/types/post'
 
 interface PostFormProps {
   onSubmit: (data: PostFormData) => Promise<void>
@@ -26,6 +19,11 @@ interface PostFormProps {
 
 export default function PostForm({ onSubmit, onCancel, submitLabel, defaultValues, isSubmitting, onDirtyChange }: PostFormProps) {
   const { user } = useAuth()
+  const [disciplines, setDisciplines] = useState<Discipline[]>([])
+
+  useEffect(() => {
+    getDisciplines().then(setDisciplines)
+  }, [])
 
   const {
     register,
@@ -108,8 +106,11 @@ export default function PostForm({ onSubmit, onCancel, submitLabel, defaultValue
                 {...register('discipline_id')}
                 className="w-full bg-surface-container-low border border-outline-variant/30 rounded-xl px-4 py-3 text-on-surface focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
               >
-                {DISCIPLINE_OPTIONS.map(opt => (
-                  <option key={opt.value} value={opt.value}>{opt.label}</option>
+                <option value="">Nenhuma disciplina</option>
+                {disciplines.map((d) => (
+                  <option key={d.id} value={d.id}>
+                    {d.label}
+                  </option>
                 ))}
               </select>
             </div>
