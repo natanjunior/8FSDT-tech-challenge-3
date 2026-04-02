@@ -227,7 +227,7 @@ export default function AdminPage() {
                   value={filterQ}
                   onChange={e => setFilterQ(e.target.value)}
                   placeholder="Buscar por título..."
-                  className="bg-surface-container-low border-none rounded-xl pl-9 pr-4 py-2 text-sm w-52 focus:ring-2 focus:ring-primary/20 outline-none placeholder:text-on-surface-variant/60"
+                  className="bg-surface-container-low border-none rounded-xl pl-9 pr-4 py-2 text-sm w-48 focus:ring-2 focus:ring-primary/20 outline-none placeholder:text-on-surface-variant/60"
                 />
               </div>
             </div>
@@ -264,7 +264,7 @@ export default function AdminPage() {
               className="px-4 py-2 text-sm text-on-surface-variant hover:bg-surface-container-high rounded-xl transition-colors flex items-center gap-1.5 mt-0.5"
             >
               <span className="material-symbols-outlined text-base">close</span>
-              Limpar
+              Limpar filtros
             </button>
           </div>
         )}
@@ -313,7 +313,7 @@ export default function AdminPage() {
                 </tr>
               ) : posts.map(post => (
                 <tr key={post.id} className="group hover:bg-surface-container-low/30 transition-colors">
-                  <td colSpan={2} className="px-6 py-4">
+                  <td colSpan={2} className="px-6 py-5">
                     <div className="flex flex-col gap-1.5">
                       <span className="font-bold text-primary leading-tight hover:text-secondary cursor-pointer transition-colors">
                         {post.title}
@@ -326,7 +326,7 @@ export default function AdminPage() {
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-5">
                     {post.discipline ? (
                       <span className={`${DISC_COLORS[getDisciplineSlug(post.discipline.label) ?? ''] ?? 'bg-primary'} text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full`}>
                         {post.discipline.label}
@@ -335,19 +335,19 @@ export default function AdminPage() {
                       <span className="text-xs text-on-surface-variant/40">—</span>
                     )}
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-5">
                     <StatusBadge status={post.status} />
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-5">
                     <span className="text-sm font-mono text-on-surface-variant">{formatDate(post.updated_at)}</span>
                   </td>
-                  <td className="px-6 py-4 text-center">
+                  <td className="px-6 py-5 text-center">
                     <span className="text-sm font-mono text-on-surface-variant">{post.comments_count}</span>
                   </td>
-                  <td className="px-6 py-4 text-center">
+                  <td className="px-6 py-5 text-center">
                     <span className="text-sm font-mono text-on-surface-variant">{post.reads_count}</span>
                   </td>
-                  <td className="px-6 py-4 text-right">
+                  <td className="px-6 py-5 text-right">
                     <div className="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                       <button
                         onClick={() => router.push(`/admin/posts/${post.id}/edit`)}
