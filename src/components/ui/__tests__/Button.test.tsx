@@ -26,6 +26,47 @@ describe('Button', () => {
   it('renders secondary variant', () => {
     render(<Button variant="secondary">Cancelar</Button>)
     const btn = screen.getByRole('button')
-    expect(btn.className).toContain('text-on-surface-variant')
+    expect(btn.className).toContain('border-outline-variant')
+    expect(btn.className).toContain('text-on-surface')
+    expect(btn.className).toContain('px-6')
+    expect(btn.className).toContain('py-3')
+  })
+
+  it('renders nav variant', () => {
+    render(<Button variant="nav">Entrar</Button>)
+    const btn = screen.getByRole('button')
+    expect(btn.className).toContain('primary-gradient')
+    expect(btn.className).toContain('shadow-sky-950/20')
+  })
+
+  it('renders danger variant (filled)', () => {
+    render(<Button variant="danger">Excluir permanentemente</Button>)
+    const btn = screen.getByRole('button')
+    expect(btn.className).toContain('bg-error')
+    expect(btn.className).toContain('text-white')
+  })
+
+  it('renders danger-outline variant', () => {
+    render(<Button variant="danger-outline">Excluir post</Button>)
+    const btn = screen.getByRole('button')
+    expect(btn.className).toContain('border-error')
+    expect(btn.className).toContain('text-error')
+    expect(btn.className).toContain('hover:bg-red-50')
+  })
+
+  it('primary disabled has opacity-40 and cursor-not-allowed', () => {
+    render(<Button disabled>Criar post</Button>)
+    const btn = screen.getByRole('button')
+    expect(btn.className).toContain('opacity-40')
+    expect(btn.className).toContain('cursor-not-allowed')
+    expect(btn).toBeDisabled()
+  })
+
+  it('secondary disabled has opacity-40 and cursor-not-allowed', () => {
+    render(<Button variant="secondary" disabled>Cancelar</Button>)
+    const btn = screen.getByRole('button')
+    expect(btn.className).toContain('opacity-40')
+    expect(btn.className).toContain('cursor-not-allowed')
+    expect(btn).toBeDisabled()
   })
 })
