@@ -1,32 +1,25 @@
 // src/components/ui/Badge.tsx
 import { PostStatus } from '@/types/post'
 
-const STATUS_CONFIG: Record<PostStatus, { label: string; bgClass: string; textClass: string; dotClass: string }> = {
+const STATUS_CONFIG: Record<PostStatus, { label: string; className: string }> = {
   PUBLISHED: {
     label: 'PUBLICADO',
-    bgClass: 'bg-green-500/10',
-    textClass: 'text-green-600',
-    dotClass: 'bg-green-500',
+    className: 'bg-green-500/10 text-green-600 border border-green-500/20',
   },
   DRAFT: {
     label: 'RASCUNHO',
-    bgClass: 'bg-yellow-500/10',
-    textClass: 'text-yellow-600',
-    dotClass: 'bg-yellow-500',
+    className: 'bg-yellow-400/10 text-yellow-600 border border-yellow-400/20',
   },
   ARCHIVED: {
     label: 'ARQUIVADO',
-    bgClass: 'bg-slate-400/10',
-    textClass: 'text-slate-500',
-    dotClass: 'bg-slate-400',
+    className: 'bg-slate-200 text-slate-500',
   },
 }
 
 export function StatusBadge({ status }: { status: PostStatus }) {
   const config = STATUS_CONFIG[status]
   return (
-    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold ${config.bgClass} ${config.textClass}`}>
-      <span className={`w-1.5 h-1.5 rounded-full ${config.dotClass} mr-2`} />
+    <span className={`text-[10px] font-bold px-3 py-1 rounded-full ${config.className}`}>
       {config.label}
     </span>
   )
