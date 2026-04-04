@@ -2,7 +2,8 @@
 
 import Link from 'next/link'
 import { useAuth } from '@/contexts/AuthContext'
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
 const DISCIPLINES = [
   { label: 'Matemática', slug: 'matematica' },
@@ -35,30 +36,54 @@ function getInitials(name: string): string {
 }
 
 interface HeaderProps {
-  activeDiscipline?: string // slug da disciplina ativa
+  activeDiscipline?: string
+  showSearch?: boolean
+  onToggleSidebar?: () => void
 }
 
-export function Header({ activeDiscipline }: HeaderProps) {
+export function Header({ activeDiscipline, showSearch, onToggleSidebar }: HeaderProps) {
   const { user, logout } = useAuth()
   const [menuOpen, setMenuOpen] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
+  const router = useRouter()
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setMenuOpen(false)
+      }
+    }
+    if (menuOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [menuOpen])
+
+  function handleSearchKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'Enter' && e.currentTarget.value.trim()) {
+      router.push(`/posts?q=${encodeURIComponent(e.currentTarget.value.trim())}`)
+    }
+  }
 
   return (
     <header className="sticky top-0 z-50 bg-slate-50/80 backdrop-blur-md shadow-xl shadow-sky-950/5">
-      <div className="flex justify-between items-center w-full px-8 py-4 max-w-[1440px] mx-auto">
+      <div className="flex justify-between items-center w-full px-8 py-4 max-w-[1440px] mx-auto gap-6">
         {/* Logo */}
         <Link href="/" className="text-xl font-black tracking-tighter text-primary uppercase shrink-0">
           8FSDT TC 3
         </Link>
 
         {/* Nav central — disciplinas (desktop) */}
-        <nav className="hidden md:flex items-center space-x-8 font-medium text-sm tracking-tight">
+        <nav className="hidden md:flex items-center space-x-1 font-medium text-sm tracking-tight">
           {DISCIPLINES.map((d) => (
             <Link
               key={d.slug}
               href={`/posts?discipline=${d.slug}`}
               className={
                 activeDiscipline === d.slug
-                  ? 'text-sky-900 bg-slate-200/40 transition-all duration-300 px-3 py-1 rounded-md'
+                  ? 'text-teal-700 font-bold border-b-2 border-teal-600 px-3 py-1'
                   : 'text-slate-600 hover:text-sky-900 hover:bg-slate-200/40 transition-all duration-300 px-3 py-1 rounded-md'
               }
             >
@@ -67,10 +92,33 @@ export function Header({ activeDiscipline }: HeaderProps) {
           ))}
         </nav>
 
-        {/* Direita — auth */}
+        {/* Direita — hamburger + search + auth */}
         <div className="flex items-center gap-3">
+          {/* Hamburger — mobile only (sidebar pages) */}
+          {showSearch && onToggleSidebar && (
+            <button
+              onClick={onToggleSidebar}
+              className="lg:hidden p-2 rounded-xl hover:bg-surface-container-low transition-colors cursor-pointer"
+            >
+              <span className="material-symbols-outlined text-primary">menu</span>
+            </button>
+          )}
+
+          {/* Search input — desktop, sidebar pages only */}
+          {showSearch && (
+            <div className="relative hidden lg:block">
+              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
+              <input
+                type="text"
+                placeholder="Buscar posts..."
+                onKeyDown={handleSearchKeyDown}
+                className="bg-surface-container-high border-none rounded-xl pl-10 pr-4 py-2 text-sm w-56 focus:ring-2 focus:ring-primary/20 outline-none placeholder:text-on-surface-variant/60"
+              />
+            </div>
+          )}
+
           {user ? (
-            <div className="relative">
+            <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setMenuOpen((v) => !v)}
                 className={`flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer transition-colors ${menuOpen ? 'bg-surface-container-low' : 'hover:bg-surface-container-low'}`}
@@ -102,7 +150,7 @@ export function Header({ activeDiscipline }: HeaderProps) {
                   <div className="border-t border-outline-variant/10" />
                   <button
                     onClick={() => { setMenuOpen(false); logout() }}
-                    className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-error hover:bg-red-50 transition-colors"
+                    className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-error hover:bg-red-50 transition-colors cursor-pointer"
                   >
                     <span className="material-symbols-outlined text-base">logout</span>
                     Sair
@@ -113,7 +161,7 @@ export function Header({ activeDiscipline }: HeaderProps) {
           ) : (
             <Link
               href="/login"
-              className="primary-gradient text-white px-5 py-2 rounded-xl text-sm font-bold shadow-lg shadow-sky-950/20 active:scale-95 transform transition-all"
+              className="primary-gradient text-white px-5 py-2 rounded-xl text-sm font-bold shadow-lg shadow-sky-950/20 active:scale-95 transform transition-all shrink-0"
             >
               Entrar
             </Link>

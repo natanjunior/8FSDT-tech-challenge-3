@@ -1,16 +1,13 @@
 'use client'
 
-import { useState, Suspense } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAuth } from '@/contexts/AuthContext'
 import { loginSchema, LoginFormData } from '@/lib/schemas/login.schema'
-import { useSearchParams } from 'next/navigation'
 
 function LoginForm() {
   const { login } = useAuth()
-  const searchParams = useSearchParams()
-  const redirectTo = searchParams.get('redirect') ?? undefined
   const [serverError, setServerError] = useState<string | null>(null)
 
   const {
@@ -24,7 +21,7 @@ function LoginForm() {
   async function onSubmit(data: LoginFormData) {
     setServerError(null)
     try {
-      await login(data.email, redirectTo)
+      await login(data.email)
     } catch (err: unknown) {
       const axiosErr = err as { response?: { status: number } }
       if (axiosErr.response?.status === 404) {
@@ -119,7 +116,7 @@ function LoginForm() {
           <p className="text-[10px] font-light uppercase tracking-widest text-on-surface-variant">© 2026 8FSDT TC 3</p>
           <div className="flex gap-6">
             <a className="text-[10px] font-light uppercase tracking-widest hover:text-primary transition-colors" href="/grupo">Grupo</a>
-            <a className="text-[10px] font-light uppercase tracking-widest hover:text-primary transition-colors" href="/design-system">Documentação</a>
+            <a className="text-[10px] font-light uppercase tracking-widest hover:text-primary transition-colors" href="https://github.com/natanjunior/8FSDT-tech-challenge-3" target="_blank" rel="noopener noreferrer">Documentação</a>
           </div>
         </div>
       </footer>
@@ -128,9 +125,5 @@ function LoginForm() {
 }
 
 export default function LoginPage() {
-  return (
-    <Suspense>
-      <LoginForm />
-    </Suspense>
-  )
+  return <LoginForm />
 }

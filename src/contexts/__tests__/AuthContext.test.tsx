@@ -103,9 +103,10 @@ describe('AuthContext', () => {
 
   it('rehydrates user from /api/auth/me on mount', async () => {
     // Simula refresh de página com sessão ativa
+    // /api/auth/me retorna { id, name, email, role, token } (campos no nível raiz)
     mockFetch.mockResolvedValue({
       ok: true,
-      json: async () => ({ user: mockUser, token: 'tok123' }),
+      json: async () => ({ ...mockUser, token: 'tok123' }),
     })
 
     render(<AuthProvider><TestComponent /></AuthProvider>)

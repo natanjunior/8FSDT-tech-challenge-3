@@ -1,3 +1,6 @@
+'use client'
+
+import { useState } from 'react'
 import { Header } from './Header'
 import { Sidebar } from './Sidebar'
 import { Footer } from './Footer'
@@ -11,6 +14,8 @@ interface PublicLayoutProps {
 }
 
 export function PublicLayout({ children, activeDiscipline, activeSection, wide, noSidebar }: PublicLayoutProps) {
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+
   if (noSidebar) {
     return (
       <>
@@ -25,8 +30,17 @@ export function PublicLayout({ children, activeDiscipline, activeSection, wide, 
 
   return (
     <>
-      <Header activeDiscipline={activeDiscipline} />
-      <Sidebar activeDiscipline={activeDiscipline} activeSection={activeSection} />
+      <Header
+        activeDiscipline={activeDiscipline}
+        showSearch
+        onToggleSidebar={() => setSidebarOpen(true)}
+      />
+      <Sidebar
+        activeDiscipline={activeDiscipline}
+        activeSection={activeSection}
+        sidebarOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+      />
       <div className="lg:ml-64">
         <main className={`px-8 lg:px-16 py-12 min-h-[calc(100vh-5rem)] ${wide ? '' : 'max-w-4xl mx-auto'}`}>
           {children}
