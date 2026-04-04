@@ -21,7 +21,8 @@ export interface SearchPostsParams {
 export async function getPosts(
   params: GetPostsParams = {}
 ): Promise<PaginatedResponse<Post>> {
-  const endpoint = params.query ? '/posts/search' : '/posts'
+  const hasFilter = params.query || params.discipline || params.status
+  const endpoint = hasFilter ? '/posts/search' : '/posts'
   const { data } = await api.get<PaginatedResponse<Post>>(endpoint, { params })
   return data
 }

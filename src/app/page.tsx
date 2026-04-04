@@ -10,13 +10,17 @@ interface HomePageProps {
 
 async function fetchPosts(page: number): Promise<PaginatedResponse<Post>> {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3030'
-  const res = await fetch(`${apiUrl}/posts?page=${page}&limit=20`, {
-    cache: 'no-store',
-  })
-  if (!res.ok) {
+  try {
+    const res = await fetch(`${apiUrl}/posts?page=${page}&limit=20`, {
+      cache: 'no-store',
+    })
+    if (!res.ok) {
+      return { data: [], pagination: { page, limit: 20, total: 0, totalPages: 0 } }
+    }
+    return res.json()
+  } catch {
     return { data: [], pagination: { page, limit: 20, total: 0, totalPages: 0 } }
   }
-  return res.json()
 }
 
 export default async function HomePage({ searchParams }: HomePageProps) {

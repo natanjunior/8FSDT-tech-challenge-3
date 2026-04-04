@@ -33,10 +33,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       try {
         const res = await fetch('/api/auth/me')
         if (res.ok) {
-          const { user, token } = await res.json()
-          setUser(user)
-          setAuthToken(token)
+          const data = await res.json()
+          // Valida que a resposta tem a shape esperada antes de usar
+          if (data && typeof data.id === 'string' && typeof data.role === 'string') {
+            setUser(data as User)
+            if (data.token) setAuthToken(data.token)
+          }
         }
+      } catch {
+        // Falha de rede ou resposta malformada — manter estado anônimo
       } finally {
         setIsLoading(false)
       }
@@ -45,13 +50,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const login = useCallback(async (email: string, redirectTo?: string) => {
-    const { user, token } = await loginRequest(email)
+    const result = await loginRequest(email)
+    if (!result || !result.user || !result.token) {
+      throw new Error('Resposta inválida do servidor de autenticação.')
+    }
+    const { user, token } = result
     // Seta httpOnly cookie via API route interna
-    await fetch('/api/auth/set-cookie', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token, user }),
-    })
+    try {
+      await fetch('/api/auth/set-cookie', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token, user }),
+      })
+    } catch {
+      // Falha ao setar cookie — login prossegue com token em memória apenas
+    }
     setAuthToken(token)
     setUser(user)
     // Use redirectTo if provided; fallback to role-based default
@@ -65,7 +78,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } catch {
       // Mesmo que o backend falhe, limpar localmente
     }
-    await fetch('/api/auth/clear-cookie', { method: 'POST' })
+    try {
+      await fetch('/api/auth/clear-cookie', { method: 'POST' })
+    } catch {
+      // Falha ao limpar cookie — prosseguir com logout local
+    }
     setAuthToken(null)
     setUser(null)
     router.push('/login')

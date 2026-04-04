@@ -15,11 +15,11 @@ const gitHubSvg = (
 function MemberLinks({ linkedin, github }: { linkedin: string; github: string }) {
   return (
     <div className="flex items-center gap-2 pt-2 border-t border-outline-variant/10">
-      <a href={linkedin} title="LinkedIn" className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium text-on-surface-variant hover:bg-surface-container-low transition-colors">
+      <a href={linkedin} title="LinkedIn" target="_blank" className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium text-on-surface-variant hover:bg-surface-container-low transition-colors">
         {linkedInSvg}
         LinkedIn
       </a>
-      <a href={github} title="GitHub" className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium text-on-surface-variant hover:bg-surface-container-low transition-colors">
+      <a href={github} title="GitHub" target="_blank" className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium text-on-surface-variant hover:bg-surface-container-low transition-colors">
         {gitHubSvg}
         GitHub
       </a>
@@ -37,7 +37,7 @@ export default function GrupoPage() {
           <span className="text-xs font-mono text-on-surface-variant">Tech Challenge Fase 3</span>
         </div>
         <h1 className="text-5xl font-extrabold text-primary leading-[1.1] tracking-tighter mb-4">
-          Grupo 28
+          Grupo 12
         </h1>
         <p className="text-lg text-on-surface-variant leading-relaxed max-w-xl">
           Turma 8FSDT — FIAP PosTech. Cinco profissionais desenvolvendo a plataforma educacional de gerenciamento de conteúdo para professores e alunos.
@@ -93,7 +93,7 @@ export default function GrupoPage() {
                 <p className="text-xs font-mono text-on-surface-variant mt-0.5">RM 369334</p>
               </div>
             </div>
-            <MemberLinks linkedin="#" github="#" />
+            <MemberLinks linkedin="https://www.linkedin.com/in/natanaeljr/" github="https://github.com/natanjunior" />
           </div>
 
           {/* Tiago Victor */}

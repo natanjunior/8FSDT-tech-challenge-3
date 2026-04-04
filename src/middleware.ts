@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import jwt from 'jsonwebtoken'
+import { jwtVerify } from 'jose'
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const token = request.cookies.get('auth_token')?.value
   const { pathname } = request.nextUrl
 
@@ -18,14 +18,12 @@ export function middleware(request: NextRequest) {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
-      id: string
-      role: string
-      sessionId?: string
-    }
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET!)
+    const { payload } = await jwtVerify(token, secret)
+    const role = payload.role as string
 
     // STUDENT tentando acessar admin → redirect para home
-    if (decoded.role !== 'TEACHER') {
+    if (role !== 'TEACHER') {
       return NextResponse.redirect(new URL('/', request.url))
     }
 

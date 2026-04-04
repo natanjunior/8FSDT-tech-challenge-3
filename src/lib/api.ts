@@ -43,7 +43,7 @@ api.interceptors.response.use(
       error.response?.status === 401 &&
       typeof window !== 'undefined' &&
       typeof document !== 'undefined' &&
-      document.cookie.includes('auth_token')
+      document.cookie.includes('auth_user')
     ) {
       setAuthToken(null)
       window.location.href = '/login'

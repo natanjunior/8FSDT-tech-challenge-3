@@ -10,13 +10,13 @@ export interface Discipline {
 export interface Post {
   id: string
   title: string
+  subtitle?: string
   content: string
   status: PostStatus
   published_at: string | null
   created_at: string
   updated_at: string
   author: User
-  subtitle?: string
   discipline: Discipline | null
   comments_count?: number
   reads_count?: number
@@ -24,7 +24,6 @@ export interface Post {
 
 export interface PostPayload {
   title: string
-  subtitle?: string
   content: string
   status: PostStatus
   discipline_id?: string

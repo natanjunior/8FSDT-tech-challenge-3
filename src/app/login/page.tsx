@@ -1,13 +1,16 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAuth } from '@/contexts/AuthContext'
 import { loginSchema, LoginFormData } from '@/lib/schemas/login.schema'
+import { useSearchParams } from 'next/navigation'
 
-export default function LoginPage() {
+function LoginForm() {
   const { login } = useAuth()
+  const searchParams = useSearchParams()
+  const redirectTo = searchParams.get('redirect') ?? undefined
   const [serverError, setServerError] = useState<string | null>(null)
 
   const {
@@ -21,7 +24,7 @@ export default function LoginPage() {
   async function onSubmit(data: LoginFormData) {
     setServerError(null)
     try {
-      await login(data.email)
+      await login(data.email, redirectTo)
     } catch (err: unknown) {
       const axiosErr = err as { response?: { status: number } }
       if (axiosErr.response?.status === 404) {
@@ -34,6 +37,7 @@ export default function LoginPage() {
 
   return (
     <div className="bg-surface-container-low text-on-surface min-h-screen flex flex-col">
+
       <main className="flex-1 flex items-center justify-center px-4 py-16">
         <section className="bg-surface-container-lowest w-full max-w-md p-10 rounded-xl shadow-xl shadow-on-surface/5 border border-outline-variant/20">
 
@@ -120,5 +124,13 @@ export default function LoginPage() {
         </div>
       </footer>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
   )
 }

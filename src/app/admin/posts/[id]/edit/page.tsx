@@ -37,12 +37,15 @@ export default function EditPostPage() {
   const [leaveModalOpen, setLeaveModalOpen] = useState(false)
   const [isDirty, setIsDirty] = useState(false)
 
+  const [loadError, setLoadError] = useState<string | null>(null)
+
   useEffect(() => {
     getPost(id).then(p => {
       setPost(p)
       setIsLoading(false)
     }).catch(() => {
-      router.push('/admin')
+      setIsLoading(false)
+      setLoadError('Não foi possível carregar o artigo. Verifique sua conexão e tente novamente.')
     })
   }, [id, router])
 
@@ -53,7 +56,6 @@ export default function EditPostPage() {
     try {
       await updatePost(id, {
         title: data.title,
-        subtitle: data.subtitle || undefined,
         content: data.content,
         status: data.status,
         discipline_id: data.discipline_id || undefined,
@@ -68,8 +70,14 @@ export default function EditPostPage() {
   }
 
   async function handleDelete() {
-    await deletePost(id)
-    router.push('/admin')
+    try {
+      await deletePost(id)
+      router.push('/admin')
+    } catch (err: unknown) {
+      setDeleteModalOpen(false)
+      const apiMessage = (err as { response?: { data?: { error?: string } } })?.response?.data?.error
+      setSaveError(apiMessage ?? 'Erro ao excluir o artigo. Tente novamente.')
+    }
   }
 
   function handleCancel() {
@@ -84,6 +92,24 @@ export default function EditPostPage() {
     return (
       <div className="px-8 lg:px-16 py-12 flex items-center justify-center">
         <span className="text-on-surface-variant">Carregando...</span>
+      </div>
+    )
+  }
+
+  if (loadError) {
+    return (
+      <div className="px-8 lg:px-16 py-12 max-w-4xl mx-auto">
+        <div className="p-6 rounded-xl bg-error-container/20 border border-error/30 flex flex-col items-center gap-4">
+          <span className="material-symbols-outlined text-error text-3xl">cloud_off</span>
+          <p className="text-sm text-error font-medium text-center">{loadError}</p>
+          <button
+            type="button"
+            onClick={() => router.push('/admin')}
+            className="px-6 py-2.5 text-sm font-bold text-secondary hover:underline"
+          >
+            Voltar ao painel
+          </button>
+        </div>
       </div>
     )
   }
@@ -122,7 +148,6 @@ export default function EditPostPage() {
           submitLabel="Salvar alterações"
           defaultValues={{
             title: post.title,
-            subtitle: post.subtitle,
             content: post.content,
             status: post.status,
             discipline_id: post.discipline?.id ?? '',
@@ -166,11 +191,11 @@ export default function EditPostPage() {
             </div>
             <div>
               <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1">Marcações de leitura</p>
-              <p className="text-sm font-mono text-on-surface">{post.reads_count}</p>
+              <p className="text-sm font-mono text-on-surface">{post.reads_count ?? 0}</p>
             </div>
             <div>
               <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1">Comentários</p>
-              <p className="text-sm font-mono text-on-surface">{post.comments_count}</p>
+              <p className="text-sm font-mono text-on-surface">{post.comments_count ?? 0}</p>
             </div>
             {post.status === 'PUBLISHED' && (
               <Link

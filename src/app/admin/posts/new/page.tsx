@@ -18,7 +18,6 @@ export default function NewPostPage() {
     try {
       await createPost({
         title: data.title,
-        subtitle: data.subtitle || undefined,
         content: data.content,
         status: data.status,
         discipline_id: data.discipline_id || undefined,

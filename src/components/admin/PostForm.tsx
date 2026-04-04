@@ -34,7 +34,6 @@ export default function PostForm({ onSubmit, onCancel, submitLabel, defaultValue
     resolver: zodResolver(postSchema),
     defaultValues: {
       title: '',
-      subtitle: '',
       content: '',
       status: 'DRAFT',
       discipline_id: '',

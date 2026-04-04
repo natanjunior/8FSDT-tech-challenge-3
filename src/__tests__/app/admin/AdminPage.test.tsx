@@ -8,7 +8,6 @@ vi.mock('@/services/posts.service', () => ({
       {
         id: 'post-1',
         title: 'Post de Teste',
-        subtitle: 'Subtítulo',
         status: 'PUBLISHED',
         discipline: { slug: 'ciencias', label: 'Ciências' },
         author: { id: 'u1', name: 'Prof. Marcos Viana' },

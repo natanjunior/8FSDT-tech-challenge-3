@@ -38,6 +38,7 @@ export async function GET() {
       role: jwtPayload.role, // DO JWT VERIFICADO — não do cookie auth_user
       name: displayName,
       email: displayEmail,
+      token,  // necessário para o AuthContext restaurar setAuthToken após page refresh
     })
   } catch {
     // Token expirado ou inválido — limpar cookies

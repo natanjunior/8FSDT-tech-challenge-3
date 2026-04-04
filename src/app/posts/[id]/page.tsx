@@ -108,10 +108,6 @@ export default async function PostPage({ params }: PostPageProps) {
             {post.title}
           </h1>
 
-          {post.subtitle && (
-            <p className="text-xl text-on-surface-variant mb-8">{post.subtitle}</p>
-          )}
-
           {/* Autor + ações */}
           <div className="flex items-center gap-4 p-4 rounded-xl bg-surface-container-low">
             <div className={`w-14 h-14 rounded-full ${authorColor} border-2 flex items-center justify-center font-black text-lg shrink-0`}>

@@ -43,6 +43,7 @@ export default function AdminPage() {
   const [filterStatus, setFilterStatus] = useState('')
   const [deleteTarget, setDeleteTarget] = useState<Post | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const loadStats = useCallback(async () => {
     try {
@@ -77,6 +78,7 @@ export default function AdminPage() {
       setPagination(prev => ({ ...prev, ...result.pagination }))
     } catch {
       setPosts([])
+      setError('Não foi possível carregar os artigos. Verifique sua conexão.')
     } finally {
       setIsLoading(false)
     }
@@ -116,13 +118,18 @@ export default function AdminPage() {
       await deletePost(deleteTarget.id)
       setDeleteTarget(null)
       loadPosts(pagination.page)
+      loadStats()
+    } catch (err: unknown) {
+      setDeleteTarget(null)
+      const apiMessage = (err as { response?: { data?: { error?: string } } })?.response?.data?.error
+      setError(apiMessage ?? 'Erro ao excluir o artigo. Tente novamente.')
     } finally {
       setIsDeleting(false)
     }
   }
 
   const total = pagination.total
-  const reads = posts.reduce((sum, p) => sum + p.reads_count, 0)
+  const reads = posts.reduce((sum, p) => sum + (p.reads_count ?? 0), 0)
 
   return (
     <div className="px-8 lg:px-16 py-12">
@@ -133,6 +140,16 @@ export default function AdminPage() {
         </nav>
         <p className="text-sm text-on-surface-variant">Gerencie seus artigos e contribuições educacionais.</p>
       </div>
+
+      {error && (
+        <div className="mb-6 p-4 rounded-xl bg-error-container/20 border border-error/30 flex items-start gap-3">
+          <span className="material-symbols-outlined text-error text-xl shrink-0 mt-0.5">error</span>
+          <p className="text-sm text-error font-medium">{error}</p>
+          <button type="button" onClick={() => setError(null)} className="ml-auto text-error/60 hover:text-error">
+            <span className="material-symbols-outlined text-base">close</span>
+          </button>
+        </div>
+      )}
 
       {/* Stats cards */}
       <section className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
@@ -318,9 +335,6 @@ export default function AdminPage() {
                       <span className="font-bold text-primary leading-tight hover:text-secondary cursor-pointer transition-colors">
                         {post.title}
                       </span>
-                      {post.subtitle && (
-                        <span className="text-xs text-on-surface-variant mt-1">{post.subtitle}</span>
-                      )}
                       <div className="flex items-center gap-2 mt-0.5">
                         <AuthorId name={post.author.name} size="sm" />
                       </div>
@@ -342,10 +356,10 @@ export default function AdminPage() {
                     <span className="text-sm font-mono text-on-surface-variant">{formatDate(post.updated_at)}</span>
                   </td>
                   <td className="px-6 py-4 text-center">
-                    <span className="text-sm font-mono text-on-surface-variant">{post.comments_count}</span>
+                    <span className="text-sm font-mono text-on-surface-variant">{post.comments_count ?? 0}</span>
                   </td>
                   <td className="px-6 py-4 text-center">
-                    <span className="text-sm font-mono text-on-surface-variant">{post.reads_count}</span>
+                    <span className="text-sm font-mono text-on-surface-variant">{post.reads_count ?? 0}</span>
                   </td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
