@@ -93,6 +93,14 @@ export function Sidebar({ activeDiscipline, activeSection, sidebarOpen = false, 
             <span className="material-symbols-outlined mr-3 text-lg">description</span>
             <span className="text-sm">Documentação</span>
           </a>
+          <Link
+            href="/design-system"
+            onClick={onClose}
+            className="flex items-center px-4 py-3 text-slate-500 hover:bg-slate-200 rounded-lg transition-all hover:translate-x-1 cursor-pointer"
+          >
+            <span className="material-symbols-outlined mr-3 text-lg">palette</span>
+            <span className="text-sm">Design System</span>
+          </Link>
         </div>
       </aside>
     </>
