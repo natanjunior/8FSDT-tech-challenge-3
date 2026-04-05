@@ -8,8 +8,8 @@ export async function getComments(
   limit = 10
 ): Promise<PaginatedResponse<Comment>> {
   const { data } = await api.get<PaginatedResponse<Comment>>(
-    `/posts/${postId}/comments`,
-    { params: { page, limit } }
+    '/comments/search',
+    { params: { post_id: postId, page, limit } }
   )
   return data
 }
@@ -18,13 +18,16 @@ export async function createComment(
   postId: string,
   payload: CommentPayload
 ): Promise<Comment> {
-  const { data } = await api.post<Comment>(`/posts/${postId}/comments`, payload)
+  const { data } = await api.post<Comment>('/comments', {
+    post_id: postId,
+    ...payload,
+  })
   return data
 }
 
 export async function deleteComment(
-  postId: string,
+  _postId: string,
   commentId: string
 ): Promise<void> {
-  await api.delete(`/posts/${postId}/comments/${commentId}`)
+  await api.delete(`/comments/${commentId}`)
 }
