@@ -58,7 +58,7 @@ export async function deletePost(id: string): Promise<void> {
 
 export async function markAsRead(postId: string): Promise<void> {
   try {
-    await api.post(`/posts/${postId}/read`)
+    await api.post('/reads', { post_id: postId })
   } catch {
     // Fire-and-forget — ignore errors silently
   }
