@@ -24,6 +24,13 @@ vi.mock('@/services/posts.service', () => ({
   deletePost: vi.fn().mockResolvedValue(undefined),
 }))
 
+vi.mock('@/services/disciplines.service', () => ({
+  getDisciplines: vi.fn().mockResolvedValue([
+    { id: 'd1', label: 'Matemática' },
+    { id: 'd2', label: 'Ciências' },
+  ]),
+}))
+
 vi.mock('@/contexts/AuthContext', () => ({
   useAuth: () => ({
     user: { id: 'u1', name: 'Prof. Marcos', email: 'marcos@escola.com', role: 'TEACHER' },

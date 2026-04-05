@@ -4,8 +4,9 @@ import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { getPosts, deletePost } from '@/services/posts.service'
+import { getDisciplines } from '@/services/disciplines.service'
 import { useAuth } from '@/contexts/AuthContext'
-import { Post } from '@/types/post'
+import { Post, Discipline } from '@/types/post'
 import { StatusBadge, DisciplineBadge } from '@/components/ui/Badge'
 import { ConfirmModal } from '@/components/ui/ConfirmModal'
 import { getDisciplineSlug } from '@/lib/discipline'
@@ -33,6 +34,7 @@ export default function AdminPage() {
   const [filterQ, setFilterQ] = useState('')
   const [filterDiscipline, setFilterDiscipline] = useState('')
   const [filterStatus, setFilterStatus] = useState('')
+  const [disciplines, setDisciplines] = useState<Discipline[]>([])
   const [deleteTarget, setDeleteTarget] = useState<Post | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -79,6 +81,10 @@ export default function AdminPage() {
   useEffect(() => { loadStats() }, [loadStats])
 
   useEffect(() => { loadPosts(1) }, [filterQ, filterDiscipline, filterStatus, sortKey, sortDir, loadPosts])
+
+  useEffect(() => {
+    getDisciplines().then(setDisciplines).catch(() => {})
+  }, [])
 
   function handleSort(col: string) {
     if (sortKey === col) {
@@ -248,11 +254,9 @@ export default function AdminPage() {
                 className="bg-surface-container-low border-none rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-primary/20 outline-none text-on-surface"
               >
                 <option value="">Todas</option>
-                <option value="matematica">Matemática</option>
-                <option value="portugues">Português</option>
-                <option value="ciencias">Ciências</option>
-                <option value="historia">História</option>
-                <option value="geografia">Geografia</option>
+                {disciplines.map(d => (
+                  <option key={d.id} value={d.id}>{d.label}</option>
+                ))}
               </select>
             </div>
             <div className="flex flex-col gap-1">
