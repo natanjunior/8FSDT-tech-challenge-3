@@ -80,6 +80,21 @@ Professores da rede pública de educação carecem de plataformas onde possam pu
 | Container | Docker + Docker Compose | Requisito do challenge |
 | CI/CD | GitHub Actions | Requisito do challenge |
 
+### Hooks e Componentes Funcionais
+
+Toda a aplicação utiliza **componentes funcionais** com hooks — não há class components. Os seguintes hooks são utilizados:
+
+| Hook | Onde é usado | Para quê |
+|------|-------------|----------|
+| `useState` | AuthContext, PostForm, SearchBar, CommentSection, páginas admin e login | Gerenciamento de estado local |
+| `useEffect` | AuthContext, PostForm, CommentSection, páginas admin e login | Side effects (fetch de dados, rehydrate de auth) |
+| `useCallback` | AuthContext, CommentSection | Memoização de funções (login, logout, paginação) |
+| `useContext` | useAuth (custom hook) | Acesso ao contexto de autenticação |
+| `useRef` | PostForm | Referências DOM (selects de disciplina e status) |
+
+**Custom hook:**
+- `useAuth()` — encapsula `useContext(AuthContext)` com tratamento de erro, usado em todos os componentes que precisam do estado de autenticação
+
 ### Decisões Arquiteturais (ADRs)
 
 Algumas escolhas tecnológicas divergem do conteúdo ensinado nas aulas. Cada divergência foi registrada como uma ADR (Architecture Decision Record) com a justificativa correspondente:
