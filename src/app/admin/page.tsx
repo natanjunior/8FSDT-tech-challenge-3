@@ -347,7 +347,7 @@ export default function AdminPage() {
                     <StatusBadge status={post.status} />
                   </td>
                   <td className="px-6 py-4">
-                    <span className="text-sm font-mono text-on-surface-variant">{formatDate(post.updatedAt)}</span>
+                    <span className="text-sm font-mono text-on-surface-variant">{formatDate(post.updated_at)}</span>
                   </td>
                   <td className="px-6 py-4 text-center">
                     <span className="text-sm font-mono text-on-surface-variant">{post.comments_count ?? 0}</span>

@@ -14,8 +14,8 @@ export interface Post {
   content: string
   status: PostStatus
   published_at: string | null
-  createdAt: string
-  updatedAt: string
+  created_at: string
+  updated_at: string
   author: User
   discipline: Discipline | null
   comments_count?: number

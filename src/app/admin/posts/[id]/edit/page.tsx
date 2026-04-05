@@ -184,11 +184,11 @@ export default function EditPostPage() {
             )}
             <div>
               <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1">Criado em</p>
-              <p className="text-sm font-mono text-on-surface">{formatDate(post.createdAt)}</p>
+              <p className="text-sm font-mono text-on-surface">{formatDate(post.created_at)}</p>
             </div>
             <div>
               <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1">Última edição</p>
-              <p className="text-sm font-mono text-on-surface">{formatDate(post.updatedAt)}</p>
+              <p className="text-sm font-mono text-on-surface">{formatDate(post.updated_at)}</p>
             </div>
             <div>
               <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1">Marcações de leitura</p>
