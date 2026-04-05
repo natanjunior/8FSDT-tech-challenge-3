@@ -7,8 +7,8 @@ export interface GetPostsParams {
   status?: string
   discipline?: string
   query?: string
-  sortKey?: string
-  sortDir?: 'asc' | 'desc'
+  sortKey?: string | null
+  sortDir?: 'asc' | 'desc' | null
 }
 
 export interface SearchPostsParams {
@@ -18,12 +18,37 @@ export interface SearchPostsParams {
   limit?: number
 }
 
+const SORT_FIELD_MAP: Record<string, string> = {
+  title: 'title',
+  author: 'author',
+  disc: 'discipline',
+  status: 'status',
+  date: 'published_at',
+}
+
+function buildFhirSort(
+  sortKey?: string | null,
+  sortDir?: 'asc' | 'desc' | null
+): string | undefined {
+  if (!sortKey || !sortDir) return undefined
+  const apiField = SORT_FIELD_MAP[sortKey]
+  if (!apiField) return undefined
+  return sortDir === 'desc' ? `-${apiField}` : apiField
+}
+
 export async function getPosts(
   params: GetPostsParams = {}
 ): Promise<PaginatedResponse<Post>> {
-  const hasFilter = params.query || params.discipline || params.status || params.sortKey
+  const { sortKey, sortDir, ...rest } = params
+  const hasFilter = rest.query || rest.discipline || rest.status || sortKey
   const endpoint = hasFilter ? '/posts/search' : '/posts'
-  const { data } = await api.get<PaginatedResponse<Post>>(endpoint, { params })
+
+  const sort = buildFhirSort(sortKey, sortDir)
+  const queryParams = sort ? { ...rest, sort } : rest
+
+  const { data } = await api.get<PaginatedResponse<Post>>(endpoint, {
+    params: queryParams,
+  })
   return data
 }
 
