@@ -2,7 +2,7 @@
 
 <div align="center">
 
-**Interface grafica para a plataforma de conteudo educacional**
+**Interface gráfica para a plataforma de conteúdo educacional**
 
 [![CI Pipeline](https://github.com/natanjunior/8FSDT-tech-challenge-3/actions/workflows/ci.yml/badge.svg)](#)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -17,16 +17,16 @@
 
 ---
 
-## 📋 Indice
+## 📋 Índice
 
 1. [Sobre o Projeto](#-sobre-o-projeto)
 2. [Tecnologias](#️-tecnologias)
 3. [Arquitetura](#️-arquitetura)
-4. [Paginas e Funcionalidades](#-paginas-e-funcionalidades)
-5. [Fluxo de Autenticacao](#-fluxo-de-autenticacao)
+4. [Páginas e Funcionalidades](#-páginas-e-funcionalidades)
+5. [Fluxo de Autenticação](#-fluxo-de-autenticação)
 6. [Design System](#-design-system)
 7. [Testes](#-testes)
-8. [Setup e Instalacao](#-setup-e-instalacao)
+8. [Setup e Instalação](#-setup-e-instalação)
 9. [Docker](#-docker)
 10. [CI/CD](#️-cicd)
 11. [Dificuldades Encontradas](#️-dificuldades-encontradas)
@@ -36,21 +36,21 @@
 
 ## 🎯 Sobre o Projeto
 
-Este projeto foi desenvolvido como parte do **Tech Challenge — Fase 3** do curso de **Full Stack Development** da FIAP (turma 8FSDT). A proposta consiste em construir a interface grafica para a aplicacao de blogging educacional cuja API RESTful foi implementada na Fase 2.
+Este projeto foi desenvolvido como parte do **Tech Challenge — Fase 3** do curso de **Full Stack Development** da FIAP (turma 8FSDT). A proposta consiste em construir a interface gráfica para a aplicação de blogging educacional cuja API RESTful foi implementada na Fase 2.
 
-A aplicacao atende dois perfis de usuario: **professores** (TEACHER), que gerenciam postagens pelo painel administrativo, e **alunos/visitantes** (STUDENT/guest), que consomem conteudo publicado e podem interagir via comentarios anonimos. O frontend foi desenvolvido com **Next.js 15 (App Router)**, utilizando renderizacao hibrida (Server e Client Components), estilizacao com **Tailwind CSS** e um Design System proprio ("The Academic Curator").
+A aplicação atende dois perfis de usuário: **professores** (TEACHER), que gerenciam postagens pelo painel administrativo, e **alunos/visitantes** (STUDENT/guest), que consomem conteúdo publicado e podem interagir via comentários anônimos. O frontend foi desenvolvido com **Next.js 15 (App Router)**, utilizando renderização híbrida (Server e Client Components), estilização com **Tailwind CSS** e um Design System próprio ("The Academic Curator").
 
 ### Contexto
 
-Professores da rede publica de educacao carecem de plataformas onde possam publicar aulas e compartilhar conhecimento de forma pratica, centralizada e tecnologica. A Fase 2 entregou a API backend em Node.js + PostgreSQL. A Fase 3 entrega o frontend que torna essa API acessivel por meio de uma interface responsiva, acessivel e intuitiva.
+Professores da rede pública de educação carecem de plataformas onde possam publicar aulas e compartilhar conhecimento de forma prática, centralizada e tecnológica. A Fase 2 entregou a API backend em Node.js + PostgreSQL. A Fase 3 entrega o frontend que torna essa API acessível por meio de uma interface responsiva, acessível e intuitiva.
 
 ### Funcionalidades Principais
 
-- **Lista de posts com busca**: Busca por palavra-chave e filtro por disciplina na pagina inicial
-- **Leitura de posts com comentarios**: Conteudo completo do post com secao de comentarios anonimos
-- **Criacao e edicao de postagens**: Formularios com validacao (apenas docentes autenticados)
-- **Painel administrativo**: DataTable com listagem, edicao e exclusao de posts
-- **Autenticacao passwordless**: Login por email com JWT armazenado em httpOnly cookie
+- **Lista de posts com busca**: Busca por palavra-chave e filtro por disciplina na página inicial
+- **Leitura de posts com comentários**: Conteúdo completo do post com seção de comentários anônimos
+- **Criação e edição de postagens**: Formulários com validação (apenas docentes autenticados)
+- **Painel administrativo**: DataTable com listagem, edição e exclusão de posts
+- **Autenticação passwordless**: Login por email com JWT armazenado em httpOnly cookie
 - **Design System documentado**: Paleta de cores, tipografia, componentes e regras visuais
 
 ### Screenshots
@@ -69,49 +69,49 @@ Professores da rede publica de educacao carecem de plataformas onde possam publi
 
 | Camada | Tecnologia | Origem |
 |--------|-----------|--------|
-| Framework | Next.js 15 (App Router) | Modulo 04 — ADR-01 |
-| Linguagem | TypeScript | Modulo 02 Aula 01 |
-| Estilizacao | Tailwind CSS | Modulo 04 Aula 02 — ADR-02 |
-| Formularios | React Hook Form + Zod | ADR-03 (curso ensina Formik+Yup) |
-| HTTP | Axios | Modulo 02 Aula 06 |
-| Estado global | Context API | Modulo 03 Aula 03 |
-| Testes | Vitest + React Testing Library | Modulo 03 Aula 05 |
+| Framework | Next.js 15 (App Router) | Módulo 04 — ADR-01 |
+| Linguagem | TypeScript | Módulo 02 Aula 01 |
+| Estilização | Tailwind CSS | Módulo 04 Aula 02 — ADR-02 |
+| Formulários | React Hook Form + Zod | ADR-03 (curso ensina Formik+Yup) |
+| HTTP | Axios | Módulo 02 Aula 06 |
+| Estado global | Context API | Módulo 03 Aula 03 |
+| Testes | Vitest + React Testing Library | Módulo 03 Aula 05 |
 | Auth | JWT em httpOnly cookie + middleware | ADR-04 |
 | Container | Docker + Docker Compose | Requisito do challenge |
 | CI/CD | GitHub Actions | Requisito do challenge |
 
-### Decisoes Arquiteturais (ADRs)
+### Decisões Arquiteturais (ADRs)
 
-Algumas escolhas tecnologicas divergem do conteudo ensinado nas aulas. Cada divergencia foi registrada como uma ADR (Architecture Decision Record) com a justificativa correspondente:
+Algumas escolhas tecnológicas divergem do conteúdo ensinado nas aulas. Cada divergência foi registrada como uma ADR (Architecture Decision Record) com a justificativa correspondente:
 
-| ADR | Decisao | Motivo |
+| ADR | Decisão | Motivo |
 |-----|---------|--------|
-| 01 | Next.js App Router em vez de React+Vite | Demonstra conteudo do Modulo 04 (SSR, API Routes, BFF) |
-| 02 | Tailwind CSS em vez de Styled Components | Integracao nativa com App Router, sem runtime JS |
-| 03 | React Hook Form + Zod em vez de Formik+Yup | Inferencia TypeScript nativa, padrao de mercado atual |
-| 04 | httpOnly cookie em vez de localStorage | Protecao contra XSS, sem flash de autenticacao |
+| 01 | Next.js App Router em vez de React+Vite | Demonstra conteúdo do Módulo 04 (SSR, API Routes, BFF) |
+| 02 | Tailwind CSS em vez de Styled Components | Integração nativa com App Router, sem runtime JS |
+| 03 | React Hook Form + Zod em vez de Formik+Yup | Inferência TypeScript nativa, padrão de mercado atual |
+| 04 | httpOnly cookie em vez de localStorage | Proteção contra XSS, sem flash de autenticação |
 | 05 | Estrutura em camadas (services/, lib/, types/) | Espelha a arquitetura da API Fase 2 |
-| 06 | Contract-first para comentarios | Frontend definiu o contrato da API de comentarios |
-| 07 | UUID em localStorage para comentarios anonimos | Ownership de comentarios sem exigir login |
+| 06 | Contract-first para comentários | Frontend definiu o contrato da API de comentários |
+| 07 | UUID em localStorage para comentários anônimos | Ownership de comentários sem exigir login |
 
 ---
 
 ## 🏗️ Arquitetura
 
-### Renderizacao Hibrida
+### Renderização Híbrida
 
-A aplicacao utiliza **renderizacao hibrida** conforme ensinado no Modulo 04 (Aulas 04 e Extra). Cada rota foi classificada como Server ou Client Component com base na sua necessidade de interatividade:
+A aplicação utiliza **renderização híbrida** conforme ensinado no Módulo 04 (Aulas 04 e Extra). Cada rota foi classificada como Server ou Client Component com base na sua necessidade de interatividade:
 
 | Rota | Tipo | Justificativa |
 |------|------|---------------|
 | `/` | Server Component | SEO + performance para visitantes |
-| `/posts/[id]` | Server Component | SEO + conteudo indexavel |
-| `/login` | Client Component | Formulario interativo |
-| `/admin` | Client Component | Lista mutavel, acoes inline |
-| `/admin/posts/new` | Client Component | Formulario interativo |
-| `/admin/posts/[id]/edit` | Client Component | Carrega dados + formulario |
-| `/grupo` | Server Component | Estatica, dados fixos |
-| `/design-system` | Server Component | Estatica, documentacao |
+| `/posts/[id]` | Server Component | SEO + conteúdo indexável |
+| `/login` | Client Component | Formulário interativo |
+| `/admin` | Client Component | Lista mutável, ações inline |
+| `/admin/posts/new` | Client Component | Formulário interativo |
+| `/admin/posts/[id]/edit` | Client Component | Carrega dados + formulário |
+| `/grupo` | Server Component | Estática, dados fixos |
+| `/design-system` | Server Component | Estática, documentação |
 
 ### Diagrama de Arquitetura
 
@@ -120,7 +120,7 @@ graph TB
     Browser[Browser]
 
     subgraph "Next.js 15"
-        MW[middleware.ts<br/>Protecao /admin/*]
+        MW[middleware.ts<br/>Proteção /admin/*]
         SC[Server Components<br/>/, /posts, /posts/id, /grupo]
         CC[Client Components<br/>/login, /admin/*]
         API[API Routes<br/>/api/auth/*]
@@ -143,11 +143,11 @@ graph TB
 src/
 ├── app/                    # Next.js App Router pages + API Routes
 │   ├── api/auth/           # set-cookie, clear-cookie, me
-│   ├── admin/              # Area protegida (Client Components)
-│   ├── posts/              # Paginas publicas de posts (Server Components)
-│   ├── login/              # Pagina de login (Client Component)
-│   ├── grupo/              # Pagina do grupo
-│   └── design-system/      # Documentacao do Design System
+│   ├── admin/              # Área protegida (Client Components)
+│   ├── posts/              # Páginas públicas de posts (Server Components)
+│   ├── login/              # Página de login (Client Component)
+│   ├── grupo/              # Página do grupo
+│   └── design-system/      # Documentação do Design System
 ├── components/
 │   ├── layout/             # Header, Footer, Sidebar, AdminSidebar
 │   ├── posts/              # PostCard, PostList, SearchBar
@@ -155,52 +155,52 @@ src/
 │   └── ui/                 # Button, Input, Badge, DataTable, etc.
 ├── contexts/               # AuthContext com hook useAuth
 ├── lib/
-│   ├── api.ts              # Instancia Axios + interceptors
+│   ├── api.ts              # Instância Axios + interceptors
 │   ├── anonymous.ts        # UUID em localStorage
 │   └── schemas/            # Schemas Zod (login, post, comment)
 ├── services/               # auth.service.ts, posts.service.ts, comments.service.ts
 ├── types/                  # Interfaces TypeScript (user, post, comment)
-└── middleware.ts            # Protecao de rotas /admin/*
+└── middleware.ts            # Proteção de rotas /admin/*
 ```
 
 ---
 
-## 📄 Paginas e Funcionalidades
+## 📄 Páginas e Funcionalidades
 
-### Paginas Publicas
+### Páginas Públicas
 
-- **Home** (`/`): Pagina inicial com hero contendo campo de busca, lista de posts com filtro por disciplina e paginacao. Os posts sao renderizados como Server Component para otimizar SEO.
+- **Home** (`/`): Página inicial com hero contendo campo de busca, lista de posts com filtro por disciplina e paginação. Os posts são renderizados como Server Component para otimizar SEO.
 
-- **Artigo** (`/posts/[id]`): Exibe o conteudo completo de um post com badges de status e disciplina. Inclui secao de comentarios anonimos — cada visitante recebe um UUID em `localStorage` que permite identificar e deletar seus proprios comentarios sem necessidade de login.
+- **Artigo** (`/posts/[id]`): Exibe o conteúdo completo de um post com badges de status e disciplina. Inclui seção de comentários anônimos — cada visitante recebe um UUID em `localStorage` que permite identificar e deletar seus próprios comentários sem necessidade de login.
 
 - **Grupo** (`/grupo`): Cards com os integrantes do Grupo 12 e seus respectivos RMs.
 
-- **Design System** (`/design-system`): Documentacao interativa do Design System "The Academic Curator" — paleta de cores, tipografia, elevacao, componentes e regras visuais.
+- **Design System** (`/design-system`): Documentação interativa do Design System "The Academic Curator" — paleta de cores, tipografia, elevação, componentes e regras visuais.
 
-### Autenticacao
+### Autenticação
 
-- **Login** (`/login`): Formulario passwordless que solicita apenas o email do docente. Validacao em tempo real com React Hook Form + Zod. Feedback visual de erro seguindo o Design System (fundo vermelho suave, nunca borda vermelha isolada).
+- **Login** (`/login`): Formulário passwordless que solicita apenas o email do docente. Validação em tempo real com React Hook Form + Zod. Feedback visual de erro seguindo o Design System (fundo vermelho suave, nunca borda vermelha isolada).
 
-### Area Administrativa (protegida)
+### Área Administrativa (protegida)
 
-Todas as rotas `/admin/*` sao protegidas por `middleware.ts` — apenas usuarios com role TEACHER e JWT valido em httpOnly cookie podem acessar.
+Todas as rotas `/admin/*` são protegidas por `middleware.ts` — apenas usuários com role TEACHER e JWT válido em httpOnly cookie podem acessar.
 
-- **Dashboard** (`/admin`): Painel com stats cards no topo (total de posts, publicados, rascunhos, arquivados) e DataTable com todos os posts. A tabela suporta filtro por texto e acoes de editar/excluir por linha.
+- **Dashboard** (`/admin`): Painel com stats cards no topo (total de posts, publicados, rascunhos, arquivados) e DataTable com todos os posts. A tabela suporta filtro por texto e ações de editar/excluir por linha.
 
-- **Novo Post** (`/admin/posts/new`): Formulario para criacao de postagens com campos de titulo, conteudo, disciplina e status. Validacao com Zod — titulo minimo de 5 caracteres, conteudo minimo de 10 caracteres.
+- **Novo Post** (`/admin/posts/new`): Formulário para criação de postagens com campos de título, conteúdo, disciplina e status. Validação com Zod — título mínimo de 5 caracteres, conteúdo mínimo de 10 caracteres.
 
-- **Editar Post** (`/admin/posts/[id]/edit`): Mesmo formulario de criacao, pre-populado com os dados do post existente. O campo de autor exibe o nome do criador original como informacao nao editavel.
+- **Editar Post** (`/admin/posts/[id]/edit`): Mesmo formulário de criação, pré-populado com os dados do post existente. O campo de autor exibe o nome do criador original como informação não editável.
 
 ---
 
-## 🔐 Fluxo de Autenticacao
+## 🔐 Fluxo de Autenticação
 
-O frontend utiliza **JWT armazenado em httpOnly cookie** (ADR-04) em vez de `localStorage`. Essa escolha protege contra ataques XSS (JavaScript nao consegue acessar o cookie) e elimina o "flash de autenticacao" no refresh da pagina — o estado do usuario e reidratado server-side antes da renderizacao.
+O frontend utiliza **JWT armazenado em httpOnly cookie** (ADR-04) em vez de `localStorage`. Essa escolha protege contra ataques XSS (JavaScript não consegue acessar o cookie) e elimina o "flash de autenticação" no refresh da página — o estado do usuário é reidratado server-side antes da renderização.
 
-Tres API Routes internas gerenciam o ciclo de vida do cookie:
-- `POST /api/auth/set-cookie` — armazena o JWT apos login
+Três API Routes internas gerenciam o ciclo de vida do cookie:
+- `POST /api/auth/set-cookie` — armazena o JWT após login
 - `POST /api/auth/clear-cookie` — remove o cookie no logout
-- `GET /api/auth/me` — decodifica o JWT server-side usando `JWT_SECRET` e retorna o objeto do usuario
+- `GET /api/auth/me` — decodifica o JWT server-side usando `JWT_SECRET` e retorna o objeto do usuário
 
 ```mermaid
 sequenceDiagram
@@ -216,17 +216,17 @@ sequenceDiagram
     Next->>API: POST /api/auth/set-cookie (token)
     API-->>Browser: httpOnly cookie setado
 
-    Note over Browser,Backend: Navegacao protegida
+    Note over Browser,Backend: Navegação protegida
     Browser->>Next: GET /admin
     Next->>Next: middleware.ts verifica cookie
-    alt Cookie invalido/ausente
+    alt Cookie inválido/ausente
         Next-->>Browser: Redirect para /login
-    else Cookie valido
-        Next-->>Browser: Renderiza pagina admin
+    else Cookie válido
+        Next-->>Browser: Renderiza página admin
     end
 
     Note over Browser,Backend: Rehydrate (page refresh)
-    Browser->>API: GET /api/auth/me (cookie automatico)
+    Browser->>API: GET /api/auth/me (cookie automático)
     API->>API: Decodifica JWT com JWT_SECRET
     API-->>Browser: { user } atualiza AuthContext
 
@@ -240,7 +240,7 @@ sequenceDiagram
 
 ## 🎨 Design System
 
-O Design System **"The Academic Curator"** foi criado para transmitir seriedade academica com leveza visual. Os tokens estao configurados em `tailwind.config.ts` e sao usados consistentemente em toda a aplicacao.
+O Design System **"The Academic Curator"** foi criado para transmitir seriedade acadêmica com leveza visual. Os tokens estão configurados em `tailwind.config.ts` e são usados consistentemente em toda a aplicação.
 
 ### Paleta de Cores
 
@@ -248,94 +248,94 @@ O Design System **"The Academic Curator"** foi criado para transmitir seriedade 
 |-------|-----|-----|
 | `primary` | `#022448` | Headers, elementos de destaque |
 | `primary-container` | `#1E3A5F` | Fundos de destaque |
-| `secondary` | `#006A61` | Botoes primarios, links ativos |
+| `secondary` | `#006A61` | Botões primários, links ativos |
 | `secondary-container` | `#86F2E4` | Badges, destaques leves |
 | `surface` | `#F9F9FF` | Fundo principal |
 | `on-surface` | `#111C2D` | Texto (nunca preto puro) |
-| `on-surface-variant` | `#94A3B8` | Texto secundario |
-| `error` | `#DC2626` | Validacao, estados de erro |
+| `on-surface-variant` | `#94A3B8` | Texto secundário |
+| `error` | `#DC2626` | Validação, estados de erro |
 
 ### Regras Visuais
 
-- **Sem bordas para separacao**: Layout usa shifts de background color em vez de `1px solid` para separar secoes
-- **Botao primario com gradiente**: `bg-gradient-to-r from-secondary to-secondary-on-container` — nunca cor solida
+- **Sem bordas para separação**: Layout usa shifts de background color em vez de `1px solid` para separar seções
+- **Botão primário com gradiente**: `bg-gradient-to-r from-secondary to-secondary-on-container` — nunca cor sólida
 - **Header com glassmorphism**: `bg-slate-50/80 backdrop-blur-md` para efeito de vidro fosco
 - **Cards com sombra sutil**: `shadow-xl shadow-sky-950/5`
-- **Inputs em erro**: `bg-error-container/20 border border-error/40` — unica excecao a regra de no-border
+- **Inputs em erro**: `bg-error-container/20 border border-error/40` — única exceção à regra de no-border
 
-### Icones por Disciplina
+### Ícones por Disciplina
 
-Icones do [Material Symbols](https://fonts.google.com/icons) mapeados por disciplina:
+Ícones do [Material Symbols](https://fonts.google.com/icons) mapeados por disciplina:
 
-| Disciplina | Icone |
+| Disciplina | Ícone |
 |------------|-------|
-| Matematica | `functions` |
-| Portugues | `menu_book` |
-| Ciencias | `science` |
-| Historia | `history_edu` |
+| Matemática | `functions` |
+| Português | `menu_book` |
+| Ciências | `science` |
+| História | `history_edu` |
 | Geografia | `public` |
 
 ---
 
 ## 🧪 Testes
 
-A aplicacao utiliza **Vitest** + **React Testing Library** para testes, seguindo o padrao ensinado no Modulo 03 Aula 05. Os testes focam em **Client Components** — Server Components nao sao testaveis em ambiente jsdom. Chamadas HTTP sao mockadas com `vi.mock('axios')`.
+A aplicação utiliza **Vitest** + **React Testing Library** para testes, seguindo o padrão ensinado no Módulo 03 Aula 05. Os testes focam em **Client Components** — Server Components não são testáveis em ambiente jsdom. Chamadas HTTP são mockadas com `vi.mock('axios')`.
 
-### Areas Testadas
+### Áreas Testadas
 
-| Area | Arquivo de teste | O que testa |
+| Área | Arquivo de teste | O que testa |
 |------|-----------------|-------------|
-| AuthContext | `contexts/__tests__/AuthContext.test.tsx` | Login, logout, rehydrate do usuario |
-| PostCard | `components/posts/__tests__/PostCard.test.tsx` | Renderizacao, badges, links |
+| AuthContext | `contexts/__tests__/AuthContext.test.tsx` | Login, logout, rehydrate do usuário |
+| PostCard | `components/posts/__tests__/PostCard.test.tsx` | Renderização, badges, links |
 | SearchBar | `components/posts/__tests__/SearchBar.test.tsx` | Busca, filtros por disciplina |
-| PostForm | `__tests__/components/admin/PostForm.test.tsx` | Validacao Zod, submissao |
-| CommentForm | `__tests__/components/comments/CommentForm.test.tsx` | Criacao de comentarios |
-| CommentItem | `__tests__/components/comments/CommentItem.test.tsx` | Renderizacao, delecao |
-| DataTable | `components/ui/data-table/__tests__/DataTable.test.tsx` | Ordenacao, filtro, paginacao |
-| Admin page | `__tests__/app/admin/AdminPage.test.tsx` | Listagem, acoes de editar/excluir |
-| Login page | `app/login/__tests__/LoginPage.test.tsx` | Formulario, validacao, redirect |
-| Schemas Zod | `lib/schemas/__tests__/*.test.ts` | Validacao de login, post, comment |
-| anonymous.ts | `lib/__tests__/anonymous.test.ts` | Geracao/persistencia UUID |
+| PostForm | `__tests__/components/admin/PostForm.test.tsx` | Validação Zod, submissão |
+| CommentForm | `__tests__/components/comments/CommentForm.test.tsx` | Criação de comentários |
+| CommentItem | `__tests__/components/comments/CommentItem.test.tsx` | Renderização, deleção |
+| DataTable | `components/ui/data-table/__tests__/DataTable.test.tsx` | Ordenação, filtro, paginação |
+| Admin page | `__tests__/app/admin/AdminPage.test.tsx` | Listagem, ações de editar/excluir |
+| Login page | `app/login/__tests__/LoginPage.test.tsx` | Formulário, validação, redirect |
+| Schemas Zod | `lib/schemas/__tests__/*.test.ts` | Validação de login, post, comment |
+| anonymous.ts | `lib/__tests__/anonymous.test.ts` | Geração/persistência UUID |
 | UI components | `components/ui/__tests__/*.test.tsx` | Badge, Button, Input, ConfirmModal, IconCount |
 
 ### Como Rodar
 
 ```bash
 npm run test          # Watch mode (desenvolvimento)
-npm run test:run      # Execucao unica (CI)
-npm run test:coverage # Com relatorio de cobertura
+npm run test:run      # Execução única (CI)
+npm run test:coverage # Com relatório de cobertura
 ```
 
 ---
 
-## 🚀 Setup e Instalacao
+## 🚀 Setup e Instalação
 
-### Pre-requisitos
+### Pré-requisitos
 
 - **Node.js** 18+ ([Download](https://nodejs.org/))
-- **npm** 9+ (incluido com Node.js)
-- **API Fase 2** rodando em `http://localhost:3030` ([Repositorio](https://github.com/natanjunior/8FSDT-tech-challenge-2))
+- **npm** 9+ (incluído com Node.js)
+- **API Fase 2** rodando em `http://localhost:3030` ([Repositório](https://github.com/natanjunior/8FSDT-tech-challenge-2))
 
-### 1. Clonar o Repositorio
+### 1. Clonar o Repositório
 
 ```bash
 git clone https://github.com/natanjunior/8FSDT-tech-challenge-3.git
 cd 8FSDT-tech-challenge-3
 ```
 
-### 2. Instalar Dependencias
+### 2. Instalar Dependências
 
 ```bash
 npm install
 ```
 
-### 3. Configurar Variaveis de Ambiente
+### 3. Configurar Variáveis de Ambiente
 
 ```bash
 cp .env.example .env
 ```
 
-Edite `.env` com suas configuracoes:
+Edite `.env` com suas configurações:
 
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:3030
@@ -348,25 +348,25 @@ JWT_SECRET=mesma_secret_da_api_fase_2
 npm run dev
 ```
 
-Aplicacao rodando em: `http://localhost:3000`
+Aplicação rodando em: `http://localhost:3000`
 
-### Variaveis de Ambiente
+### Variáveis de Ambiente
 
-| Variavel | Descricao | Padrao | Obrigatoria |
+| Variável | Descrição | Padrão | Obrigatória |
 |----------|-----------|--------|-------------|
 | `NEXT_PUBLIC_API_URL` | URL da API Fase 2 | `http://localhost:3030` | Sim |
 | `JWT_SECRET` | Secret para decodificar JWT (mesmo da Fase 2) | — | Sim |
 
-### Scripts Disponiveis
+### Scripts Disponíveis
 
-| Script | Descricao |
+| Script | Descrição |
 |--------|-----------|
 | `npm run dev` | Servidor de desenvolvimento (localhost:3000) |
-| `npm run build` | Build de producao |
+| `npm run build` | Build de produção |
 | `npm run lint` | ESLint |
 | `npm run test` | Testes em watch mode |
-| `npm run test:run` | Testes em execucao unica (CI) |
-| `npm run test:coverage` | Testes com relatorio de cobertura |
+| `npm run test:run` | Testes em execução única (CI) |
+| `npm run test:coverage` | Testes com relatório de cobertura |
 
 ---
 
@@ -400,6 +400,6 @@ Aplicacao rodando em: `http://localhost:3000`
 
 ---
 
-## 📄 Licenca
+## 📄 Licença
 
 MIT License - Projeto Educacional
