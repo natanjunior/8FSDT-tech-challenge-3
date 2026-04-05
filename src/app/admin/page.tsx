@@ -7,24 +7,16 @@ import { getPosts, deletePost } from '@/services/posts.service'
 import { useAuth } from '@/contexts/AuthContext'
 import { Post } from '@/types/post'
 import { StatusBadge, DisciplineBadge } from '@/components/ui/Badge'
-import { AuthorId } from '@/components/ui/AuthorId'
 import { ConfirmModal } from '@/components/ui/ConfirmModal'
 import { getDisciplineSlug } from '@/lib/discipline'
 
-// Discipline color map (matches prototype)
-const DISC_COLORS: Record<string, string> = {
-  matematica: 'bg-blue-600',
-  portugues: 'bg-amber-600',
-  ciencias: 'bg-emerald-600',
-  historia: 'bg-rose-600',
-  geografia: 'bg-teal-600',
+function formatDate(dateStr: string | null | undefined) {
+  if (!dateStr) return '—'
+  const d = new Date(dateStr)
+  if (isNaN(d.getTime())) return '—'
+  return d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' })
 }
 
-function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString('pt-BR', {
-    day: '2-digit', month: 'short', year: 'numeric',
-  })
-}
 
 export default function AdminPage() {
   const { user } = useAuth()
@@ -103,7 +95,7 @@ export default function AdminPage() {
     const icon = active && sortDir === 'desc' ? 'arrow_downward' : 'arrow_upward'
     return (
       <span
-        className={`sort-arrow material-symbols-outlined text-outline-variant ${active ? '' : 'opacity-0'}`}
+        className={`sort-arrow material-symbols-outlined text-outline-variant transition-opacity ${active ? 'opacity-100' : 'opacity-0 group-hover/col:opacity-100'}`}
         style={{ fontSize: 14 }}
       >
         {icon}
@@ -291,25 +283,25 @@ export default function AdminPage() {
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-surface-container-low/30 border-b border-surface-container-high">
-                <th onClick={() => handleSort('title')} className="px-6 py-4 text-xs font-black uppercase tracking-widest text-on-surface-variant cursor-pointer select-none transition-colors">
+                <th onClick={() => handleSort('title')} className="group/col px-6 py-4 text-xs font-black uppercase tracking-widest text-on-surface-variant hover:text-secondary cursor-pointer select-none transition-colors">
                   <span className="flex items-center gap-1">Título<SortArrow col="title" /></span>
                 </th>
-                <th onClick={() => handleSort('author')} className="pl-0 pr-6 py-4 text-xs font-black uppercase tracking-widest text-on-surface-variant cursor-pointer select-none transition-colors">
+                <th onClick={() => handleSort('author')} className="group/col pl-0 pr-6 py-4 text-xs font-black uppercase tracking-widest text-on-surface-variant hover:text-secondary cursor-pointer select-none transition-colors">
                   <span className="flex items-center gap-1.5"><span className="text-outline-variant font-light">|</span>Autor<SortArrow col="author" /></span>
                 </th>
-                <th onClick={() => handleSort('disc')} className="px-6 py-4 text-xs font-black uppercase tracking-widest text-on-surface-variant cursor-pointer select-none transition-colors">
+                <th onClick={() => handleSort('disc')} className="group/col px-6 py-4 text-xs font-black uppercase tracking-widest text-on-surface-variant hover:text-secondary cursor-pointer select-none transition-colors">
                   <span className="flex items-center gap-1">Disciplina<SortArrow col="disc" /></span>
                 </th>
-                <th onClick={() => handleSort('status')} className="px-6 py-4 text-xs font-black uppercase tracking-widest text-on-surface-variant cursor-pointer select-none transition-colors">
+                <th onClick={() => handleSort('status')} className="group/col px-6 py-4 text-xs font-black uppercase tracking-widest text-on-surface-variant hover:text-secondary cursor-pointer select-none transition-colors">
                   <span className="flex items-center gap-1">Status<SortArrow col="status" /></span>
                 </th>
-                <th onClick={() => handleSort('date')} className="px-6 py-4 text-xs font-black uppercase tracking-widest text-on-surface-variant cursor-pointer select-none transition-colors">
+                <th onClick={() => handleSort('date')} className="group/col px-6 py-4 text-xs font-black uppercase tracking-widest text-on-surface-variant hover:text-secondary cursor-pointer select-none transition-colors">
                   <span className="flex items-center gap-1">Última edição<SortArrow col="date" /></span>
                 </th>
-                <th onClick={() => handleSort('comments')} className="px-6 py-4 text-xs font-black uppercase tracking-widest text-on-surface-variant text-center cursor-pointer select-none transition-colors">
+                <th onClick={() => handleSort('comments')} className="group/col px-6 py-4 text-xs font-black uppercase tracking-widest text-on-surface-variant text-center hover:text-secondary cursor-pointer select-none transition-colors">
                   <span className="flex items-center justify-center gap-1">Coment.<SortArrow col="comments" /></span>
                 </th>
-                <th onClick={() => handleSort('bookmarks')} className="px-6 py-4 text-xs font-black uppercase tracking-widest text-on-surface-variant text-center cursor-pointer select-none transition-colors">
+                <th onClick={() => handleSort('bookmarks')} className="group/col px-6 py-4 text-xs font-black uppercase tracking-widest text-on-surface-variant text-center hover:text-secondary cursor-pointer select-none transition-colors">
                   <span className="flex items-center justify-center gap-1">Lidos<SortArrow col="bookmarks" /></span>
                 </th>
                 <th className="px-6 py-4 text-xs font-black uppercase tracking-widest text-on-surface-variant text-right">Ações</th>
@@ -335,25 +327,27 @@ export default function AdminPage() {
                       <span className="font-bold text-primary leading-tight hover:text-secondary cursor-pointer transition-colors">
                         {post.title}
                       </span>
+                      {post.content && (
+                        <span className="text-xs text-on-surface-variant truncate max-w-xs">{post.content}</span>
+                      )}
                       <div className="flex items-center gap-2 mt-0.5">
-                        <AuthorId name={post.author.name} size="sm" />
+                        <div className={`w-5 h-5 rounded-full border flex items-center justify-center text-[9px] font-black shrink-0 ${
+                          (() => { const h = post.author.name.split('').reduce((a,c)=>a+c.charCodeAt(0),0); return ['bg-blue-100 border-blue-200 text-blue-700','bg-emerald-100 border-emerald-200 text-emerald-700','bg-teal-100 border-teal-200 text-teal-700','bg-amber-100 border-amber-200 text-amber-700','bg-rose-100 border-rose-200 text-rose-700','bg-violet-100 border-violet-200 text-violet-700'][h%6] })()
+                        }`}>
+                          {post.author.name.split(' ').slice(0,2).map(n=>n[0]?.toUpperCase()??'').join('')}
+                        </div>
+                        <span className="text-xs font-medium text-on-surface-variant">{post.author.name}</span>
                       </div>
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    {post.discipline ? (
-                      <span className={`${DISC_COLORS[getDisciplineSlug(post.discipline.label) ?? ''] ?? 'bg-primary'} text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full`}>
-                        {post.discipline.label}
-                      </span>
-                    ) : (
-                      <span className="text-xs text-on-surface-variant/40">—</span>
-                    )}
+                    <DisciplineBadge disciplineSlug={post.discipline ? getDisciplineSlug(post.discipline.label) : null} />
                   </td>
                   <td className="px-6 py-4">
                     <StatusBadge status={post.status} />
                   </td>
                   <td className="px-6 py-4">
-                    <span className="text-sm font-mono text-on-surface-variant">{formatDate(post.updated_at)}</span>
+                    <span className="text-sm font-mono text-on-surface-variant">{formatDate(post.updatedAt)}</span>
                   </td>
                   <td className="px-6 py-4 text-center">
                     <span className="text-sm font-mono text-on-surface-variant">{post.comments_count ?? 0}</span>

@@ -37,6 +37,14 @@
   --font-family-mono: 'JetBrains Mono', monospace;
 }
 
+/* Global cursor-pointer for all interactive elements */
+button, [role="button"], a, label[for], select, input[type="checkbox"], input[type="radio"] {
+  cursor: pointer;
+}
+input[disabled], button[disabled], textarea[disabled] {
+  cursor: not-allowed;
+}
+
 /* CSS custom classes usadas nos protótipos */
 .cta-gradient {
   background: linear-gradient(90deg, #006a61 0%, #005049 100%);

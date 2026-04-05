@@ -153,6 +153,7 @@ export default function EditPostPage() {
             discipline_id: post.discipline?.id ?? '',
           }}
           isSubmitting={isSubmitting}
+          isEdit
           onDirtyChange={setIsDirty}
         />
       </main>
@@ -183,11 +184,11 @@ export default function EditPostPage() {
             )}
             <div>
               <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1">Criado em</p>
-              <p className="text-sm font-mono text-on-surface">{formatDate(post.created_at)}</p>
+              <p className="text-sm font-mono text-on-surface">{formatDate(post.createdAt)}</p>
             </div>
             <div>
               <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1">Última edição</p>
-              <p className="text-sm font-mono text-on-surface">{formatDate(post.updated_at)}</p>
+              <p className="text-sm font-mono text-on-surface">{formatDate(post.updatedAt)}</p>
             </div>
             <div>
               <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1">Marcações de leitura</p>

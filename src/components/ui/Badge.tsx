@@ -1,26 +1,18 @@
 // src/components/ui/Badge.tsx
 import { PostStatus } from '@/types/post'
 
-const STATUS_CONFIG: Record<PostStatus, { label: string; className: string }> = {
-  PUBLISHED: {
-    label: 'PUBLICADO',
-    className: 'bg-green-500/10 text-green-600 border border-green-500/20',
-  },
-  DRAFT: {
-    label: 'RASCUNHO',
-    className: 'bg-yellow-400/10 text-yellow-600 border border-yellow-400/20',
-  },
-  ARCHIVED: {
-    label: 'ARQUIVADO',
-    className: 'bg-slate-200 text-slate-500',
-  },
+const STATUS_CONFIG: Record<PostStatus, { label: string; bg: string; text: string; dot: string }> = {
+  PUBLISHED: { label: 'PUBLICADO', bg: 'bg-green-500/10',  text: 'text-green-600',  dot: 'bg-green-500'  },
+  DRAFT:     { label: 'RASCUNHO',  bg: 'bg-yellow-500/10', text: 'text-yellow-600', dot: 'bg-yellow-500' },
+  ARCHIVED:  { label: 'ARQUIVADO', bg: 'bg-slate-400/10',  text: 'text-slate-500',  dot: 'bg-slate-400'  },
 }
 
 export function StatusBadge({ status }: { status: PostStatus }) {
-  const config = STATUS_CONFIG[status]
+  const c = STATUS_CONFIG[status]
   return (
-    <span className={`text-[10px] font-bold px-3 py-1 rounded-full ${config.className}`}>
-      {config.label}
+    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold ${c.bg} ${c.text}`}>
+      <span className={`w-1.5 h-1.5 rounded-full ${c.dot} mr-2`}></span>
+      {c.label}
     </span>
   )
 }

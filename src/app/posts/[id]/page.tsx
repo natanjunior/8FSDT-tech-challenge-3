@@ -91,12 +91,12 @@ export default async function PostPage({ params }: PostPageProps) {
             </div>
             <span className="text-xs font-mono text-on-surface-variant ml-auto">
               <span className="md:hidden">
-                {new Date(post.published_at ?? post.created_at).toLocaleDateString('pt-BR', {
+                {new Date(post.published_at ?? post.createdAt).toLocaleDateString('pt-BR', {
                   day: '2-digit', month: '2-digit', year: '2-digit',
                 })}
               </span>
               <span className="hidden md:inline">
-                {new Date(post.published_at ?? post.created_at).toLocaleDateString('pt-BR', {
+                {new Date(post.published_at ?? post.createdAt).toLocaleDateString('pt-BR', {
                   day: 'numeric', month: 'long', year: 'numeric',
                 })}
               </span>

@@ -71,7 +71,7 @@ export function PostCard({ post, size = 'default' }: PostCardProps) {
             {statusConfig.label}
           </span>
           <span className="font-mono text-[10px] text-outline uppercase tracking-tighter">
-            {formatDate(post.published_at ?? post.created_at)}
+            {formatDate(post.published_at ?? post.createdAt)}
           </span>
         </div>
 
