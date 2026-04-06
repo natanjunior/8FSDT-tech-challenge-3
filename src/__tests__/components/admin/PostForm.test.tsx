@@ -8,6 +8,12 @@ vi.mock('@/contexts/AuthContext', () => ({
   }),
 }))
 
+vi.mock('@uiw/react-md-editor', () => ({
+  default: ({ value, onChange }: { value: string; onChange: (v: string) => void }) => (
+    <textarea data-testid="md-editor" value={value} onChange={e => onChange(e.target.value)} />
+  ),
+}))
+
 const mockOnSubmit = vi.fn()
 const mockOnCancel = vi.fn()
 
