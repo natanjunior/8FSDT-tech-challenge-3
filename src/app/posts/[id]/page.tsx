@@ -133,7 +133,7 @@ export default async function PostPage({ params }: PostPageProps) {
 
         {/* Corpo do artigo */}
         <div className="prose prose-slate max-w-none">
-          <ReactMarkdown>{post.content}</ReactMarkdown>
+          <ReactMarkdown skipHtml>{post.content}</ReactMarkdown>
         </div>
 
         {/* Seção de comentários */}
