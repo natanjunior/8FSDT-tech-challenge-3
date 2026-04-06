@@ -1,5 +1,6 @@
 /* src/app/globals.css */
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @theme {
   /* === Cores — extraídas do tailwind.config dos protótipos === */
@@ -35,6 +36,19 @@
   /* === Tipografia === */
   --font-family-sans: 'Inter', sans-serif;
   --font-family-mono: 'JetBrains Mono', monospace;
+
+  /* === Tailwind Typography — mapeamento para design system === */
+  --tw-prose-body: var(--color-on-surface);
+  --tw-prose-headings: var(--color-primary);
+  --tw-prose-links: var(--color-secondary);
+  --tw-prose-bold: var(--color-on-surface);
+  --tw-prose-code: var(--color-primary);
+  --tw-prose-quotes: var(--color-on-surface-variant);
+  --tw-prose-counters: var(--color-on-surface-variant);
+  --tw-prose-bullets: var(--color-on-surface-variant);
+  --tw-prose-hr: var(--color-outline-variant);
+  --tw-prose-th-borders: var(--color-outline-variant);
+  --tw-prose-td-borders: var(--color-outline-variant);
 }
 
 /* Global cursor-pointer for all interactive elements */
