@@ -1,5 +1,6 @@
 import { cookies } from 'next/headers'
 import { notFound, redirect } from 'next/navigation'
+import ReactMarkdown from 'react-markdown'
 import { PublicLayout } from '@/components/layout/PublicLayout'
 import { CommentSection } from '@/components/comments/CommentSection'
 import { DisciplineBadge, StatusBadge } from '@/components/ui/Badge'
@@ -67,8 +68,6 @@ export default async function PostPage({ params }: PostPageProps) {
   const authorColor = getColorByName(post.author.name)
   const authorInitials = getInitials(post.author.name)
 
-  const paragraphs = post.content.split('\n\n').filter(Boolean)
-
   return (
     <PublicLayout activeDiscipline={disciplineSlug}>
       <article>
@@ -133,16 +132,9 @@ export default async function PostPage({ params }: PostPageProps) {
         </header>
 
         {/* Corpo do artigo */}
-        <article className="text-lg text-on-surface leading-[1.6] space-y-8">
-          {paragraphs.map((paragraph, i) => (
-            <p
-              key={i}
-              className={i === 0 ? 'first-letter:text-5xl first-letter:font-black first-letter:text-primary first-letter:mr-3 first-letter:float-left' : ''}
-            >
-              {paragraph}
-            </p>
-          ))}
-        </article>
+        <div className="prose prose-slate max-w-none">
+          <ReactMarkdown>{post.content}</ReactMarkdown>
+        </div>
 
         {/* Seção de comentários */}
         <CommentSection postId={post.id} initialCount={post.comments_count ?? 0} />
