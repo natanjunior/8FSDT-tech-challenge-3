@@ -1,7 +1,8 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
+import MarkdownEditor from '@/components/ui/MarkdownEditor'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { postSchema, PostFormData, PostFormInput } from '@/lib/schemas/post.schema'
 import { useAuth } from '@/contexts/AuthContext'
@@ -64,6 +65,7 @@ export default function PostForm({ onSubmit, onCancel, submitLabel, defaultValue
     handleSubmit,
     watch,
     setValue,
+    control,
     formState: { errors, isDirty: formIsDirty },
   } = useForm<PostFormInput, unknown, PostFormData>({
     resolver: zodResolver(postSchema),
@@ -252,21 +254,22 @@ export default function PostForm({ onSubmit, onCancel, submitLabel, defaultValue
           {/* Conteúdo */}
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <label className="block text-sm font-bold text-primary" htmlFor="content">Conteúdo *</label>
+              <label className="block text-sm font-bold text-primary">Conteúdo *</label>
               <span className="text-[10px] font-bold text-on-surface-variant/70 font-mono">
                 {isEdit ? `${contentValue.length} CARACTERES` : `${contentValue.length} / MÍN. 10`}
               </span>
             </div>
-            <textarea
-              id="content"
-              rows={12}
-              placeholder="Escreva o conteúdo do artigo aqui..."
-              {...register('content')}
-              className={`w-full rounded-xl px-4 py-4 text-on-surface placeholder:text-on-surface-variant/60 outline-none transition-all resize-none min-h-[300px] ${
-                errors.content
-                  ? 'bg-error-container/20 border-2 border-error/40 focus:ring-2 focus:ring-error/20'
-                  : 'bg-surface-container-low border border-outline-variant/30 focus:ring-2 focus:ring-primary/20 focus:border-primary'
-              }`}
+            <Controller
+              name="content"
+              control={control}
+              render={({ field }) => (
+                <MarkdownEditor
+                  value={field.value}
+                  onChange={field.onChange}
+                  error={!!errors.content}
+                  placeholder="Escreva o conteúdo do artigo aqui..."
+                />
+              )}
             />
             {errors.content ? (
               <p className="text-xs text-error font-medium">{errors.content.message}</p>
