@@ -23,9 +23,10 @@ export default function MarkdownEditor({ value, onChange, error, placeholder }: 
     >
       <MDEditor
         value={value}
+        // MDEditor passes undefined when content is cleared; normalise to '' for RHF
         onChange={(val) => onChange(val ?? '')}
         preview="edit"
-        placeholder={placeholder}
+        textareaProps={{ placeholder }}
         height={300}
         style={{ borderRadius: 0, border: 'none', boxShadow: 'none' }}
       />
