@@ -8,7 +8,7 @@ vi.mock('@/contexts/AuthContext', () => ({
   }),
 }))
 
-vi.mock('@uiw/react-md-editor', () => ({
+vi.mock('@/components/ui/MarkdownEditor', () => ({
   default: ({ value, onChange }: { value: string; onChange: (v: string) => void }) => (
     <textarea data-testid="md-editor" value={value} onChange={e => onChange(e.target.value)} />
   ),
@@ -23,7 +23,7 @@ describe('PostForm', () => {
   it('renders title, content, status, author fields', () => {
     render(<PostForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} submitLabel="Criar artigo" />)
     expect(screen.getByLabelText('Título *')).toBeInTheDocument()
-    expect(screen.getByLabelText('Conteúdo *')).toBeInTheDocument()
+    expect(screen.getByTestId('md-editor')).toBeInTheDocument()
     expect(screen.getByLabelText('Autor')).toBeInTheDocument()
     expect(screen.getByText('Criar artigo')).toBeInTheDocument()
   })
@@ -47,7 +47,7 @@ describe('PostForm', () => {
   it('shows validation error when title is too short', async () => {
     render(<PostForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} submitLabel="Criar artigo" />)
     fireEvent.change(screen.getByLabelText('Título *'), { target: { value: 'abc' } })
-    fireEvent.change(screen.getByLabelText('Conteúdo *'), { target: { value: 'conteudo valido longo o suficiente' } })
+    fireEvent.change(screen.getByTestId('md-editor'), { target: { value: 'conteudo valido longo o suficiente' } })
     fireEvent.submit(screen.getByRole('button', { name: /criar artigo/i }))
     await waitFor(() => {
       expect(screen.getByText(/entre 5 e 255 caracteres/i)).toBeInTheDocument()
@@ -57,7 +57,7 @@ describe('PostForm', () => {
   it('shows validation error when content is too short', async () => {
     render(<PostForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} submitLabel="Criar artigo" />)
     fireEvent.change(screen.getByLabelText('Título *'), { target: { value: 'Título válido de teste' } })
-    fireEvent.change(screen.getByLabelText('Conteúdo *'), { target: { value: 'curto' } })
+    fireEvent.change(screen.getByTestId('md-editor'), { target: { value: 'curto' } })
     fireEvent.submit(screen.getByRole('button', { name: /criar artigo/i }))
     await waitFor(() => {
       expect(screen.getByText(/no mínimo 10 caracteres/i)).toBeInTheDocument()
