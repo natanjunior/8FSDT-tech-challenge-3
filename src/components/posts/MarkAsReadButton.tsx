@@ -14,7 +14,7 @@ export function MarkAsReadButton({ postId }: MarkAsReadButtonProps) {
     if (hasRead) return
     setHasRead(true)
     // fire-and-forget — markAsRead já trata erros silenciosamente
-    markAsRead(postId)
+    void markAsRead(postId)
   }
 
   return (
