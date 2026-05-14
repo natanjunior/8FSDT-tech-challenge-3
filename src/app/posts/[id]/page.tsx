@@ -6,6 +6,7 @@ import { CommentSection } from '@/components/comments/CommentSection'
 import { DisciplineBadge, StatusBadge } from '@/components/ui/Badge'
 import type { Post } from '@/types/post'
 import { getDisciplineSlug } from '@/lib/discipline'
+import { MarkAsReadButton } from '@/components/posts/MarkAsReadButton'
 
 const COLORS = [
   'bg-blue-100 border-blue-200 text-blue-700',
@@ -123,10 +124,7 @@ export default async function PostPage({ params }: PostPageProps) {
                 <span className="material-symbols-outlined text-lg">share</span>
                 <span className="text-xs font-medium hidden sm:block">Compartilhar</span>
               </button>
-              <button className="flex items-center gap-1.5 px-3 py-2 text-sm text-on-surface-variant hover:bg-surface-container rounded-lg transition-colors">
-                <span className="material-symbols-outlined text-lg">bookmark</span>
-                <span className="text-xs font-medium hidden sm:block">Marcar como lido</span>
-              </button>
+              <MarkAsReadButton postId={post.id} />
             </div>
           </div>
         </header>
