@@ -302,11 +302,11 @@ export default function AdminPage() {
                 <th onClick={() => handleSort('date')} className="group/col px-6 py-4 text-xs font-black uppercase tracking-widest text-on-surface-variant hover:text-secondary cursor-pointer select-none transition-colors">
                   <span className="flex items-center gap-1">Última edição<SortArrow col="date" /></span>
                 </th>
-                <th onClick={() => handleSort('comments')} className="group/col px-6 py-4 text-xs font-black uppercase tracking-widest text-on-surface-variant text-center hover:text-secondary cursor-pointer select-none transition-colors">
-                  <span className="flex items-center justify-center gap-1">Coment.<SortArrow col="comments" /></span>
+                <th className="px-6 py-4 text-xs font-black uppercase tracking-widest text-on-surface-variant text-center cursor-default select-none">
+                  <span className="flex items-center justify-center gap-1">Coment.</span>
                 </th>
-                <th onClick={() => handleSort('bookmarks')} className="group/col px-6 py-4 text-xs font-black uppercase tracking-widest text-on-surface-variant text-center hover:text-secondary cursor-pointer select-none transition-colors">
-                  <span className="flex items-center justify-center gap-1">Lidos<SortArrow col="bookmarks" /></span>
+                <th className="px-6 py-4 text-xs font-black uppercase tracking-widest text-on-surface-variant text-center cursor-default select-none">
+                  <span className="flex items-center justify-center gap-1">Lidos</span>
                 </th>
                 <th className="px-6 py-4 text-xs font-black uppercase tracking-widest text-on-surface-variant text-right">Ações</th>
               </tr>
