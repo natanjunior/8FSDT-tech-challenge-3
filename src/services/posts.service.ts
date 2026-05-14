@@ -11,13 +11,6 @@ export interface GetPostsParams {
   sortDir?: 'asc' | 'desc' | null
 }
 
-export interface SearchPostsParams {
-  query?: string
-  discipline?: string
-  page?: number
-  limit?: number
-}
-
 const SORT_FIELD_MAP: Record<string, string> = {
   title: 'title',
   author: 'author',
@@ -49,13 +42,6 @@ export async function getPosts(
   const { data } = await api.get<PaginatedResponse<Post>>(endpoint, {
     params: queryParams,
   })
-  return data
-}
-
-export async function searchPosts(
-  params: SearchPostsParams
-): Promise<PaginatedResponse<Post>> {
-  const { data } = await api.get<PaginatedResponse<Post>>('/posts/search', { params })
   return data
 }
 
