@@ -26,7 +26,7 @@ export default function AdminPage() {
   const [posts, setPosts] = useState<Post[]>([])
   const [pagination, setPagination] = useState({ page: 1, total: 0, totalPages: 1, limit: 10 })
   const [isLoading, setIsLoading] = useState(true)
-  const [statusStats, setStatusStats] = useState({ published: 0, draft: 0, archived: 0 })
+  const [statusStats, setStatusStats] = useState({ published: 0, draft: 0, archived: 0, totalReads: 0 })
   const [sortKey, setSortKey] = useState<string | null>('date')
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc')
   const [filterOpen, setFilterOpen] = useState(false)
@@ -41,15 +41,20 @@ export default function AdminPage() {
 
   const loadStats = useCallback(async () => {
     try {
-      const [pubRes, draftRes, archRes] = await Promise.all([
+      // 4 calls in parallel: 3 status counters + 1 wide query (capped at API max 100)
+      // to compute total reads. Cap aceitável para um projeto acadêmico.
+      const [pubRes, draftRes, archRes, allRes] = await Promise.all([
         getPosts({ status: 'PUBLISHED', page: 1, limit: 1 }),
         getPosts({ status: 'DRAFT', page: 1, limit: 1 }),
         getPosts({ status: 'ARCHIVED', page: 1, limit: 1 }),
+        getPosts({ page: 1, limit: 100 }),
       ])
+      const totalReads = allRes.data.reduce((sum, p) => sum + (p.reads_count ?? 0), 0)
       setStatusStats({
         published: pubRes.pagination.total,
         draft: draftRes.pagination.total,
         archived: archRes.pagination.total,
+        totalReads,
       })
     } catch {
       // Keep previous stats on error — non-critical
@@ -127,7 +132,6 @@ export default function AdminPage() {
   }
 
   const total = pagination.total
-  const reads = posts.reduce((sum, p) => sum + (p.reads_count ?? 0), 0)
 
   return (
     <div className="px-8 lg:px-16 py-12">
@@ -175,7 +179,7 @@ export default function AdminPage() {
         <div className="bg-primary p-6 rounded-xl shadow-xl shadow-primary/20 flex flex-col justify-between text-white overflow-hidden relative">
           <div className="relative z-10">
             <span className="text-xs font-bold uppercase tracking-widest opacity-70">Marcados como lido</span>
-            <span className="text-3xl font-black mt-3 block">{reads >= 1000 ? `${(reads/1000).toFixed(1)}k` : reads}</span>
+            <span className="text-3xl font-black mt-3 block">{statusStats.totalReads >= 1000 ? `${(statusStats.totalReads / 1000).toFixed(1)}k` : statusStats.totalReads}</span>
           </div>
           <div className="absolute -right-4 -bottom-4 opacity-10">
             <span className="material-symbols-outlined text-9xl" style={{ fontVariationSettings: "'FILL' 1" }}>bookmark</span>
