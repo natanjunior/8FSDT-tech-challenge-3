@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -115,7 +116,7 @@ function LoginForm() {
         <div className="max-w-md mx-auto flex justify-between items-center opacity-60">
           <p className="text-[10px] font-light uppercase tracking-widest text-on-surface-variant">© 2026 8FSDT TC 3</p>
           <div className="flex gap-6">
-            <a className="text-[10px] font-light uppercase tracking-widest hover:text-primary transition-colors" href="/grupo">Grupo</a>
+            <Link className="text-[10px] font-light uppercase tracking-widest hover:text-primary transition-colors" href="/grupo">Grupo</Link>
             <a className="text-[10px] font-light uppercase tracking-widest hover:text-primary transition-colors" href="https://github.com/natanjunior/8FSDT-tech-challenge-3" target="_blank" rel="noopener noreferrer">Documentação</a>
           </div>
         </div>

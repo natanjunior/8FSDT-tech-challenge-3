@@ -1,5 +1,7 @@
 // src/components/layout/Footer.tsx
 
+import Link from 'next/link'
+
 const GITHUB_URL = 'https://github.com/natanjunior/8FSDT-tech-challenge-3'
 
 export function Footer() {
@@ -11,9 +13,9 @@ export function Footer() {
           <p className="text-xs font-light uppercase tracking-widest text-slate-500">© 2026 8FSDT TC 3. Conteúdo educacional para professores e alunos brasileiros.</p>
         </div>
         <div className="flex space-x-8">
-          <a href="/grupo" className="text-xs font-light uppercase tracking-widest text-slate-500 hover:text-secondary transition-colors">Grupo</a>
+          <Link href="/grupo" className="text-xs font-light uppercase tracking-widest text-slate-500 hover:text-secondary transition-colors">Grupo</Link>
           <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="text-xs font-light uppercase tracking-widest text-slate-500 hover:text-secondary transition-colors">Documentação</a>
-          <a href="/design-system" className="text-xs font-light uppercase tracking-widest text-slate-500 hover:text-secondary transition-colors">Design System</a>
+          <Link href="/design-system" className="text-xs font-light uppercase tracking-widest text-slate-500 hover:text-secondary transition-colors">Design System</Link>
         </div>
       </div>
     </footer>

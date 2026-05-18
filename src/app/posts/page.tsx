@@ -3,8 +3,7 @@ import { PostList } from '@/components/posts/PostList'
 import { SearchBar } from '@/components/posts/SearchBar'
 import type { Post, PaginatedResponse } from '@/types/post'
 import { DisciplineBadge } from '@/components/ui/Badge'
-import { getDisciplines } from '@/services/disciplines.service'
-import { getDisciplineSlug } from '@/lib/discipline'
+import { getDisciplineIdBySlug, getDisciplineLabelBySlug } from '@/lib/discipline'
 
 interface PostsPageProps {
   searchParams: Promise<{
@@ -46,21 +45,9 @@ export default async function PostsPage({ searchParams }: PostsPageProps) {
   const q = sp.q?.trim()
   const disciplineSlug = sp.discipline
 
-  // Resolve discipline slug → UUID for server-side filtering
-  let disciplineId: string | undefined
-  let disciplineLabel: string | undefined
-  if (disciplineSlug) {
-    try {
-      const allDisciplines = await getDisciplines()
-      const match = allDisciplines.find(
-        (d) => getDisciplineSlug(d.label) === disciplineSlug
-      )
-      disciplineId = match?.id
-      disciplineLabel = match?.label
-    } catch {
-      // Fallback: fetch without discipline filter
-    }
-  }
+  // Resolve discipline slug → UUID using hardcoded seed map (no /disciplines fetch needed)
+  const disciplineId = disciplineSlug ? getDisciplineIdBySlug(disciplineSlug) : undefined
+  const disciplineLabel = disciplineSlug ? getDisciplineLabelBySlug(disciplineSlug) : undefined
 
   const { data: posts, pagination } = await fetchPosts({
     query: q,
