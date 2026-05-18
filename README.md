@@ -387,13 +387,148 @@ Aplicação rodando em: `http://localhost:3000`
 
 ## 🐳 Docker
 
-<!-- TODO: documentar Dockerfile, docker-compose e comandos -->
+A aplicação é containerizada com **Docker multi-stage build** para garantir uma imagem final mínima, segura e idêntica entre ambientes (desenvolvimento, CI e produção). A abordagem segue boas práticas oficiais do Next.js: separar a etapa de build (que precisa de devDependencies como TypeScript, Tailwind e tipos) da etapa de runtime, que utiliza o **output `standalone`** do Next.js — um servidor Node autocontido que dispensa `node_modules` completo na imagem final.
+
+### Estratégia Multi-Stage
+
+O [Dockerfile](Dockerfile) é dividido em três estágios. Apenas o último estágio compõe a imagem publicada; os demais são descartados.
+
+| Estágio | Base | Responsabilidade |
+|---------|------|------------------|
+| `deps` | `node:20-alpine` | Instala todas as dependências (`npm ci`) — inclusive devDependencies, necessárias para o build do Next |
+| `builder` | `node:20-alpine` | Copia `node_modules` do estágio anterior, copia o código-fonte e executa `npm run build` (gera `.next/standalone` e `.next/static`) |
+| `runner` | `node:20-alpine` | Imagem final. Copia apenas `public/`, `.next/standalone` e `.next/static`. Cria usuário não-root `nextjs:nodejs` (UID 1001) e expõe a porta 3000 |
+
+```mermaid
+graph LR
+    A[Source] --> B[Stage 1: deps<br/>npm ci]
+    B --> C[Stage 2: builder<br/>npm run build]
+    C --> D[Stage 3: runner<br/>node server.js]
+    style D fill:#86F2E4,stroke:#006A61
+```
+
+### Decisões de Segurança e Tamanho
+
+- **Imagem `alpine`**: base mínima (~5 MB) que reduz superfície de ataque e tempo de pull
+- **Usuário não-root**: o container roda como `nextjs` (UID 1001), nunca como root — boa prática contra container escape
+- **Output `standalone`**: configurado em [next.config.ts](next.config.ts) — o Next gera um servidor com apenas as dependências de produção tree-shaken, reduzindo a imagem final em ~80% comparada a copiar `node_modules` inteiro
+- **`.dockerignore`**: exclui `node_modules`, `.next`, `.git`, `docs/`, arquivos `.env` e o próprio `docker-compose.yml` do contexto de build, evitando vazamento de segredos e reduzindo o tempo de transferência
+
+### docker-compose
+
+O [docker-compose.yml](docker-compose.yml) orquestra o serviço de frontend e expõe variáveis de ambiente. Há um bloco comentado para conectar à rede externa criada pelo `docker-compose` da Fase 2, permitindo que o frontend resolva `backend:3030` em vez de `localhost:3030`.
+
+```yaml
+services:
+  frontend:
+    build: { context: ., dockerfile: Dockerfile }
+    ports: ['3000:3000']
+    environment:
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:3030}
+      - JWT_SECRET=${JWT_SECRET}
+```
+
+### Comandos
+
+```bash
+# Build da imagem
+docker build -t edublog-frontend .
+
+# Run direto (após build)
+docker run -p 3000:3000 \
+  -e NEXT_PUBLIC_API_URL=http://host.docker.internal:3030 \
+  -e JWT_SECRET=<mesma_secret_da_fase_2> \
+  edublog-frontend
+
+# Via docker-compose (lê .env automaticamente)
+docker compose up -d
+docker compose logs -f frontend
+docker compose down
+```
 
 ---
 
 ## ⚙️ CI/CD
 
-<!-- TODO: documentar pipeline GitHub Actions e deploy Vercel -->
+O projeto utiliza **GitHub Actions** com pipelines separados para **integração contínua** (CI) e **entrega contínua** (CD). A separação garante que toda mudança seja validada antes de chegar à `main`, e que toda imagem publicada no registry tenha origem rastreável em um commit que passou nos checks.
+
+### Pipeline de CI
+
+Definido em [`.github/workflows/ci.yml`](.github/workflows/ci.yml). Executa em **push para qualquer branch** e em **pull requests para `main`**. Composto por 4 jobs:
+
+| Job | Comando | Propósito |
+|-----|---------|-----------|
+| `lint` | `npm run lint` | ESLint — padronização de código |
+| `type-check` | `npx tsc --noEmit` | Verifica tipagem sem gerar arquivos |
+| `test` | `npx vitest run --reporter=verbose` | Executa toda a suite de testes |
+| `build` | `npm run build` | Build de produção do Next.js |
+
+O job `build` declara `needs: [lint, type-check, test]` — só executa se os três anteriores passarem. Os três jobs de validação rodam em **paralelo**, otimizando o tempo total do pipeline.
+
+```mermaid
+graph LR
+    Push[push / PR] --> L[lint]
+    Push --> T[type-check]
+    Push --> Te[test]
+    L --> B[build]
+    T --> B
+    Te --> B
+    B --> Done[✓ Pronto para merge]
+```
+
+Todos os jobs utilizam **Node 20** com cache de `npm` via `actions/setup-node@v4`, reduzindo o tempo de instalação em runs subsequentes.
+
+### Pipeline de CD
+
+Definido em [`.github/workflows/cd.yml`](.github/workflows/cd.yml). Executa apenas em **push para `main`** (tipicamente após merge de PR validado pelo CI). Constrói a imagem Docker e publica no **GitHub Container Registry (GHCR)** em `ghcr.io/natanjunior/8fsdt-tech-challenge-3`.
+
+A action `docker/metadata-action@v5` gera duas tags por imagem:
+- `sha-<short_commit>` — identifica o commit exato (versionamento imutável)
+- `latest` — sempre aponta para o último build de `main`
+
+```mermaid
+sequenceDiagram
+    participant Dev as Desenvolvedor
+    participant GH as GitHub
+    participant CI as CI Workflow
+    participant CD as CD Workflow
+    participant GHCR as ghcr.io
+
+    Dev->>GH: Push em feature branch
+    GH->>CI: Dispara CI
+    CI-->>GH: ✓ lint + types + tests + build
+    Dev->>GH: Merge PR em main
+    GH->>CD: Dispara CD
+    CD->>CD: docker build (multi-stage)
+    CD->>GHCR: push image:sha-abc + :latest
+    GHCR-->>Dev: Imagem disponível para pull
+```
+
+### Variáveis e Secrets
+
+| Tipo | Nome | Uso |
+|------|------|-----|
+| Secret | `GITHUB_TOKEN` | Fornecido automaticamente pelo Actions; autoriza push no GHCR |
+| Variable | `NEXT_PUBLIC_API_URL` | URL da API consumida em build-time (passada como `--build-arg`) |
+| Secret (CI) | `JWT_SECRET` | Placeholder no CI (`ci-placeholder-secret`) — o build não precisa de uma secret real |
+
+### Como Consumir a Imagem Publicada
+
+```bash
+# Pull da imagem mais recente
+docker pull ghcr.io/natanjunior/8fsdt-tech-challenge-3:latest
+
+# Pull de uma versão específica (por commit SHA)
+docker pull ghcr.io/natanjunior/8fsdt-tech-challenge-3:sha-0a5ea69
+
+# Run
+docker run -p 3000:3000 \
+  -e NEXT_PUBLIC_API_URL=<url_da_api> \
+  -e JWT_SECRET=<secret> \
+  ghcr.io/natanjunior/8fsdt-tech-challenge-3:latest
+```
+
+> A imagem é pública (visibilidade do pacote configurada no GHCR), portanto não exige autenticação para `pull`.
 
 ---
 
