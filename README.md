@@ -67,18 +67,19 @@ Professores da rede pública de educação carecem de plataformas onde possam pu
 
 ## 🛠️ Tecnologias
 
-| Camada | Tecnologia | Origem |
-|--------|-----------|--------|
-| Framework | Next.js 15 (App Router) | Módulo 04 — ADR-01 |
-| Linguagem | TypeScript | Módulo 02 Aula 01 |
-| Estilização | Tailwind CSS | Módulo 04 Aula 02 — ADR-02 |
-| Formulários | React Hook Form + Zod | ADR-03 (curso ensina Formik+Yup) |
-| HTTP | Axios | Módulo 02 Aula 06 |
-| Estado global | Context API | Módulo 03 Aula 03 |
-| Testes | Vitest + React Testing Library | Módulo 03 Aula 05 |
-| Auth | JWT em httpOnly cookie + middleware | ADR-04 |
-| Container | Docker + Docker Compose | Requisito do challenge |
-| CI/CD | GitHub Actions | Requisito do challenge |
+| Camada | Tecnologia | Propósito no projeto |
+|--------|-----------|----------------------|
+| Framework | Next.js 15 (App Router) | SSR/SSG para SEO, API Routes internas (`/api/auth/*`), middleware Edge para proteção de rotas |
+| Linguagem | TypeScript | Inferência de tipos end-to-end entre schemas Zod, contratos da API e componentes |
+| Estilização | Tailwind CSS v4 | Utility-first com tokens do Design System em `@theme` (CSS-first config) + plugin Typography para Markdown |
+| Formulários | React Hook Form + Zod | Validação tipada com inferência automática (Zod → TS), re-renders mínimos vs estado controlado |
+| Renderização Markdown | `@uiw/react-md-editor` + `react-markdown` | Edição com toolbar/preview no admin e renderização segura (`skipHtml`) no leitor de post |
+| HTTP | Axios | Cliente nas Client Components, interceptor que injeta `Authorization` e `X-Anonymous-Id`; Server Components usam `fetch` nativo |
+| Estado global | Context API (`AuthContext`) | Estado de autenticação compartilhado entre Header, sidebar e área `/admin/*` |
+| Testes | Vitest + React Testing Library | Testes de Client Components, contextos, schemas e services com mock de Axios |
+| Auth | JWT em httpOnly cookie + middleware | Sessão protegida contra XSS; `jose` no Edge, `jsonwebtoken` no Node |
+| Container | Docker + Docker Compose | Build multi-stage com output `standalone` do Next, usuário não-root, paridade dev/CI/prod |
+| CI/CD | GitHub Actions | Lint + type-check + tests em paralelo (CI), build e push para GHCR em `main` (CD) |
 
 ### Hooks e Componentes Funcionais
 
